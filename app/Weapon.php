@@ -1,0 +1,21 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Weapon extends Model
+{
+    protected $fillable = [
+        'name', 'type', 'profile_id',
+    ];
+
+
+
+
+    public function profile(){
+        return $this->belongsTo(Profile::class);
+    }
+
+
+}
