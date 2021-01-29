@@ -18,16 +18,15 @@ class CreateEventsTable extends Migration
             $table->string('name');
             $table->date('date');
             $table->integer('players');
-            $table->string('about');
+            $table->text('about');
             $table->enum('type',['Reunião','Jogo']);
-            $table->enum('status',['Aberto','Fechado','Planejado']);
+            $table->enum('status',['Aberto','Encerrado','Planejado']);
 
-
-            $table->unsignedBigInteger('league_id');
-            $table->foreign('league_id')->references('id')->on('leagues');
-
-            $table->unsignedBigInteger('team_id')->nullable(); // se nulo quem faz o jogo é a ADM
+            $table->unsignedBigInteger('team_id')->nullable();
             $table->foreign('team_id')->references('id')->on('teams');
+
+            $table->unsignedBigInteger('league_id')->nullable();
+            $table->foreign('league_id')->references('id')->on('leagues');
 
             $table->timestamps();
         });
