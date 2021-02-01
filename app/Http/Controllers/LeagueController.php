@@ -18,8 +18,13 @@ class LeagueController extends Controller
     }
 
     public function index(){
-        dd('ok');
+        d('ok');
     }
+
+    public function dashboard(){
+        return view ('league.dashboard');
+    }
+
     public function createView()
     {
         return view('league.create.index');

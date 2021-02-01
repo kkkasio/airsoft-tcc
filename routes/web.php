@@ -31,7 +31,7 @@ Route::post('/liga/criar', 'LeagueController@create')->name('criarliga')->middle
 
 
 //private routes
-Route::get('/liga/dashboard', 'LeagueController@index')->name('liga-dashboard')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/dashboard', 'LeagueController@dashboard')->name('liga-dashboard')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/me', 'LeagueController@me')->name('liga-me')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/me/edit', 'LeagueController@meEditForm')->name('liga-me-edit-form')->middleware(['auth', 'verifyLeague']);
 
