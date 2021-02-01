@@ -1,5 +1,6 @@
 @extends('league.layouts.base')
 
+@section('title', '- Meu Perfil')
 
 @section('content')
 

@@ -1,5 +1,8 @@
 @extends('league.layouts.base')
 
+@section('title', '- Criar Comunicado')
+
+
 
 @section('content')
 

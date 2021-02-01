@@ -86,4 +86,32 @@ class PostsController extends Controller
             return redirect()->back();
         }
     }
+
+    public function all()
+    {
+        $league = Auth::user()->league;
+
+        $posts = Post::where('league_id', $league->id)->orderBy('created_at', 'desc')->get();
+
+        return view('league.posts.all', compact('posts', $posts));
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $post = Post::find($data['post']);
+
+
+            if (Auth::user()->league->id === $post->league_id) {
+                $post->delete();
+
+                toastr()->success('O comunicado foi deletado');
+                return redirect()->back();
+            }
+        } catch (Exception $e) {
+            toastr()->error('Ops.. algo de errado aconteceu...');
+            return redirect()->back();
+        }
+    }
 }

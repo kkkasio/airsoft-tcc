@@ -38,7 +38,9 @@ Route::get('/liga/me/edit', 'LeagueController@meEditForm')->name('liga-me-edit-f
 Route::get('/liga/post/create', 'PostsController@form')->name('liga-post-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/post/create', 'PostsController@create')->name('liga-post-create')->middleware(['auth', 'verifyLeague']);
 
-Route::get('/liga/post/{id}/editar', 'PostsController@editForm')->name('liga-post-edit-form')->middleware(['auth', 'verifyLeague']);
-Route::post('/liga/post/{id}/editar', 'PostsController@update')->name('liga-post-edit')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/post/{id}/edit', 'PostsController@editForm')->name('liga-post-edit-form')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/post/{id}/edit', 'PostsController@update')->name('liga-post-edit')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/post/delete', 'PostsController@delete')->name('liga-post-delete')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/eventos', 'LeagueController@me')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
