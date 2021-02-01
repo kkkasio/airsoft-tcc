@@ -18,8 +18,16 @@ class CreateLeaguesTable extends Migration
             $table->text('slug');
             $table->string('name');
             $table->string('about');
+            $table->date('foundation');
+            $table->string('avatar')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('state_id');
+            $table->foreign('state_id')->references('id')->on('states');
+
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('cities');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('state_id');
+            $table->foreign('state_id')->references('id')->on('states');
             $table->string('title');
-            $table->text('content');
-            $table->unsignedBigInteger('league_id');
-            $table->foreign('league_id')->references('id')->on('leagues');
+            $table->integer('iso');
+            $table->integer('iso_ddd');
+            $table->integer('status');
+            $table->string('slug');
+            $table->integer('population');
             $table->timestamps();
         });
     }
@@ -30,6 +35,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('cities');
     }
 }

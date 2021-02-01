@@ -6,6 +6,18 @@
         SQUAD
     </div>
 
+    @if (Session::has('mensagem'))
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+        <div class="toast-header">
+          <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ Session::get('mensagem') }}
+        </div>
+      </div>
+
+    @endif
+
     <form method="POST" action="{{ route('login') }}" class="card card-md">
         @csrf
         <div class="card-body">
