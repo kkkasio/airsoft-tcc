@@ -81,7 +81,7 @@
                                 <line x1="11" y1="15" x2="12" y2="15"></line>
                                 <line x1="12" y1="15" x2="12" y2="18"></line>
                             </svg>
-                            Data de Fundação: <strong>{{ $league->foundation }}</strong>
+                            Data de Fundação: <strong>{{ date('d/m/Y', strtotime($league->foundation)) }}</strong>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
@@ -143,7 +143,10 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a href="{{ route('liga-post-edit-form',['id'=> $post->id]) }}"
                                         class="dropdown-item">Editar</a>
-                                    <a href="#" class="dropdown-item">Excluir</a>
+                                    <a href="#" class="dropdown-item" data-post-modal="{{$post->id}}"
+                                        data-bs-toggle="modal" data-bs-target="#modal-small">
+                                        Deletar
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -171,9 +174,39 @@
             <p>Nenhum comunicado...</p>
             @endforelse
 
+            <div class="modal modal-blur fade" id="modal-small" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                    <form id="form" method="POST" action="{{ route('liga-post-delete') }}" class="modal-content">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="modal-title">Você tem certeza?</div>
+                            <div>Você quer deletar esse comunicado? Não é possivel desfazer essa ação.</div>
+                        </div>
+                        <input type="hidden" name="post" id="post_id" value="">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link link-secondary me-auto"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Sim! Deletar
+                                comunicado</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<script>
+    $("[data-post-modal]").click(function() {
+        var id = $(this).attr('data-post-modal');
+        $('#post_id').val(id);
+    });
+
+    $("button[type=submit").click(function(){
+        $("form").submit();
+    })
+</script>
 
 
 @endsection
