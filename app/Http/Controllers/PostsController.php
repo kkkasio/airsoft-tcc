@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use App\User;
+
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PostsController extends Controller
 {
@@ -27,7 +28,9 @@ class PostsController extends Controller
 
         $post = Post::create($data);
 
-        return redirect()->route('liga-me')->with(['message' => 'Comunicado criado com sucesso!', 'type' => 'success']);
+        toastr()->success('O comunicado foi criado');
+
+        return redirect()->route('liga-me');
     }
 
     public function form()
@@ -50,11 +53,12 @@ class PostsController extends Controller
         }
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $data = $request->all();
 
         try {
-            if($data['id'] === $id){
+            if ($data['id'] === $id) {
 
                 $valid = Validator::make($data, [
                     'title' => 'required|string|max:255',
@@ -69,13 +73,17 @@ class PostsController extends Controller
                 $post->update($data);
                 $post->save();
 
-                return redirect()->back()->with(['message', 'O comunicado foi atualizado', 'type' => 'success']);
+                toastr()->success('O comunicado foi atualizado');
 
-
+                return redirect()->route('liga-me');
             }
-        } catch (\Throwable $th) {
-            return redirect()->back()->with(['message', 'Ops.. algo de errado aconteceu...', 'type' => 'error']);
+            throw new Exception('Ops.. algo de errado aconteceu...');
+        } catch (ValidationException $exception) {
 
+            return redirect()->back()->withErrors($exception->validator)->withInput();
+        } catch (Exception $e) {
+            toastr()->error('Ops.. algo de errado aconteceu...');
+            return redirect()->back();
         }
     }
 }

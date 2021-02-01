@@ -15,10 +15,14 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ URL::asset('css/tabler.css') }}">
+
+    @toastr_css
 </head>
 
 <body class="antialiased" cz-shortcut-listen="true">
     <div id="page">
+        @toastr_js
+        @toastr_render
 
         @include('league.layouts.sidebar')
         @include('league.layouts.header')

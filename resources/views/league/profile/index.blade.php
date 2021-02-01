@@ -140,7 +140,8 @@
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a href="{{ route('liga-post-edit-form',['id'=> $post->id]) }}" class="dropdown-item">Editar</a>
+                                    <a href="{{ route('liga-post-edit-form',['id'=> $post->id]) }}"
+                                        class="dropdown-item">Editar</a>
                                     <a href="#" class="dropdown-item">Excluir</a>
                                 </div>
                             </div>
@@ -148,10 +149,20 @@
 
                     </div>
                     <div class="card-body">
-                        <div class="card-subtitle">Data: {{$post->created_at->format('d/m/Y')}}</div>
+                        <div class="card-meta d-flex justify-content-between">
+                            <div class="card-subtitle">Data: {{$post->created_at->format('d/m/Y')}}</div>
+
+                            @if ($post->created_at != $post->updated_at)
+
+                            <div class="card-subtitle">Atualizado em: {{$post->updated_at->format('d/m/Y')}}</div>
+                            @endif
+
+
+                        </div>
                         <div class="mb-2">
                             {{$post->content}}
                         </div>
+
                     </div>
                 </div>
             </div>
