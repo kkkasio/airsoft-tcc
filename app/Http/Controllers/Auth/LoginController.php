@@ -90,11 +90,8 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
-
         if ($user->type === 'Membro') {
-            $profile = $user->profile;
-
-            dd($profile, $user);
+            return redirect()->route('membro-dashboard');
         } else {
             return redirect()->route('liga-dashboard');
         }

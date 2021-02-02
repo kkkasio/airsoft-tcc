@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'about','owner_id'
+        'name', 'slug', 'about','profile_id'
     ];
 
 
-    public function members(){
+    public function owner(){
         return $this->hasMany(Profile::class);
     }
+
+    public function members(){
+        return $this->belongsToMany(Profile::class,'team_members')->withPivot('type','id')->withTimestamps();
+    }
+
+
 }

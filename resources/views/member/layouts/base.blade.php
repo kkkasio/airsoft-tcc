@@ -11,26 +11,27 @@
     <title>{{ config('app.name')}} @yield('title')</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
     <!-- Styles -->
-    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
-    @toastr_css
+    <link rel="stylesheet" href="{{ URL::asset('css/tabler.css') }}">
 
+    @toastr_css
 </head>
 
-<body>
-    <div id="app">
+<body class="antialiased" cz-shortcut-listen="true">
+    <div id="page">
         @toastr_js
         @toastr_render
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
 
-    <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+        @include('member.layouts.sidebar')
+        @include('member.layouts.header')
+        @yield('content')
+
+    </div>
+    <script src="{{URL::asset('js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{URL::asset('js/tabler.min.js')}}"></script>
+    @include('layouts.footer')
 </body>
 
 </html>

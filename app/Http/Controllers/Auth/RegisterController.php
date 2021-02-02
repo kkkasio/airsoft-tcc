@@ -78,7 +78,8 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         $this->create($request->all());
 
-        return redirect()->route('login')->with(['mensagem' => 'Parabéns! sua conta está criada, acabamos de enviar um email para você ativar sua conta.']);
+        toastr()->success('Parabéns! sua conta está criada, acabamos de enviar um email para você ativar sua conta.');
+        return redirect()->route('login');
 
     }
 }

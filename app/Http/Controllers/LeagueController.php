@@ -18,7 +18,7 @@ class LeagueController extends Controller
     }
 
     public function index(){
-        d('ok');
+        dd('ok');
     }
 
     public function dashboard(){
