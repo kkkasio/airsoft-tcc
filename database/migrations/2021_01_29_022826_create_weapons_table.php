@@ -16,6 +16,8 @@ class CreateWeaponsTable extends Migration
         Schema::create('weapons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('nickname',100)->nullable();
+            $table->string('avatar')->nullable();
             $table->enum('type',['Pistola','Assault','Suporte','DMR','Sniper']);
             $table->unsignedBigInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profiles');

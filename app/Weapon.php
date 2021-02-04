@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Weapon extends Model
 {
     protected $fillable = [
-        'name', 'type', 'profile_id',
+        'name','nickname','avatar', 'type', 'profile_id',
     ];
 
 

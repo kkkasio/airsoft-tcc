@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="card-meta d-flex justify-content-between">
+                        <div class="card-meta mt-1 d-flex justify-content-between">
                             <div class="card-subtitle">Data: {{$post->created_at->format('d/m/Y')}}</div>
 
                             @if($post->created_at != $post->updated_at)
@@ -31,7 +31,7 @@
 
                         </div>
                         <div class="mb-2">
-                            {{$post->conent}}
+                            {{$post->content}}
                         </div>
 
                     </div>

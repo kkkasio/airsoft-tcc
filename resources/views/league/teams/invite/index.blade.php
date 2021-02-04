@@ -51,7 +51,7 @@
                                         {{$invite->created_at->format('d/m/Y - G:m')}}
                                     </td>
                                     <td class="text-muted">
-                                       {{$invite->used ? 'Sim': 'Não'}}
+                                        {{$invite->used ? 'Sim': 'Não'}}
                                     </td>
                                     <td>
                                         {{$invite->team ? $invite->team->name : '-'}}

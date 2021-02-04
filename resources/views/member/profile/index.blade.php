@@ -167,11 +167,49 @@
 
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <span class="d-sm-inline-block">
-                            <a href="#" class="btn btn-white">
-                                Editar Armas
-                            </a>
-                        </span>
+                        <a href="#" class="btn d-none d-sm-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                <line x1="16" y1="5" x2="19" y2="8"></line>
+                            </svg>
+                            Editar Armas
+                        </a>
+                        <a href="#" class="btn  d-sm-none btn-icon" aria-label="Adicionar nova arma">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                <line x1="16" y1="5" x2="19" y2="8"></line>
+                            </svg>
+                        </a>
+
+                        <a href="#" id="form-modal" class="btn btn-primary d-none d-sm-inline-block"
+                            data-bs-toggle="modal" data-bs-target="#modal-form">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Nova Arma
+                        </a>
+                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                            data-bs-target="#modal-form" aria-label="Create new report">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -184,7 +222,13 @@
                 <div class="card card-stacked">
                     <div class="card-header">
                         <div class="card-title">
-                            {{$weapon->name}}
+                            {{$weapon->name}} - {{$weapon->type}}
+
+                            <div class="mb-2">
+                                @if($weapon->nickname)
+                                <small>Conhecida como: {{$weapon->nickname}}</small>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,9 +236,86 @@
             @empty
             <p>Nenhuma arma cadastrada</p>
             @endforelse
-
-
         </div>
     </div>
 </div>
+
+
+
+<div class="modal modal-blur fade" id="modal-form" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <form id="form" action="{{ route('membro-me-weapon-post') }}" method="POST" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar nova arma</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                        placeholder="Ex: Ares Amoeba 009" required>
+                    @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Apelido</label>
+                    <input type="text" class="form-control @error('nickname') is-invalid @enderror" name="nickname"
+                        placeholder="Sua arma tem um apelido?">
+                    @error('nickname')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label">Classe</label>
+                    <select class="form-select" name="type" required>
+                        <option value="Pistola">Pistola</option>
+                        <option value="Assault">Assault</option>
+                        <option value="Suporte">Suporte</option>
+                        <option value="DMR">DMR</option>
+                        <option value="Sniper">Sniper</option>
+                    </select>
+                </div>
+                @error('type')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </a>
+                <button id="sendForm" type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Salvar
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("button[type=submit").click(function(){
+        $("form").submit();
+    })
+</script>
+
+
 @endsection
