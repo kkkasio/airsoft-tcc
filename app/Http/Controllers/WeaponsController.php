@@ -29,7 +29,7 @@ class WeaponsController extends Controller
 
             toastr()->success('Arma adicionada!');
             return redirect()->route('membro-me');
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
             toastr()->error('Ops.. ago de errado aconteceu');
             return redirect()->back();
         }
@@ -57,7 +57,6 @@ class WeaponsController extends Controller
             toastr()->success('A Arma foi removida');
             return redirect()->route('membro-me-weapon-all');
         }
-
 
         toastr()->error('Ops... algo de errado aconteceu');
         return redirect()->back();
