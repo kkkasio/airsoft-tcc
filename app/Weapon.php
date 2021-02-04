@@ -17,5 +17,6 @@ class Weapon extends Model
         return $this->belongsTo(Profile::class);
     }
 
+    
 
 }

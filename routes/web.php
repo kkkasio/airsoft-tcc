@@ -63,6 +63,8 @@ Route::get('/membro/me/edit', 'MemberController@editForm')->name('membro-me-edit
 Route::post('/membro/me/edit', 'MemberController@update')->name('membro-me-edit-post')->middleware(['auth', 'verifyMember']);
 
 Route::post('/membro/me/weapons/create', 'WeaponsController@create')->name('membro-me-weapon-post')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/me/weapons/all', 'WeaponsController@editForm')->name('membro-me-weapon-all')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/me/weapons/delete', 'WeaponsController@delete')->name('membro-me-weapon-delete')->middleware(['auth', 'verifyMember']);
 
 
 // Rotas para o time

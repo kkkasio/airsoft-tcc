@@ -34,4 +34,32 @@ class WeaponsController extends Controller
             return redirect()->back();
         }
     }
+
+    public function edit(Request $request)
+    {
+    }
+
+    public function editForm()
+    {
+        return view('member.weapons.index');
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $request->all();
+
+        $weapon = Weapon::find($data['weapon'])->first();
+        $user = Auth::user()->profile;
+
+
+        if ($user->id === $weapon->profile_id) {
+            $weapon->delete();
+            toastr()->success('A Arma foi removida');
+            return redirect()->route('membro-me-weapon-all');
+        }
+
+
+        toastr()->error('Ops... algo de errado aconteceu');
+        return redirect()->back();
+    }
 }
