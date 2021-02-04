@@ -78,6 +78,8 @@ Route::post('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberUpdate
 
 
 Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/league/events', 'LeagueController@showEventsMember')->name('membro-league-show-events')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/league/events/{id}', 'EventController@show')->name('membro-league-show-event')->middleware(['auth', 'verifyMember']);
 
 
 

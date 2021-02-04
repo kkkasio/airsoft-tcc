@@ -14,7 +14,7 @@ class LeagueController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth'); //tem que estar logado
+        $this->middleware('auth');
     }
 
     public function index()
@@ -89,5 +89,12 @@ class LeagueController extends Controller
         $posts = $league->posts->sortDesc();
 
         return view('member.league.posts', compact('posts'));
+    }
+
+    public function showEventsMember()
+    {
+        $league = Auth::user()->profile->league->league;
+        $events = $league->events->sortDesc();
+        return view('member.league.events', compact('events'));
     }
 }

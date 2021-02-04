@@ -17,6 +17,7 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->string('name');
             $table->date('date');
+            $table->string('file');
             $table->integer('players');
             $table->text('about');
             $table->enum('type',['Reunião','Jogo']);
