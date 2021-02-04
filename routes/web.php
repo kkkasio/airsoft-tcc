@@ -45,6 +45,9 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 
 Route::get('/liga/eventos', 'LeagueController@me')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 
+Route::get('/liga/eventos/create', 'EventController@createForm')->name('liga-eventos-form')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/eventos/create', 'EventController@create')->name('liga-eventos-post')->middleware(['auth', 'verifyLeague']);
+
 
 Route::get('/liga/teams', 'LeagueTeamsController@show')->name('liga-times-show')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/teams/invites', 'LeagueTeamsController@showInvites')->name('liga-times-show-invites')->middleware(['auth', 'verifyLeague']);
