@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\League;
+use App\LeagueTeam;
+use App\LeagueTeamInvites;
 use App\Profile;
+use App\ProfileLeague;
+use App\ProfileTeam;
 use App\Team;
 use Exception;
 use Illuminate\Http\Request;
@@ -123,7 +128,7 @@ class TeamController extends Controller
         $data = $request->all();
 
         $valid = Validator::make($data, [
-            'type' => ['required', Rule::in(['Moderador','Membro'])]
+            'type' => ['required', Rule::in(['Moderador', 'Membro'])]
         ]);
 
         $valid->validate();
@@ -137,8 +142,8 @@ class TeamController extends Controller
 
             if ($isModerador->team_id === $team->id && $isModerador->type === 'Moderador') {
 
-                $isOwner = DB::table('team_members')->where('id',$id)->first();
-                if($team->profile_id === $isOwner->profile_id){
+                $isOwner = DB::table('team_members')->where('id', $id)->first();
+                if ($team->profile_id === $isOwner->profile_id) {
                     throw new Exception('Você não pode editar o dono do time');
                 }
 
@@ -151,6 +156,58 @@ class TeamController extends Controller
             return redirect()->back()->withErrors($exception->validator)->withInput();
         } catch (Exception $e) {
             toastr()->error('Ops.. algo de errado aconteceu...');
+            return redirect()->back();
+        }
+    }
+
+    public function invitePost(Request $request, $slug)
+    {
+        try {
+            $data = $request->all();
+            $valid = Validator::make($data, [
+                'code' => 'required|string'
+            ]);
+
+            $valid->validate();
+
+            $code = LeagueTeamInvites::where('code', '=', $data['code'])->first();
+
+
+            if ($code) {
+                if ($code->used || $code->team_id) {
+                    throw new Exception('Código já foi utilizado');
+                }
+
+                $team = Team::where('slug', $slug)->first();
+
+                foreach ($team->members as $member) {
+                    ProfileLeague::updateOrCreate([
+                        'profile_id' => $member->profile_id,
+                        'league_id' => $code->league_id,
+                        'type' => 'Membro'
+                    ]);
+                }
+
+                LeagueTeam::create([
+                    'team_id' => $team->id,
+                    'league_id' => $code->league_id
+                ]);
+
+
+
+                $code->used = true;
+                $code->team_id = $team->id;
+                $code->save();
+
+                toastr()->success('Time adicionado na liga '. $code->league->name);
+                return redirect()->back();
+            }
+
+            toastr()->warning('Código não encontrado');
+            return redirect()->back();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo deu errado');
             return redirect()->back();
         }
     }

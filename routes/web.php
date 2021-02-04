@@ -46,6 +46,11 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 Route::get('/liga/eventos', 'LeagueController@me')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 
 
+Route::get('/liga/teams', 'LeagueTeamsController@show')->name('liga-times-show')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/teams/invites', 'LeagueTeamsController@showInvites')->name('liga-times-show-invites')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-times-create-invite')->middleware(['auth', 'verifyLeague']);
+
+
 
 //private routes membro
 
@@ -68,3 +73,8 @@ Route::get('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberEdit')-
 Route::post('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberUpdate')->name('membro-time-edit-member-post')->middleware(['auth', 'verifyMember']);
 
 
+Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);
+
+
+
+Route::post('/membro/time/{slug}/league', 'TeamController@invitePost')->name('membro-time-invite-post')->middleware(['auth', 'verifyMember']);

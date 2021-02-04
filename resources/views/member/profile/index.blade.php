@@ -50,24 +50,30 @@
                         </div>
 
                         <div class="mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-at" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-at" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28"></path>
-                             </svg>
+                            </svg>
                             Apelido: <strong>{{$profile->nickname}}</strong>
                         </div>
                         <div class="mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                             </svg>
+                            </svg>
                             Gênero: <strong>{{$profile->gender === 'F' ? 'Feminino': 'Masculino'}}</strong>
                         </div>
 
                         <div class="mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-unlink" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-unlink"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
                                 <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path>
@@ -75,7 +81,7 @@
                                 <line x1="19" y1="16" x2="21" y2="16"></line>
                                 <line x1="3" y1="8" x2="5" y2="8"></line>
                                 <line x1="8" y1="3" x2="8" y2="5"></line>
-                             </svg>
+                            </svg>
                             URL: <strong><?php echo config('app.url')."/membro/{$profile->slug}" ?></strong>
                         </div>
                         <div class="mb-2">
@@ -93,11 +99,15 @@
                             Data de Nascimento: <strong>{{ date('d/m/Y', strtotime($profile->birthday)) }}</strong>
                         </div>
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <circle cx="12" cy="11" r="3"></circle>
-                                <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-                             </svg>
+                                <path
+                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
+                                </path>
+                            </svg>
                             Localização: <strong>{{ $profile->state->letter}}</strong> -
                             <strong>{{ $profile->city->title }}</strong>
                         </div>
@@ -109,12 +119,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Meu Time</div>
-                        @if($team = Auth::user()->profile->teamMember->first())
+                        @if($team = Auth::user()->profile->team)
                         <div class="mb-2">
-                            Nome: <strong>{{$team->name}}</strong>
+                            Nome: <strong>{{$team->team->name}}</strong>
                         </div>
                         <div class="mb-2">
-                            Total de membros: <strong>{{count($team->members)}}</strong>
+                            Total de membros: <strong>{{count($team->team->members)}}</strong>
                         </div>
                         @else
                         <div class="mb-2">

@@ -44,23 +44,23 @@
                 <div class="card">
                     <div class="card-body p-4 text-center">
                         <span class="avatar avatar-xl mb-3 avatar-rounded"
-                            style="background-image: url(./static/avatars/000m.jpg)">{{$member->initials}}</span>
-                        <h3 class="m-0 mb-1">{{$member->name}}</h3>
+                            style="background-image: url(./static/avatars/000m.jpg)">{{$member->profile->initials}}</span>
+                        <h3 class="m-0 mb-1">{{$member->profile->name}}</h3>
 
                         <div class="text-muted">
-                            @if($member->pivot->type === 'Moderador')
+                            @if($member->type === 'Moderador')
                             <span class="badge bg-purple-lt">
-                                {{$member->pivot->type}}
+                                {{$member->type}}
                             </span>
                             @else
                             <span class="badge bg-green-lt">
-                                {{$member->pivot->type}}
+                                {{$member->type}}
                             </span>
                             @endif
                         </div>
                     </div>
                     <div class="d-flex">
-                        <a href="{{ route('membro-time-edit-member-form',['slug' => $team->slug,'id'=> $member->pivot->id])}}"
+                        <a href="{{ route('membro-time-edit-member-form',['slug' => $team->slug,'id'=> $member->id])}}"
                             class="card-btn"><svg xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24"
                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"

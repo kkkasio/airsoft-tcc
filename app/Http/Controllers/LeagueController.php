@@ -17,12 +17,14 @@ class LeagueController extends Controller
         $this->middleware('auth'); //tem que estar logado
     }
 
-    public function index(){
+    public function index()
+    {
         dd('ok');
     }
 
-    public function dashboard(){
-        return view ('league.dashboard');
+    public function dashboard()
+    {
+        return view('league.dashboard');
     }
 
     public function createView()
@@ -48,7 +50,7 @@ class LeagueController extends Controller
             'foundation' => ['required', 'date_format:Y-m-d'],
             "estado" => ['required', 'string'],
             "cidade" => ['required', 'string'],
-            "about" => ['required','string']
+            "about" => ['required', 'string']
         ]);
 
 
@@ -57,23 +59,35 @@ class LeagueController extends Controller
         $league = League::create($data);
 
         return redirect()->route('liga-me');
-
     }
 
-    public function me(Request $request){
+    public function me(Request $request)
+    {
         $user = Auth::user();
         $league = $user->league;
-        return view('league.profile.index',compact('league',$league));
+        return view('league.profile.index', compact('league', $league));
     }
 
-    public function meEditForm(){
+    public function meEditForm()
+    {
         return view();
     }
 
-    public function editForm(){
-        return view ('league.posts.edit');
+    public function editForm()
+    {
+        return view('league.posts.edit');
     }
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         dd($request);
+    }
+
+    public function showPostsMember()
+    {
+
+        $league = Auth::user()->profile->league->league;
+        $posts = $league->posts->sortDesc();
+
+        return view('member.league.posts', compact('posts'));
     }
 }
