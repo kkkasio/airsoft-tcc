@@ -42,7 +42,7 @@ class LeagueTeamsController extends Controller
 
             if ($data['code']) {
                 $valid = Validator::make($data, [
-                    'code' => 'required|unique:league_team_invite'
+                    'code' => 'required|unique:league_team_invite|min:5'
                 ]);
 
                 $valid->validate();
@@ -60,8 +60,9 @@ class LeagueTeamsController extends Controller
                 return redirect()->route('liga-times-show-invites');
             }
         } catch (ValidationException $e) {
-            toastr()->error('Ops... esse código já existe');
-            return redirect()->back();
+
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();

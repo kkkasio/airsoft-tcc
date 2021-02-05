@@ -84,12 +84,13 @@
                             <label class="form-label">Código</label>
                             <input type="text" class="form-control @error('code') is-invalid @enderror" name="code"
                                 placeholder="Se preferir deixe em branco">
+                            @error('code')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
-                        @error('code')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+
 
                     </div>
                     <div class="modal-footer">
