@@ -26,14 +26,28 @@
         </div>
 
         <div class="row row-cards">
-            @forelse ($open as $event)
+
+            @forelse ($open as $i => $event)
+
+
             <div class="col-md-6 col-lg-3">
                 <div class="card">
                     <div class="card-img-top img-responsive img-responsive-16by9"
                         style="background-image: url(https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png)">
                     </div>
-
                     <div class="card-body p-4 text-center">
+                        @if($i === 0)
+                        <div class="ribbon ribbon-bookmark" title="Próximo evento">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                </path>
+                            </svg>
+                        </div>
+                        @endif
 
                         <h3 class="m-0 mb-1"><a
                                 href="{{ route('membro-league-show-event',['id' => $event->id])}}">{{$event->name}}</a>

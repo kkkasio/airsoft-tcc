@@ -90,10 +90,10 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('liga-times-show')}}">
+                        <a class="dropdown-item" href="{{ route('liga-membros-all')}}">
                             Ver todos os membros
                         </a>
-                        <a class="dropdown-item" href="{{ route('liga-times-show-invites')}}">
+                        <a class="dropdown-item" href="{{ route('liga-members-show-invites')}}">
                             Gerar convite
                         </a>
                     </div>

@@ -43,6 +43,12 @@ Route::post('/liga/post/{id}/edit', 'PostsController@update')->name('liga-post-e
 Route::post('/liga/post/delete', 'PostsController@delete')->name('liga-post-delete')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->middleware(['auth', 'verifyLeague']);
 
+
+Route::get('/liga/membros', 'LeagueController@showMembers')->name('liga-membros-all')->middleware(['auth', 'verifyLeague']);
+
+Route::get('/liga/membros/invites', 'LeagueProfilesController@showInvites')->name('liga-members-show-invites')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/membros/invites', 'LeagueProfilesController@create')->name('liga-members-create-invites')->middleware(['auth', 'verifyLeague']);
+
 Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/eventos/aberto', 'EventController@open')->name('liga-eventos-aberto')->middleware(['auth', 'verifyLeague']);

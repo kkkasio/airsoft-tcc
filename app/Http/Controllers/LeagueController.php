@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\League;
+use App\ProfileLeague;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,5 +97,13 @@ class LeagueController extends Controller
         $league = Auth::user()->profile->league->league;
         $events = $league->events->sortDesc();
         return view('member.league.events', compact('events'));
+    }
+
+    public function showMembers(){
+        $league = Auth::user()->league;
+
+        $members = ProfileLeague::where('league_id',$league->id)->get();
+
+        return view('league.members.show',compact('members'));
     }
 }
