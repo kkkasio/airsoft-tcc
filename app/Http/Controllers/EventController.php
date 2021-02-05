@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\EventSquad;
 use App\LeagueTeam;
+use App\ProfileEvent;
 use App\Team;
 use Carbon\Carbon;
 use Exception;
@@ -102,8 +104,14 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         if ($event->league_id === $league->id) {
+            $subscribers = ProfileEvent::where('event_id', $event->id)->paginate(10);
+            $noSquad = ProfileEvent::where('event_id',$event->id)->where('squad_id',null)->get();
 
-            dd($event);
+
+
+            $squads = EventSquad::where('event_id',$event->id)->get();
+
+            return view('league.events.show', compact('event','noSquad', 'subscribers','squads'));
         }
 
         toastr()->error('Ops... ago de errado aconteceu');
@@ -124,5 +132,15 @@ class EventController extends Controller
         $planned  = $league->events->where('status', 'Planejado')->sortBy('startdate');
 
         return view('league.events.planned.index', compact('planned'));
+    }
+
+    public function subscribe($id)
+    {
+        dd($id);
+    }
+
+    public function unSubscribe($id)
+    {
+        dd($id);
     }
 }

@@ -85,6 +85,21 @@
                                 <path d="M4 18h4"></path>
                             </svg>
                             Visualizar</a>
+                            @if($event->team === null)
+                        <a href="{{ route('liga-evento-show',['id' => $event->id])}}" class="card-btn"><svg
+                                xmlns="http://www.w3.org/2000/svg" class="icon mx-1 icon-tabler icon-tabler-list-search"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="15" cy="15" r="4"></circle>
+                                <path d="M18.5 18.5l2.5 2.5"></path>
+                                <path d="M4 6h16"></path>
+                                <path d="M4 12h4"></path>
+                                <path d="M4 18h4"></path>
+                            </svg>
+                            Gerenciar</a>
+                            @endif
+
 
                     </div>
                 </div>

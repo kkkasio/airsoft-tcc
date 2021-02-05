@@ -29,6 +29,6 @@ class Event extends Model
     }
 
     public function subscribers(){
-        return 'aqui vem os inscritos';
+        return $this->hasMany(ProfileEvent::class);
     }
 }
