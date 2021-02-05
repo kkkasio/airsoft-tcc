@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
      protected $fillable = [
-        'name', 'date', 'players','about','type','status','league_id','team_id','file'
+        'name', 'players','about','type','status','league_id','team_id','file','startdate','enddate'
     ];
 
     protected $casts = [
-        'date' => 'datetime:Y-m-d',
+        'startdate' => 'datetime:Y-m-d H:i',
+        'enddate' => 'datetime:Y-m-d H:i',
     ];
 
 

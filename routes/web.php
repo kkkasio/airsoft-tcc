@@ -43,7 +43,12 @@ Route::post('/liga/post/{id}/edit', 'PostsController@update')->name('liga-post-e
 Route::post('/liga/post/delete', 'PostsController@delete')->name('liga-post-delete')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->middleware(['auth', 'verifyLeague']);
 
-Route::get('/liga/eventos', 'LeagueController@me')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/eventos/aberto', 'EventController@open')->name('liga-eventos-aberto')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/eventos/planejados', 'EventController@planned')->name('liga-eventos-planejados')->middleware(['auth', 'verifyLeague']);
+
+
 
 Route::get('/liga/eventos/create', 'EventController@createForm')->name('liga-eventos-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/eventos/create', 'EventController@create')->name('liga-eventos-post')->middleware(['auth', 'verifyLeague']);

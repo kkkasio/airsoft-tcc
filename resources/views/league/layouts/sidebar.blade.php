@@ -75,43 +75,28 @@
                     <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" role="button"
                         aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24"
+                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                </path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                             </svg>
                         </span>
                         <span class="nav-link-title">
-                            Eventos
+                            Membros
                         </span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ route('liga-times-show')}}">
-                            Ver todos os eventos
+                            Ver todos os membros
                         </a>
-                        <a class="dropdown-item" href="{{ route('liga-eventos-form')}}">
-                           Criar um novo evento
+                        <a class="dropdown-item" href="{{ route('liga-times-show-invites')}}">
+                            Gerar convite
                         </a>
                     </div>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('liga-eventos') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <polyline points="9 11 12 14 20 6"></polyline>
-                                <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            *** Membros ***
-                        </span>
-                    </a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -135,7 +120,7 @@
                             Ver todos os times
                         </a>
                         <a class="dropdown-item" href="{{ route('liga-times-show-invites')}}">
-                           Gerar convite para time
+                            Gerar convite para time
                         </a>
                     </div>
                 </li>
@@ -144,12 +129,43 @@
                     <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" role="button"
                         aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                class="icon icon-tabler icon-tabler-calendar-event" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+                                <line x1="16" y1="3" x2="16" y2="7"></line>
+                                <line x1="8" y1="3" x2="8" y2="7"></line>
+                                <line x1="4" y1="11" x2="20" y2="11"></line>
+                                <rect x="8" y="15" width="2" height="2"></rect>
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Eventos
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('liga-eventos')}}">
+                            Ver todos os eventos
+                        </a>
+                        <a class="dropdown-item" href="{{ route('liga-eventos-form')}}">
+                            Criar um novo evento
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" role="button"
+                        aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-brand-hipchat" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path
-                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                    d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 2.998 -3.49 2.998 -5.789c0 -4.286 -4.03 -7.764 -8.998 -7.764c-4.97 0 -9.002 3.478 -9.002 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29z">
                                 </path>
+                                <path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0"></path>
                             </svg>
                         </span>
                         <span class="nav-link-title">
@@ -161,27 +177,9 @@
                             Novo Comunicado
                         </a>
                         <a class="dropdown-item" href="{{ route('liga-post-all')}}">
-                           Ver Todos
+                            Ver Todos
                         </a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./docs/index.html">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                <line x1="9" y1="9" x2="10" y2="9"></line>
-                                <line x1="9" y1="13" x2="15" y2="13"></line>
-                                <line x1="9" y1="17" x2="15" y2="17"></line>
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Documentation
-                        </span>
-                    </a>
                 </li>
             </ul>
         </div>
