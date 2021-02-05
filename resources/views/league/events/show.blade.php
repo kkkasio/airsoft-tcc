@@ -1,6 +1,6 @@
 @extends('league.layouts.base')
 
-@section('title', '- Eventos')
+@section('title', '- Gerenciar Evento')
 
 @section('content')
 
@@ -16,6 +16,7 @@
         height: 100% !important;
         z-index: 1050;
         display: none;
+        backdrop-filter: blur(4px);
     }
 
     .whole-page-overlay .center-loader {
@@ -45,9 +46,10 @@
 
                 <div class="card-body border-bottom py-3">
                     <div class="d-flex">
-                       <div class="text-muted">
-                        <strong>Inscritos ({{count($event->subscribers)}})</strong>
+                        <div class="text-muted">
+                            <strong>Inscritos ({{count($event->subscribers)}})</strong>
                         </div>
+                        <input id="event-id" type="hidden" name="event" value="{{$event->id}}">
                         <div class="ms-auto text-muted">
                             Pesquisar:
                             <div class="ms-2 d-inline-block">
@@ -71,7 +73,7 @@
                             @forelse ($subscribers as $subscriber)
 
                             <tr>
-                                <td><span class="text-muted">001401</span></td>
+                                <td><span class="text-muted">#{{$subscriber->id}}</span></td>
                                 <td><a href="{{route('liga-membro-show',['id' => $subscriber->profile->id])}}"
                                         class="text-reset" tabindex="-1">{{$subscriber->profile->name}}</a></td>
                                 <td>
@@ -90,7 +92,9 @@
                                         data-profile-id="{{$subscriber->profile->id}}">
                                         <option value="0">Selecione o SQUAD</option>
                                         @foreach ($squads as $squad)
-                                        <option value="{{$squad->id}}" {{$subscriber->squad_id === $squad->id ? 'selected': '' }}>{{$squad->name}}</option>
+                                        <option value="{{$squad->id}}"
+                                            {{$subscriber->squad_id === $squad->id ? 'selected': '' }}>{{$squad->name}}
+                                        </option>
                                         @endforeach
 
                                     </select>
@@ -122,12 +126,35 @@
 
 
         <div class="row mt-5">
-            <h2 class="text-center pb-3 pt-1">Squads</h2>
-            @foreach ($squads as $squad)
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="page-pretitle">
+                        </div>
+                        <h2 class="page-title">
+                            Squads ({{count($squads)}})
+                        </h2>
+                    </div>
+
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <span class="d-sm-inline-block">
+                                <a href="#" class="btn btn-white" data-bs-toggle="modal"
+                                    data-bs-target="#modal-new-squad">
+                                    Criar novo Squad
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @forelse ($squads as $squad)
             <div class="col-md-4">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}}</h3>
+                        <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})</h3>
                     </div>
                     <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
                         @foreach($squad->squadMembers as $key => $value)
@@ -147,13 +174,56 @@
 
                             </div>
                         </li>
+
                         @endforeach
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <h2>Nenhum squad criado vamos criar?</h2>
+            @endforelse
         </div>
         @csrf
+    </div>
+
+    <div class="modal modal-blur fade" id="modal-new-squad" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form id="form-create-squad" action="{{ route('liga-evento-squad-create') }}" method="POST" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Novo Squad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
+                        placeholder="BDU / PMC">
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <input type="hidden" name="event_id" value="{{$event->id}}">
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </a>
+                    <button id="sendForm" type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                       Criar Squad
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="whole-page-overlay" id="whole_page_loader">
@@ -182,12 +252,14 @@
         $('#whole_page_loader').css('display','block');
         var squad = $('#squad').val($("option:selected", this).val());
         var profile = $('#profile').val($(this).attr('data-profile-id'));
-        var event = $('#event').val($('#event-id').val())
+        var event = $('#event').val($('#event-id').val());
 
         $('#form-squad').submit();
-
     });
 
 
+    $('#sendForm').on('click', function(){
+        $('#form-create-squad').submit();
+    })
 </script>
 @endsection

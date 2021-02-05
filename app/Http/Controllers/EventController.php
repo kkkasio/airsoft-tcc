@@ -104,11 +104,9 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         if ($event->league_id === $league->id) {
+
             $subscribers = ProfileEvent::where('event_id', $event->id)->paginate(10);
             $noSquad = ProfileEvent::where('event_id',$event->id)->where('squad_id',null)->get();
-
-
-
             $squads = EventSquad::where('event_id',$event->id)->get();
 
             return view('league.events.show', compact('event','noSquad', 'subscribers','squads'));

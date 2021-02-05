@@ -8,7 +8,7 @@ class EventSquad extends Model
 {
     protected $table = 'event_squad';
 
-    protected $fillable = ['event_id','squad'];
+    protected $fillable = ['event_id','name'];
 
 
 

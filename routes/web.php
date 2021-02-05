@@ -54,6 +54,7 @@ Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
 
 Route::post('/liga/evento/squads/update', 'SquadsController@update')->name('liga-evento-squad-update')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
 
 
 
@@ -71,6 +72,12 @@ Route::post('/liga/eventos/create', 'EventController@create')->name('liga-evento
 Route::get('/liga/teams', 'LeagueTeamsController@show')->name('liga-times-show')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/teams/invites', 'LeagueTeamsController@showInvites')->name('liga-times-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-times-create-invite')->middleware(['auth', 'verifyLeague']);
+
+
+
+//Rotas Compartilhadas
+
+
 
 
 
