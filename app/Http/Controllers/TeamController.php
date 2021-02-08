@@ -39,8 +39,11 @@ class TeamController extends Controller
 
         $team = Team::create($data);
 
+        $data['profile_id'] = Auth::user()->profile->id;
+        $data['team_id'] = $team->id;
+        $data['type'] =  'Moderador';
         //adicionar membro ao
-        $addMember = Team::find($team->id)->members()->attach(Auth::user()->profile->id);
+        $addMember = Team::find($team->id)->members()->create($data);
 
         return redirect()->route('membro-time-show', ['slug' => $team->slug]);
     }

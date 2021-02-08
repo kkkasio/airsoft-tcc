@@ -87,6 +87,8 @@ Route::get('membro/dashboard','MemberController@dashboard')->name('membro-dashbo
 Route::get('/membro/criar', 'MemberController@createView')->name('criarProfileView')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/criar', 'MemberController@create')->name('criarProfile')->middleware(['auth', 'verifyMember']);
 
+
+
 Route::get('/membro/me', 'MemberController@me')->name('membro-me')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/me/edit', 'MemberController@editForm')->name('membro-me-edit-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/me/edit', 'MemberController@update')->name('membro-me-edit-post')->middleware(['auth', 'verifyMember']);
@@ -110,6 +112,7 @@ Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('me
 Route::get('/membro/league/events', 'EventController@showEventsMember')->name('membro-league-show-events')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/league/events/{id}', 'EventController@show')->name('membro-league-show-event')->middleware(['auth', 'verifyMember']);
 
+Route::post('/membro/league/invite', 'LeagueController@inviteMember')->name('membro-league-invite')->middleware(['auth', 'verifyMember']);
 
 Route::post('/membro/league/events/{id}/subscribe', 'EventController@subscribe')->name('membro-event-subscribe')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/league/events/{id}/unSubscribe', 'EventController@unSubscribe')->name('membro-event-unsubscribe')->middleware(['auth', 'verifyMember']);

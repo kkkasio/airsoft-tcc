@@ -94,14 +94,13 @@
 
 
                         @if (Auth::user()->profile->team)
-                        <a class="dropdown-item" href="{{ route('membro-time-show',['slug' => 'skulltat'])}}">
+                        <a class="dropdown-item" href="{{ route('membro-time-show',['slug' => Auth::user()->profile->team->team->slug])}}">
                             Meu Time
                         </a>
                         @endif
 
                     </div>
                 </li>
-
                 @if(Auth::user()->profile->league)
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('membro-league-show-events') }}">
