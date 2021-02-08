@@ -36,4 +36,8 @@ class Team extends Model
         }
         return substr($name[0], 0, 1);
     }
+
+    public function invites(){
+        return $this->hasMany(TeamInvite::class);
+    }
 }

@@ -106,6 +106,15 @@ Route::get('/membro/time/{slug}/edit', 'TeamController@editForm')->name('membro-
 Route::post('/membro/time/{slug}/edit', 'TeamController@edit')->name('membro-time-edit-post')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberEdit')->name('membro-time-edit-member-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberUpdate')->name('membro-time-edit-member-post')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/time/{slug}/member/edit/{id}/remove', 'TeamController@memberRemove')->name('membro-time-remove-member')->middleware(['auth', 'verifyMember']);
+
+
+Route::get('/membro/time/{slug}/invites', 'TeamController@showCodeInvite')->name('membro-time-show-invites')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/time/{slug}/invites/create', 'TeamController@codeInvite')->name('membro-time-create-invite')->middleware(['auth', 'verifyMember']);
+
+
+Route::get('/membro/team/invite', 'MemberController@inviteTeamForm')->name('member-team-invite-form')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/team/invite', 'MemberController@invitePost')->name('member-team-invite-post')->middleware(['auth', 'verifyMember']);
 
 
 Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);

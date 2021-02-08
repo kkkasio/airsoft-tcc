@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Profile;
+use App\ProfileTeam;
 use App\State;
+use App\TeamInvite;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -97,5 +99,62 @@ class MemberController extends Controller
 
         toastr()->success('Perfil atualizado');
         return redirect()->route('membro-me');
+    }
+
+    public function inviteTeamForm()
+    {
+        $profile = Auth::user()->profile;
+
+
+        if ($profile->team) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+
+        return view('member.team.invite.index');
+    }
+
+    public function invitePost(Request $request)
+    {
+
+        try {
+            $data = $request->all();
+            $profile = Auth::user()->profile;
+
+            $valid = Validator::make($data, [
+                // 'code'  => 'exists:team_invites'
+            ]);
+
+            $valid->validate();
+
+
+            if (!$profile->team) {
+
+                $invite = TeamInvite::where('code', $data['code'])->first();
+                $invite->used = true;
+                $invite->profile_id = $profile->id;
+                $invite->save();
+
+
+                ProfileTeam::create([
+                    'profile_id' => $profile->id,
+                    'team_id' => $invite->team_id,
+                    'type' => 'Membro'
+                ]);
+
+                toastr()->success('Você entrou no time');
+                return redirect()->route('membro-time-show', ['slug' => $invite->team->slug]);
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
     }
 }

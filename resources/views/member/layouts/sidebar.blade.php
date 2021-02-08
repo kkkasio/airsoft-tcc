@@ -89,12 +89,13 @@
                         <a class="dropdown-item" href="{{ route('membro-criar-time-form')}}">
                             Novo Time
                         </a>
+
+                        <a href="{{route('member-team-invite-form')}}" class="dropdown-item">Entrar com um convite</a>
                         @endif
 
-
-
                         @if (Auth::user()->profile->team)
-                        <a class="dropdown-item" href="{{ route('membro-time-show',['slug' => Auth::user()->profile->team->team->slug])}}">
+                        <a class="dropdown-item"
+                            href="{{ route('membro-time-show',['slug' => Auth::user()->profile->team->team->slug])}}">
                             Meu Time
                         </a>
                         @endif

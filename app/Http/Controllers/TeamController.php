@@ -9,10 +9,12 @@ use App\Profile;
 use App\ProfileLeague;
 use App\ProfileTeam;
 use App\Team;
+use App\TeamInvite;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -107,15 +109,12 @@ class TeamController extends Controller
             $team = Team::where('slug', $slug)->first();
             $profile_id = Auth::user()->profile->id;
 
-            $result = DB::select('SELECT * FROM team_members WHERE profile_id = :profile_id LIMIT 1', ['profile_id' => $profile_id]);
-            $isModerador = $result[0];
+            $isModerador = ProfileTeam::where('profile_id', $profile_id)->first();
 
             if ($isModerador->team_id === $team->id && $isModerador->type === 'Moderador') {
 
-                $result_member = DB::select('SELECT * FROM team_members WHERE id = :id LIMIT 1', ['id' => $id]);
-                $member = $result_member[0];
+                $member = ProfileTeam::where('id', $id)->first();
                 $profile = Profile::find($member->profile_id);
-
 
                 return view('team.edit.member.edit', compact('member', 'profile'));
             }
@@ -202,7 +201,7 @@ class TeamController extends Controller
                 $code->team_id = $team->id;
                 $code->save();
 
-                toastr()->success('Time adicionado na liga '. $code->league->name);
+                toastr()->success('Time adicionado na liga ' . $code->league->name);
                 return redirect()->back();
             }
 
@@ -211,6 +210,99 @@ class TeamController extends Controller
         } catch (Exception $e) {
             dd($e);
             toastr()->error('Ops... algo deu errado');
+            return redirect()->back();
+        }
+    }
+
+    public function memberRemove(Request $request, $slug, $id)
+    {
+        try {
+            $member = ProfileTeam::find($id);
+            $profile = Auth::user()->profile;
+            $team = Team::where('slug', $slug)->first();
+
+            $member = ProfileTeam::where('id', $id)->first();
+
+
+            $isModerador = ProfileTeam::where('profile_id', $profile->id)->first();
+
+            if ($isModerador->team_id === $member->team_id && $isModerador->type === 'Moderador') {
+
+
+                if ($team->members->count() === 1 || $team->profile_id === $member->profile_id) {
+                    toastr()->error('Ops... você não pode excluir este membro');
+                    return redirect()->back();
+                }
+
+
+                $profile = Profile::find($member->profile_id);
+                $member->delete();
+
+                toastr()->success('Membro removido do time');
+                return redirect()->route('membro-time-show',['slug' => $team->slug]);
+            }
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function showCodeInvite(Request $request, $slug)
+    {
+        try {
+            $team = Team::where('slug', $slug)->first();
+            $profile = Auth::user()->profile;
+
+            if ($profile->team && $profile->team->type === 'Moderador' && $profile->team->team->id === $team->id) {
+
+                $invites = TeamInvite::where('team_id', $team->id)->get();
+
+                return view('team.invites.index', compact('invites', 'team'));
+            }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function codeInvite(Request $request, $slug)
+    {
+        try {
+            $data = $request->all();
+            $team = Team::where('slug', $slug)->first();
+
+            $data['code'] = strtoupper(str_replace(' ', '', $data['code']));
+            $data['team_id'] = $team->id;
+
+            if ($data['code']) {
+                $valid = Validator::make($data, [
+                    'code' => 'required|unique:team_invites|min:5'
+                ]);
+
+                $valid->validate();
+
+                $invite = TeamInvite::create($data);
+
+                toastr()->success('Código criado!');
+                return redirect()->back();
+            } else {
+                $data['code'] = strtoupper(uniqid());
+
+                $invite = TeamInvite::create($data);
+
+                toastr()->success('Código cirado!');
+                return redirect()->back();
+            }
+        } catch (ValidationException $e) {
+
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
     }

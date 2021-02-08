@@ -14,7 +14,8 @@
                         {{$team->name}}
                     </div>
                 </div>
-                <!-- regra para ver se o cara é moderador -->
+                @if(Auth::user()->profile->team && Auth::user()->profile->team->team->id === $team->id &&
+                Auth::user()->profile->team->type === 'Moderador' )
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <span class="d-sm-inline-block">
@@ -24,6 +25,7 @@
                         </span>
                     </div>
                 </div>
+                @endif
 
             </div>
         </div>
@@ -80,9 +82,19 @@
                     <div class="card-body">
                         <div class="card-title">Liga</div>
                         @if($team->league)
-                        <p>tem time</p>
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <polyline points="5 12 3 12 12 3 21 12 19 12"></polyline>
+                                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                            </svg>
+                            Liga: <strong>{{$team->league->league->name}}</strong>
+                        </div>
                         @else
-                        <p>O time ainda não possui uma liga</p>
+                        <p>O time ainda não participa de uma liga</p>
                         @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
                         === 'Moderador')
                         <div class="mt-2">
@@ -97,6 +109,30 @@
                     </div>
                 </div>
             </div>
+
+            @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
+            === 'Moderador')
+            <div class="col-md-4 col-sm-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Convidar Membro</div>
+
+                        <p>Códigos disponíveis:
+                            {{count(Auth::user()->profile->team->team->invites()->where('used',null)->get())}}</p>
+                        @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
+                        === 'Moderador')
+                        <div class="mt-2">
+                            <a href="{{route('membro-time-show-invites',['slug' => Auth::user()->profile->team->team->slug ])}}"
+                                class="btn btn-white">
+                                Ver Códigos
+                            </a>
+                        </div>
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
 
         <div class="page-title mt-3 mb-2">
