@@ -21,7 +21,7 @@
                 <form method="POST" class="card card-md" class="card card-md" action="{{ route('membro-criar-time-post') }}">
                     @csrf
                     <div class="card-body">
-                        @include('team.posts._form')
+                        @include('team.create._form')
                         <div class="form-footer">
                             <button type="submit" class="btn btn-primary w-100">
                                 Criar time

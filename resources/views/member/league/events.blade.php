@@ -11,7 +11,7 @@
         </h2>
 
         <div class="row row-cards">
-            @forelse ($events as $event)
+            @forelse ($events as $i => $event)
             <div class="col-md-6 col-lg-3">
                 <div class="card">
                     <div class="card-img-top img-responsive img-responsive-16by9"
@@ -19,11 +19,23 @@
                     </div>
 
                     <div class="card-body p-4 text-center">
+                        @if($i === 0)
+                        <div class="ribbon ribbon-bookmark" title="Próximo evento">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                </path>
+                            </svg>
+                        </div>
+                        @endif
 
                         <h3 class="m-0 mb-1"><a
                                 href="{{ route('membro-league-show-event',['id' => $event->id])}}">{{$event->name}}</a>
                         </h3>
-                        <div class="text-muted">Data: {{$event->date->format('d/m/Y')}}</div>
+                        <div class="text-muted">Data: {{$event->startdate->format('d/m/Y')}}</div>
                         <div class="mb-3">
                             <span><b>Situação:</b> {{$event->status}}</span>
                         </div>
@@ -56,17 +68,6 @@
                                 <path d="M4 18h4"></path>
                             </svg>
                             Visualizar</a>
-                        <a href="#" id="btnRemove" data-weapon="4" data-bs-toggle="modal" data-bs-target="#modal-remove"
-                            class="card-btn">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mx-1 icon-tabler icon-tabler-checks"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M7 12l5 5l10 -10"></path>
-                                <path d="M2 12l5 5m5 -5l5 -5"></path>
-                            </svg>
-                            Participar</a>
                     </div>
                 </div>
             </div>

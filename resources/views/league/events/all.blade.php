@@ -28,8 +28,6 @@
         <div class="row row-cards">
 
             @forelse ($open as $i => $event)
-
-
             <div class="col-md-6 col-lg-3">
                 <div class="card">
                     <div class="card-img-top img-responsive img-responsive-16by9"
@@ -85,7 +83,7 @@
                                 <path d="M4 18h4"></path>
                             </svg>
                             Visualizar</a>
-                            @if($event->team === null)
+                        @if($event->team === null)
                         <a href="{{ route('liga-evento-show',['id' => $event->id])}}" class="card-btn"><svg
                                 xmlns="http://www.w3.org/2000/svg" class="icon mx-1 icon-tabler icon-tabler-list-search"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -98,7 +96,7 @@
                                 <path d="M4 18h4"></path>
                             </svg>
                             Gerenciar</a>
-                            @endif
+                        @endif
 
 
                     </div>

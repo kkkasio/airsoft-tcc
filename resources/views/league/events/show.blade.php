@@ -37,6 +37,19 @@
                         Evento: {{$event->name}}
                     </h2>
                 </div>
+                @if($event->status == 'Aberto' && $event->team === null && $event->league_id ===
+                Auth::user()->league->id)
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <form id="form-create-squad" action="{{ route('liga-evento-squad-create') }}" method="POST">
+                            @csrf
+                            <a href="{{ route('liga-eventos-aberto') }}" class="btn btn-white">
+                                Encerrar Inscrições
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                @endif
 
             </div>
         </div>
@@ -80,12 +93,11 @@
                                     {{$subscriber->profile->team ? $subscriber->profile->team->team->name : '' }}
                                 </td>
 
-                                <form action="" method="POST">
-                                    @csrf
-                                    <td>
-                                        {{$subscriber->created_at->format('d/m/Y')}}
-                                    </td>
-                                </form>
+
+                                <td>
+                                    {{$subscriber->created_at->format('d/m/Y')}}
+                                </td>
+
 
                                 <td>
                                     <select name="squad" class="form-select"
@@ -135,7 +147,8 @@
                             Squads ({{count($squads)}})
                         </h2>
                     </div>
-
+                    @if($event->status == 'Aberto' && $event->team === null && $event->league_id ===
+                    Auth::user()->league->id)
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <span class="d-sm-inline-block">
@@ -146,6 +159,7 @@
                             </span>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -180,15 +194,15 @@
                 </div>
             </div>
             @empty
-            <h2>Nenhum squad criado vamos criar?</h2>
+            <h2>Ainda não foi criado nenhum squad.</h2>
             @endforelse
         </div>
-        @csrf
     </div>
 
     <div class="modal modal-blur fade" id="modal-new-squad" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <form id="form-create-squad" action="{{ route('liga-evento-squad-create') }}" method="POST" class="modal-content">
+            <form id="form-create-squad" action="{{ route('liga-evento-squad-create') }}" method="POST"
+                class="modal-content">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Novo Squad</h5>
@@ -197,8 +211,8 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nome</label>
-                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name"
-                        placeholder="BDU / PMC">
+                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror"
+                            name="name" placeholder="BDU / PMC">
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -212,14 +226,14 @@
                         Cancelar
                     </a>
                     <button id="sendForm" type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
-                       Criar Squad
+                        Criar Squad
                     </button>
                 </div>
             </form>

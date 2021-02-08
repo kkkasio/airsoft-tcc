@@ -92,12 +92,7 @@ class LeagueController extends Controller
         return view('member.league.posts', compact('posts'));
     }
 
-    public function showEventsMember()
-    {
-        $league = Auth::user()->profile->league->league;
-        $events = $league->events->sortDesc();
-        return view('member.league.events', compact('events'));
-    }
+
 
     public function showMembers(){
         $league = Auth::user()->league;

@@ -8,6 +8,7 @@ use App\LeagueTeam;
 use App\ProfileEvent;
 use App\Team;
 use Carbon\Carbon;
+use Error;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +22,24 @@ class EventController extends Controller
         $profile = Auth::user()->profile;
         $event = Event::find($id);
 
-
         if ($profile->league->league->id === $event->league->id) {
-            return view('member.league.showEvent', compact('event'));
+            $squads = EventSquad::where('event_id', $event->id)->get();
+            $subscribers = ProfileEvent::where('event_id', $event->id)->paginate(10);
+
+            $participacao = ProfileEvent::where('event_id', $event->id)->where('profile_id', Auth::user()->profile->id)->first();
+            return view('member.league.showEvent', compact('event', 'squads', 'participacao', 'subscribers'));
         }
 
         toastr()->error('Ops... algo de errado aconteceu');
         return redirect()->back();
+    }
+
+
+    public function showEventsMember()
+    {
+        $league = Auth::user()->profile->league->league;
+        $events = $league->events->sortBy('startdate');
+        return view('member.league.events', compact('events'));
     }
 
     public function createForm()
@@ -106,10 +118,10 @@ class EventController extends Controller
         if ($event->league_id === $league->id) {
 
             $subscribers = ProfileEvent::where('event_id', $event->id)->paginate(10);
-            $noSquad = ProfileEvent::where('event_id',$event->id)->where('squad_id',null)->get();
-            $squads = EventSquad::where('event_id',$event->id)->get();
+            $noSquad = ProfileEvent::where('event_id', $event->id)->where('squad_id', null)->get();
+            $squads = EventSquad::where('event_id', $event->id)->get();
 
-            return view('league.events.show', compact('event','noSquad', 'subscribers','squads'));
+            return view('league.events.show', compact('event', 'noSquad', 'subscribers', 'squads'));
         }
 
         toastr()->error('Ops... ago de errado aconteceu');
@@ -132,13 +144,157 @@ class EventController extends Controller
         return view('league.events.planned.index', compact('planned'));
     }
 
-    public function subscribe($id)
+    public function subscribe(Request $request, $id)
     {
-        dd($id);
+        try {
+            $data = $request->all();
+            $data['event_id'] = $data['event'];
+
+            $valid = Validator::make($data, [
+                'event_id' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+            $event = Event::find($data['event_id']);
+
+            if ($event->status === 'Aberto') {
+
+                $profile = Auth::user()->profile;
+                $hasInscription = ProfileEvent::where('event_id', $data['event_id'])->where('profile_id', $profile->id)->first();
+
+                if ($hasInscription)
+                    throw new Error('Já possui inscrição');
+
+                $inscription = ProfileEvent::create([
+                    'event_id' => $event->id,
+                    'profile_id' => $profile->id
+                ]);
+
+
+
+                toastr()->success('Inscrição removida');
+                return redirect()->back();
+            }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
     }
 
-    public function unSubscribe($id)
+    public function unSubscribe(Request $request, $id)
     {
-        dd($id);
+        try {
+            $data = $request->all();
+            $data['event_id'] = $data['event'];
+
+            $valid = Validator::make($data, [
+                'event_id' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+            $event = Event::find($data['event_id']);
+
+            if ($event->status === 'Aberto') {
+
+                $profile = Auth::user()->profile;
+                $inscription = ProfileEvent::where('event_id', $data['event_id'])->where('profile_id', $profile->id)->first();
+
+                if ($inscription)
+                    $inscription->delete();
+
+                toastr()->success('Inscrição removida');
+                return redirect()->back();
+            }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function openEvent(Request $request, $id)
+    {
+
+        try {
+            $data = $request->all();
+
+
+            $valid = Validator::make($data, [
+                'event' => 'required'
+            ]);
+
+            $valid->validate();
+
+            $profile = Auth::user()->profile;
+            $event = Event::find($data['event']);
+
+
+            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+
+
+                $event->status = 'Encerrado';
+                $event->save();
+
+                toastr()->success('Evento atualizado');
+                return redirect()->back();
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function closeEvent(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+
+
+            $valid = Validator::make($data, [
+                'event' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+
+            $profile = Auth::user()->profile;
+            $event = Event::find($data['event']);
+
+
+            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                foreach($event->subscribers as $subscriber){
+
+                    if($subscriber->squad_id === null){
+                        toastr()->info('Existem pessoas sem SQUAD');
+                        return redirect()->back();
+                    }
+                }
+                $event->status = 'Encerrado';
+                $event->save();
+
+                toastr()->success('Evento atualizado');
+                return redirect()->back();
+            }
+
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
     }
 }

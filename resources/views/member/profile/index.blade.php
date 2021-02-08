@@ -128,9 +128,8 @@
                         </div>
                         @else
                         <div class="mb-2">
-
                             Ops... Você ainda não possui um time
-                            <a href="{{membro-criar-time-form}}" class="btn btn-dark">Criar um time</button>
+                            <a href="{{route('membro-criar-time-form')}}" class="btn btn-dark">Criar um time</a>
                         </div>
 
                         @endif
@@ -141,9 +140,9 @@
             <div class="col-md-6 col-sm-12 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Liga que participo</div>
+                        <div class="card-title">Minha Liga</div>
                         @if(Auth::user()->profile->league)
-
+                        <p>sua liga aqui</p>
                         @else
                         <div class="mb-2">
                             Ops... Você ainda não participa de uma liga

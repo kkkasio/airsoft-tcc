@@ -13,4 +13,8 @@ class ProfileEvent extends Model
     public function profile(){
         return $this->belongsTo(Profile::class);
     }
+
+    public function squad(){
+        return $this->belongsTo(EventSquad::class);
+    }
 }
