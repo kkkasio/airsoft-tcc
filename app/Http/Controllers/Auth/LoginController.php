@@ -119,10 +119,10 @@ class LoginController extends Controller
                     return redirect()->route('liga-dashboard');
                 }
             }
-            toastr()->error('1Ops... não encontramos um usuário válido');
-            return redirect()->back();
+            toastr()->error('Ops... não encontramos um usuário válido');
+            return redirect()->route('login');
         } catch (Exception $e) {
-            toastr()->error('2Ops... não encontramos um usuário válido');
+            toastr()->error('Ops... não encontramos um usuário válido');
             return redirect('login');
         }
     }
