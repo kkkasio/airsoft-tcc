@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Weapon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -39,9 +40,52 @@ class WeaponsController extends Controller
     {
     }
 
-    public function editForm()
+    public function allWeapons()
     {
         return view('member.weapons.index');
+    }
+
+    public function editForm($id)
+    {
+        $weapon = Weapon::find($id);
+        $profile = Auth::user()->profile;
+
+        if (!$weapon || !$weapon->profile_id === $profile->id) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+
+        return view('member.weapons.edit', compact('weapon'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+            $profile = Auth::user()->profile;
+
+            $valid = Validator::make($data, [
+                'name' => 'required|string',
+                'nickname' => 'required|string',
+            ]);
+
+            $valid->validate();
+
+            $weapon = Weapon::find($id);
+
+            if ($weapon->profile_id === $profile->id) {
+
+                $weapon->update($data);
+                $weapon->save();
+
+                toastr()->success('Arma atualizada');
+                return redirect()->route('membro-me-weapon-all');
+            }
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
     }
 
     public function delete(Request $request)

@@ -45,12 +45,14 @@
                         </div>
                     </div>
                     <div class="d-flex">
-                        <a href="#" class="card-btn"><svg xmlns="http://www.w3.org/2000/svg"
-                                class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <a href="{{route('membro-me-weapon-edit-form',['id' => $weapon->id])}}" class="card-btn"><svg
+                                xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                                <polyline points="3 7 12 13 21 7"></polyline>
+                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                <line x1="16" y1="5" x2="19" y2="8"></line>
                             </svg>
                             Editar</a>
                         <a href="#" id="btnRemove" data-weapon="{{$weapon->id}}" data-bs-toggle="modal"
@@ -132,20 +134,9 @@
 
 
                 <div class="mb-3">
-                    <label class="form-label">Classe</label>
-                    <select class="form-select" name="type" required>
-                        <option value="Pistola">Pistola</option>
-                        <option value="Assault">Assault</option>
-                        <option value="Suporte">Suporte</option>
-                        <option value="DMR">DMR</option>
-                        <option value="Sniper">Sniper</option>
-                    </select>
+                    
                 </div>
-                @error('type')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+
 
             </div>
             <div class="modal-footer">

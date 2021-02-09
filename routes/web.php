@@ -100,7 +100,9 @@ Route::get('/membro/me/edit', 'MemberController@editForm')->name('membro-me-edit
 Route::post('/membro/me/edit', 'MemberController@update')->name('membro-me-edit-post')->middleware(['auth', 'verifyMember']);
 
 Route::post('/membro/me/weapons/create', 'WeaponsController@create')->name('membro-me-weapon-post')->middleware(['auth', 'verifyMember']);
-Route::get('/membro/me/weapons/all', 'WeaponsController@editForm')->name('membro-me-weapon-all')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/me/weapons/all', 'WeaponsController@allWeapons')->name('membro-me-weapon-all')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/me/weapons/{id}', 'WeaponsController@editForm')->name('membro-me-weapon-edit-form')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/me/weapons/{id}/update', 'WeaponsController@update')->name('membro-me-weapon-update')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/me/weapons/delete', 'WeaponsController@delete')->name('membro-me-weapon-delete')->middleware(['auth', 'verifyMember']);
 
 
