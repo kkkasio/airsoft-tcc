@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-     protected $fillable = [
-        'name', 'players','about','type','status','league_id','team_id','file','startdate','enddate'
+    protected $fillable = [
+        'name', 'players', 'about', 'type', 'status', 'league_id', 'team_id', 'file', 'startdate', 'enddate'
     ];
 
     protected $casts = [
@@ -16,19 +16,28 @@ class Event extends Model
     ];
 
 
-    public function team(){
+    public function team()
+    {
         return $this->belongsTo(Team::class);
     }
 
-    public function league(){
+    public function league()
+    {
         return $this->belongsTo(League::class);
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Event::class);
     }
 
-    public function subscribers(){
+    public function subscribers()
+    {
         return $this->hasMany(ProfileEvent::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(EventEvaluate::class);
     }
 }

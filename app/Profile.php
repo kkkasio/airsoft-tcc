@@ -42,6 +42,11 @@ class Profile extends Model
         return $this->hasOne(ProfileLeague::class);
     }
 
+    public function ratings()
+    {
+        return $this->hasMany(EventEvaluate::class);
+    }
+
     public function getInitialsAttribute()
     {
         $name = explode(' ', $this->name);
