@@ -132,7 +132,7 @@ class LeagueController extends Controller
                 return redirect()->back();
             }
 
-            
+
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (ValidationException $e) {

@@ -1,0 +1,28 @@
+<title> Membros do time </title>
+
+<div class="col-12">
+    <div class="card">
+        <div>
+            <table class="table table-vcenter card-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Time</th>
+                        <th>Permissão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($members as $member)
+                    <tr>
+                        <td class="text-danger">{{$member->profile->name}}</td>
+                        <td class="text-muted"><a href="#" class="text-reset">{{$member->team->name}}</a></td>
+                        <td class="text-muted">
+                            {{$member->type}}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
