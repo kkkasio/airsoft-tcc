@@ -17,16 +17,20 @@ class VerifyLeague
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if($request->path() === "liga/criar"){
 
-            if(isset($user->league->id)){
+
+        if (isset($user->profile)) {
+            return redirect('404');
+        }
+        if ($request->path() === "liga/criar") {
+
+            if (isset($user->league->id)) {
                 return redirect('404');
             }
-        }else {
-            if(!isset($user->league->id)){
+        } else {
+            if (!isset($user->league->id)) {
                 return redirect()->route('criarligaView');
             }
-
         }
         return $next($request);
     }

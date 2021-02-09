@@ -19,6 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('auth/google', 'Auth\LoginController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\LoginController@handleGoogleCallback');
+
+
+Route::get('auth/github', 'Auth\LoginController@redirectToGithub');
+Route::get('auth/github/callback', 'Auth\LoginController@handleGithubCallback');
 
 Route::get('/estados', 'StateController@getEstados');
 Route::get('get-cidades/{estado_id}', 'CityController@getCidades');
@@ -83,7 +89,7 @@ Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-t
 
 //private routes membro
 
-Route::get('membro/dashboard','MemberController@dashboard')->name('membro-dashboard')->middleware(['auth','verifyMember']);
+Route::get('membro/dashboard', 'MemberController@dashboard')->name('membro-dashboard')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/criar', 'MemberController@createView')->name('criarProfileView')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/criar', 'MemberController@create')->name('criarProfile')->middleware(['auth', 'verifyMember']);
 
@@ -107,6 +113,11 @@ Route::post('/membro/time/{slug}/edit', 'TeamController@edit')->name('membro-tim
 Route::get('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberEdit')->name('membro-time-edit-member-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberUpdate')->name('membro-time-edit-member-post')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/member/edit/{id}/remove', 'TeamController@memberRemove')->name('membro-time-remove-member')->middleware(['auth', 'verifyMember']);
+
+
+Route::get('/membro/time/members/export', 'TeamController@exportMembers')->name('membro-time-members-export')->middleware(['auth', 'verifyMember']);
+
+
 
 
 Route::get('/membro/time/{slug}/invites', 'TeamController@showCodeInvite')->name('membro-time-show-invites')->middleware(['auth', 'verifyMember']);

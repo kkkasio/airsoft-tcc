@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use PDF;
 
 class TeamController extends Controller
 {
@@ -239,7 +240,7 @@ class TeamController extends Controller
                 $member->delete();
 
                 toastr()->success('Membro removido do time');
-                return redirect()->route('membro-time-show',['slug' => $team->slug]);
+                return redirect()->route('membro-time-show', ['slug' => $team->slug]);
             }
         } catch (Exception $e) {
             dd($e);
@@ -304,6 +305,31 @@ class TeamController extends Controller
             dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
+        }
+    }
+
+    public function exportMembers()
+    {
+
+        try {
+            $profile = Auth::user()->profile;
+
+
+            if ($profile->team) {
+                $team = Team::find($profile->team->team_id);
+                $members = $team->members;
+
+
+                $pdf = PDF::loadView('pdf.team', compact('members'));
+
+
+                return $pdf->stream('customers.pdf');
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            dd($e);
         }
     }
 }
