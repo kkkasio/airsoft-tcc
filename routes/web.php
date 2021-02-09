@@ -19,6 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('auth/google', 'Auth\LoginController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\LoginController@handleGoogleCallback');
+
+
+Route::get('auth/github', 'Auth\LoginController@redirectToGithub');
+Route::get('auth/github/callback', 'Auth\LoginController@handleGithubCallback');
 
 Route::get('/estados', 'StateController@getEstados');
 Route::get('get-cidades/{estado_id}', 'CityController@getCidades');
@@ -83,7 +89,7 @@ Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-t
 
 //private routes membro
 
-Route::get('membro/dashboard','MemberController@dashboard')->name('membro-dashboard')->middleware(['auth','verifyMember']);
+Route::get('membro/dashboard', 'MemberController@dashboard')->name('membro-dashboard')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/criar', 'MemberController@createView')->name('criarProfileView')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/criar', 'MemberController@create')->name('criarProfile')->middleware(['auth', 'verifyMember']);
 

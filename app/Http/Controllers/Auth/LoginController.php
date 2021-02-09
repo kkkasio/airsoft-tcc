@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Socialite;
+
 
 class LoginController extends Controller
 {
@@ -28,7 +32,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -87,6 +91,66 @@ class LoginController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }*/
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function redirectToGithub()
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+
+            $user = Socialite::driver('google')->user();
+            $finduser = User::where('email', $user->email)->first();
+
+            if ($finduser) {
+
+                Auth::login($finduser);
+
+                if ($finduser->type === 'Membro') {
+                    return redirect()->route('membro-dashboard');
+                } else {
+                    return redirect()->route('liga-dashboard');
+                }
+            }
+            toastr()->error('1Ops... não encontramos um usuário válido');
+            return redirect()->back();
+        } catch (Exception $e) {
+            toastr()->error('2Ops... não encontramos um usuário válido');
+            return redirect('login');
+        }
+    }
+
+    public function handleGithubCallback()
+    {
+        try {
+
+            $user = Socialite::driver('github')->user();
+            $finduser = User::where('email', $user->email)->first();
+
+            if ($finduser) {
+
+                Auth::login($finduser);
+
+                if ($finduser->type === 'Membro') {
+                    return redirect()->route('membro-dashboard');
+                } else {
+                    return redirect()->route('liga-dashboard');
+                }
+            }
+            toastr()->error('Ops... não encontramos um usuário válido');
+            return redirect()->route('login');
+        } catch (Exception $e) {
+            toastr()->error('Ops... não encontramos um usuário válido');
+            return redirect('login');
+        }
+    }
 
     public function authenticated(Request $request, $user)
     {
