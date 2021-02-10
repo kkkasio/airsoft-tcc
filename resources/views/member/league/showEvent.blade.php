@@ -2,6 +2,55 @@
 
 @section('title', '- Evento '. $event->name)
 
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<style>
+    div.stars {
+        width: 270px;
+        display: inline-block;
+    }
+
+    input.star {
+        display: none;
+    }
+
+    label.star {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    input.star:checked~label.star:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    input.star-5:checked~label.star:before {
+        color: #FE7;
+        text-shadow: 0 0 20px rgba(153, 85, 34, 0.12);
+    }
+
+    input.star-1:checked~label.star:before {
+        color: #F62;
+    }
+
+    label.star:hover {
+        color: #FE7;
+        transform: rotate(-15deg) scale(1.3);
+    }
+
+    input .star:before {
+        color: #fe7;
+    }
+
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+</style>
+
 @section('content')
 
 <div class="content">
@@ -42,7 +91,7 @@
                         @endif
 
                         @if($event->status === 'Encerrado')
-                        <form action="{{ route('membro-event-close',['id' => $event->id]) }}" method="POST">
+                        <form action="{{ route('membro-event-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
                             <button type="submit" class="btn btn-primary d-sm-inline-block">
@@ -205,7 +254,64 @@
             </div>
         </div>
 
-        <div class="row mt-5">
+        @if ($event->status === 'Finalizado' && \Carbon\Carbon::now()::now()->diffInHours($event->enddate) > 2))
+
+        <div class="row row-cards mt-4">
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">Avaliações & Comentários</h2>
+                    </div>
+                    <div class="col-auto ms-auto d-print-none">
+                        <a href="#" class="btn btn-white" data-bs-toggle="modal" data-bs-target="#modal-comment">
+                            Escrever um comentário
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <div class="divide y-4">
+                        @forelse ($event->ratings as $comment)
+                        <div class="row">
+                            <div class="col-auto">
+                                <span class="avatar">{{$comment->profile->initials}}</span>
+                            </div>
+                            <div class="col">
+                                <div class="text-truncate">
+                                    <strong>
+                                        @for ($i = 0; $i < $comment->evaluation; $i++)
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-filled text-yellow icon-tabler-star" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path
+                                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                </path>
+                                            </svg>
+
+                                            @endfor
+                                    </strong> - {{$comment->comment}}
+                                </div>
+                                <div class="text-muted">{{$comment->created_at->format('d/m/Y H:m')}}</div>
+                            </div>
+                        </div>
+                        @empty
+                        <p class="mt-3">Ainda não temos nenhuma avaliação</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        @endif
+
+        <div class="row mt-4">
             <div class="page-header d-print-none">
                 <div class="row align-items-center">
                     <div class="col">
@@ -251,7 +357,8 @@
             <div class="col-md-4">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})</h3>
+                        <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})
+                        </h3>
                     </div>
                     <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
                         @foreach($squad->squadMembers as $key => $value)
@@ -283,7 +390,66 @@
     </div>
 </div>
 
+<div class="modal modal-blur fade" id="modal-comment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form id="formComment" action="{{ route('membro-league-event-comment',['id' => $event->id])}}" method="POST"
+            class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Avaliar Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
+                <div class="mb-3">
+                    <label class="form-label">Avaliação do Evento</label>
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <input class="star star-5" id="star-5" type="radio" value="5" name="star" />
+                            <label class="star star-5" for="star-5"></label>
+                            <input class="star star-4" id="star-4" type="radio" value="4" name="star" />
+                            <label class="star star-4" for="star-4"></label>
+                            <input class="star star-3" id="star-3" type="radio" value="3" name="star" />
+                            <label class="star star-3" for="star-3"></label>
+                            <input class="star star-2" id="star-2" type="radio" value="2" name="star" />
+                            <label class="star star-2" for="star-2"></label>
+                            <input class="star star-1" id="star-1" type="radio" value="1" name="star" />
+                            <label class="star star-1" for="star-1"></label>
+
+                        </div>
+                        @error('star')
+                        <h5 class="text-muted" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </h5>
+                        @enderror
+                    </div>
+                </div>
+                <div>
+                    <label for="comment" class="form-label">Comentário</label>
+                    <textarea id="comment" name="comment" placeholder="Escreva um texto curto"
+                        class="form-control  @error('comment') is-invalid @enderror"
+                        required>{{old('comment')}}</textarea>
+                    @error('comment')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Fechar</button>
+                <button id="sendFormComment" type="button" class="btn btn-primary"
+                    data-bs-dismiss="modal">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('#sendFormComment').on('click', function(){
+        $('#formComment').submit();
+    })
+</script>
 
 @if($event->status == 'Aberto' && $event->team && Auth::user()->profile->team && $event->team->id ===
 Auth::user()->profile->team->team->id && Auth::user()->profile->team->type === 'Moderador')
@@ -342,6 +508,7 @@ Auth::user()->profile->team->team->id && Auth::user()->profile->team->type === '
         <input id="event" type="hidden" name="event" value="">
     </form>
 </div>
+
 
 
 @include('member.league._script')

@@ -68,7 +68,8 @@
 
 <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <form id="form-delete" action="{{ route('membro-time-remove-member',['id'=> $member->id, 'slug' => $member->team->slug])}}"
+        <form id="form-delete"
+            action="{{ route('membro-league-event-comment',['id'=> $member->id, 'slug' => $member->team->slug])}}"
             method="POST" class="modal-content">
             @csrf
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -91,8 +92,8 @@
                         <div class="col"><a href="#" class="btn btn-white w-100" data-bs-dismiss="modal">
                                 Cancelar
                             </a></div>
-                        <div class="col"><a id="sendForm" href="#" class="btn btn-danger w-100"
-                                data-bs-dismiss="modal">
+                        <div class="col">
+                            <a id="sendForm" href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
                                 Remover membro
                             </a></div>
                     </div>

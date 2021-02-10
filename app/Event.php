@@ -26,11 +26,6 @@ class Event extends Model
         return $this->belongsTo(League::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Event::class);
-    }
-
     public function subscribers()
     {
         return $this->hasMany(ProfileEvent::class);

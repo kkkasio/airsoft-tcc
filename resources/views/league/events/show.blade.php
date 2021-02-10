@@ -41,7 +41,7 @@
                 Auth::user()->league->id)
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <form id="form-create-squad" action="{{ route('liga-evento-squad-create') }}" method="POST">
+                        <form action="{{ route('liga-evento-squad-create') }}" method="POST">
                             @csrf
                             <a href="{{ route('liga-eventos-aberto') }}" class="btn btn-white">
                                 Encerrar Inscrições

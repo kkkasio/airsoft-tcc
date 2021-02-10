@@ -20,7 +20,7 @@ class CreateEvaluateEventTable extends Migration
             $table->string('comment')->nullable();
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('events');
-            $table->unsignedBigInteger('profile_id')->nullable();
+            $table->unsignedBigInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profiles');
             $table->timestamps();
         });

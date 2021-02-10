@@ -133,6 +133,7 @@ Route::post('/membro/team/invite', 'MemberController@invitePost')->name('member-
 Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/league/events', 'EventController@showEventsMember')->name('membro-league-show-events')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/league/events/{id}', 'EventController@show')->name('membro-league-show-event')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/league/events/{id}/comment', 'EventController@comment')->name('membro-league-event-comment')->middleware(['auth', 'verifyMember']);
 
 Route::post('/membro/league/invite', 'LeagueController@inviteMember')->name('membro-league-invite')->middleware(['auth', 'verifyMember']);
 
@@ -142,6 +143,7 @@ Route::post('/membro/league/events/{id}/unSubscribe', 'EventController@unSubscri
 // se o membro tem um time e pode gerenciar um evento
 Route::post('/membro/league/events/{id}/open', 'EventController@openEvent')->name('membro-event-open')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/league/events/{id}/close', 'EventController@closeEvent')->name('membro-event-close')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/league/events/{id}/close', 'EventController@finishEvent')->name('membro-event-finish')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/league/events/{id}/squads/create', 'SquadsController@createMember')->name('membro-evento-squad-create')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/evento/squads/update', 'SquadsController@updateMember')->name('membro-evento-squad-update')->middleware(['auth', 'verifyMember']);
 

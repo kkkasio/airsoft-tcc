@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\EventEvaluate;
 use App\EventSquad;
 use App\LeagueTeam;
 use App\ProfileEvent;
@@ -13,7 +14,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
@@ -93,8 +94,12 @@ class EventController extends Controller
             }
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
         }
     }
 
@@ -275,9 +280,9 @@ class EventController extends Controller
 
             if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
 
-                foreach($event->subscribers as $subscriber){
+                foreach ($event->subscribers as $subscriber) {
 
-                    if($subscriber->squad_id === null){
+                    if ($subscriber->squad_id === null) {
                         toastr()->info('Existem pessoas sem SQUAD');
                         return redirect()->back();
                     }
@@ -293,6 +298,79 @@ class EventController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (\Throwable $th) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function finishEvent(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+
+
+            $valid = Validator::make($data, [
+                'event' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+            $profile = Auth::user()->profile;
+            $event = Event::find($data['event']);
+
+
+            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                $event->status = 'Finalizado';
+                $event->save();
+
+                toastr()->success('Evento foi finalizado');
+                return redirect()->back();
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function comment(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+            $event = Event::find($id);
+            $profile = Auth::user()->profile;
+
+            $inscription = ProfileEvent::where('event_id', $event->id)->where('profile_id', $profile->id)->first();
+
+            $valid = Validator::make($data, [
+                'comment' => 'required|string|max:255',
+                'star' => 'required|between:1,5'
+            ]);
+
+            $valid->validate();
+            $data['evaluation'] = $data['star'];
+
+            if ($inscription) {
+
+                $comment = EventEvaluate::create([
+                    'event_id' => $inscription->event_id,
+                    'profile_id' => $inscription->profile_id,
+                    'comment' => $data['comment'],
+                    'evaluation' => $data['star']
+                ]);
+
+                toastr()->success('Avaliação enviada');
+                return redirect()->route('membro-league-show-event', ['id' => $event->id]);
+            }
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
