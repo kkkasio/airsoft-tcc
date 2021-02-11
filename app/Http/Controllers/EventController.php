@@ -81,12 +81,21 @@ class EventController extends Controller
             if ($data['team_id']) {
                 $team = Team::find($data['team_id']);
                 if ($team->league->league->id === $data['league_id']) {
+
+                    $avatar = $this->uploadAvatar($request, $league);
+
+                    $data['avatar'] = $avatar;
+
                     $event = Event::create($data);
 
                     toastr()->success('Evento criado');
                     return redirect()->back();
                 }
             } else {
+                $avatar = $this->uploadAvatar($request, $league);
+
+                $data['avatar'] = $avatar;
+
                 $event = Event::create($data);
 
                 toastr()->success('Evento criado');
@@ -98,8 +107,34 @@ class EventController extends Controller
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
+            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
+        }
+    }
+
+    private function uploadAvatar(Request $request, $league)
+    {
+        try {
+            $data = $request->all();
+
+            if ($request->hasFile('avatar')) {
+
+                $avatar = $request->file('avatar');
+                $validFile = Validator::make($data, [
+                    'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+
+                $validFile->validate();
+
+                $avatarName = $league->id . '_avatar' . time() . '.' . request()->avatar->getClientOriginalExtension();
+                $request->avatar->storeAs('avatars', $avatarName);
+
+
+                return $avatarName;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -331,7 +366,7 @@ class EventController extends Controller
 
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }

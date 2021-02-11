@@ -31,7 +31,8 @@
             <div class="col-md-6 col-lg-3">
                 <div class="card">
                     <div class="card-img-top img-responsive img-responsive-16by9"
-                        style="background-image: url(https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png)">
+                        style="background-image: url({{$event->avatar ? '/storage/avatars/'.$event->avatar : 'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png'}})">
+
                     </div>
                     <div class="card-body p-4 text-center">
                         @if($i === 0)
