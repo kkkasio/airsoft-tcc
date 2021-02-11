@@ -59,6 +59,9 @@ Route::post('/liga/membros/invites', 'LeagueProfilesController@create')->name('l
 
 Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/evento/{id}/edit', 'EventController@formEdit')->name('liga-evento-edit-form')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/update', 'EventController@update')->name('liga-evento-update')->middleware(['auth', 'verifyLeague']);
+
 Route::post('/liga/evento/squads/update', 'SquadsController@update')->name('liga-evento-squad-update')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);

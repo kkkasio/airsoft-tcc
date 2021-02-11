@@ -413,4 +413,89 @@ class EventController extends Controller
             return redirect()->back();
         }
     }
+
+    public function formEdit($id)
+    {
+
+        $league = Auth::user()->league;
+        $event = Event::findOrFail($id);
+        $teams =  LeagueTeam::where('league_id', $league->id)->get();
+
+        if ($event->league_id === $league->id && $event->team_id === null) {
+
+            return view('league.events.edit.index', compact('event', 'teams'));
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        try {
+            $data = $request->all();
+            $event = Event::findOrFail($id);
+            $league = Auth::user()->league;
+
+
+
+            $data['league_id'] = $league->id;
+            $data['startdate'] = Carbon::createFromDate($data['startdate']);
+            $data['enddate']   = Carbon::createFromDate($data['enddate']);
+            $data['team_id']   = $data['time'];
+            $data['type']      = 'Jogo';
+
+            $valid = Validator::make($data, [
+                'name' => 'required|string|min:3',
+                'startdate' => 'required|date', 'before:today',
+                'enddate' => 'required|date', 'before:today|after:startdate',
+                'players' => 'required|integer',
+                'about' => 'required|string|min:3',
+                'status' => 'required|string|min:3',
+                'team_id' => 'required|integer'
+            ]);
+
+            $valid->validate();
+
+            $data['team_id'] = $data['time'] > 0 ? $data['time'] : null;
+
+
+
+            if ($data['team_id']) {
+                $team = Team::find($data['team_id']);
+                if ($team->league->league->id === $data['league_id']) {
+
+                    $avatar = $this->uploadAvatar($request, $league);
+
+
+                    if ($avatar) {
+                        $data['avatar'] = $avatar;
+                    }
+
+                    $event->update($data);
+
+                    toastr()->success('Evento Atualizado');
+                    return redirect()->back();
+                }
+            } else {
+                $avatar = $this->uploadAvatar($request, $league);
+
+                if ($avatar) {
+                    $data['avatar'] = $avatar;
+                }
+
+                $event->update($data);
+
+                toastr()->success('Evento Atualizado');
+                return redirect()->back();
+            }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
 }
