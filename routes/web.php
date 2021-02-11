@@ -40,6 +40,7 @@ Route::post('/liga/criar', 'LeagueController@create')->name('criarliga')->middle
 Route::get('/liga/dashboard', 'LeagueController@dashboard')->name('liga-dashboard')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/me', 'LeagueController@me')->name('liga-me')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/me/edit', 'LeagueController@meEditForm')->name('liga-me-edit-form')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/me/edit', 'LeagueController@update')->name('liga-me-edit-post')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/post/create', 'PostsController@form')->name('liga-post-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/post/create', 'PostsController@create')->name('liga-post-create')->middleware(['auth', 'verifyLeague']);
@@ -51,7 +52,8 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 
 
 Route::get('/liga/membros', 'LeagueController@showMembers')->name('liga-membros-all')->middleware(['auth', 'verifyLeague']);
-Route::get('/liga/membro/{id}', 'LeagueController@showMembers')->name('liga-membro-show')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/membro/{id}', 'LeagueController@showMember')->name('liga-membro-show')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/membro/{id}/update', 'LeagueController@updateMember')->name('liga-membro-update')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/membros/invites', 'LeagueProfilesController@showInvites')->name('liga-members-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/membros/invites', 'LeagueProfilesController@create')->name('liga-members-create-invites')->middleware(['auth', 'verifyLeague']);

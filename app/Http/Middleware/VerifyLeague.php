@@ -19,7 +19,8 @@ class VerifyLeague
         $user = Auth::user();
 
 
-        if (isset($user->profile)) {
+
+        if ($user->type === 'Membro') {
             return redirect('404');
         }
         if ($request->path() === "liga/criar") {

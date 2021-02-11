@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\League;
 use App\LeagueProfileInvites;
+use App\Profile;
 use App\ProfileLeague;
+use App\State;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class LeagueController extends Controller
@@ -73,7 +77,9 @@ class LeagueController extends Controller
 
     public function meEditForm()
     {
-        return view();
+        $states = State::all();
+        $cities = City::all();
+        return view('league.edit.index', compact('states', 'cities'));
     }
 
     public function editForm()
@@ -82,7 +88,37 @@ class LeagueController extends Controller
     }
     public function update(Request $request)
     {
-        dd($request);
+        try {
+            $data = $request->all();
+
+
+            $data['state_id'] = $data['estado'];
+            $data['city_id'] = $data['cidade'];
+            $data['foundation'] = date("Y-m-d", strtotime($data['foundation']));
+
+            $valid =  Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'foundation' => ['required', 'date_format:Y-m-d'],
+                "estado" => ['required', 'string'],
+                "cidade" => ['required', 'string'],
+                "about" => ['required', 'string']
+            ]);
+            $valid->validate();
+
+
+            $league = League::find(Auth::user()->league->id);
+
+            $league->update($data);
+
+            toastr()->success('Liga atualziada');
+            return redirect()->route('liga-me');
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
     }
 
     public function showPostsMember()
@@ -97,8 +133,48 @@ class LeagueController extends Controller
     public function showMembers()
     {
         $league = Auth::user()->league;
-        $members = ProfileLeague::where('league_id', $league->id)->get();
+        $members = ProfileLeague::where('league_id', $league->id)->paginate(10);
         return view('league.members.show', compact('members'));
+    }
+
+    public function showMember($id)
+    {
+        try {
+            $league = Auth::user()->league;
+            $member = ProfileLeague::findOrFail($id);
+
+            if ($member) {
+                return view('league.members.edit.index', compact('member'));
+            }
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function updateMember(Request $request, $id)
+    {
+
+        $data = $request->all();
+        $member = ProfileLeague::find($id);
+
+        $valid = Validator::make($data, [
+            'type' => ['required', Rule::in(['Membro', 'Moderador'])],
+        ]);
+
+        $valid->validate();
+
+        if ($member) {
+            $member->update($data);
+            $member->save();
+
+            toastr()->success('Membro atualziado');
+            return redirect()->route('liga-membros-all');
+        }
+
+        toastr()->error('Ops... algo de errado aconteceu');
+        return redirect()->back();
     }
 
     public function inviteMember(Request $request)

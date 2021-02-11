@@ -20,7 +20,7 @@
 
         <div class="row row-cards">
             <div class="col-md-12">
-                <form method="POST" class="card card-md" class="card card-md" action="{{ route('liga-eventos-post') }}">
+                <form enctype="multipart/form-data" method="POST" class="card card-md" class="card card-md" action="{{ route('liga-eventos-post') }}">
                     @csrf
                     <div class="card-body">
                         @include('league.events._form')

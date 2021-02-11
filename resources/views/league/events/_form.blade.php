@@ -14,6 +14,21 @@
 
 <div class="form-group">
     <div class="mb-3">
+        <label for="avatar" class="form-label">Foto</label>
+        <input type="file" id="avatar" name="avatar" class="form-control @error('avatar') is-invalid @enderror">
+        @error('avatar')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+    </div>
+
+
+
+</div>
+
+<div class="form-group">
+    <div class="mb-3">
         <label for="startdate" class="form-label col-3 col-form-label">Data e hora de início</label>
         <input type="datetime-local" id="startdate" name="startdate"
             class="form-control @error('startdate') is-invalid @enderror"
@@ -46,8 +61,8 @@
 <div class="form-group">
     <div class="mb-3">
         <label for="players" class="form-label col-3 col-form-label">Mínimo de Jogadores</label>
-        <input type="number" id="players" name="players" value="{{old('players')}}" class="form-control @error('players') is-invalid @enderror"
-            required>
+        <input type="number" id="players" name="players" value="{{old('players')}}"
+            class="form-control @error('players') is-invalid @enderror" required>
 
         @error('players')
         <span class="invalid-feedback" role="alert">

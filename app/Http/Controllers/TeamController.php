@@ -75,9 +75,11 @@ class TeamController extends Controller
                 return view('team.edit.index', compact('team', 'members'));
             }
 
+            toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (Exception $e) {
-            dd($e->getMessage());
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
         }
     }
 
@@ -97,6 +99,8 @@ class TeamController extends Controller
                 toastr()->success('O time foi atualizado!');
                 return redirect()->back();
             }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
         } catch (Exception $e) {
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
@@ -119,8 +123,9 @@ class TeamController extends Controller
 
                 return view('team.edit.member.edit', compact('member', 'profile'));
             }
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
