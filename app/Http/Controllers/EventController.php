@@ -84,7 +84,10 @@ class EventController extends Controller
 
                     $avatar = $this->uploadAvatar($request, $league);
 
-                    $data['avatar'] = $avatar;
+
+                    if ($avatar) {
+                        $data['avatar'] = $avatar;
+                    }
 
                     $event = Event::create($data);
 

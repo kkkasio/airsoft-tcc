@@ -108,7 +108,10 @@ class LeagueController extends Controller
             $league = League::find(Auth::user()->league->id);
 
             $avatar = $this->uploadAvatar($request, $league);
-            $data['avatar'] = $avatar;
+
+            if ($avatar) {
+                $data['avatar'] = $avatar;
+            }
 
             $league->update($data);
 
@@ -128,7 +131,6 @@ class LeagueController extends Controller
     {
         try {
             $data = $request->all();
-
             if ($request->hasFile('avatar')) {
 
                 $avatar = $request->file('avatar');
