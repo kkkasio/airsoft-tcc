@@ -35,6 +35,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Informações</div>
+                        <div class="text-center mb-3">
+                            <span class="avatar avatar-xl avatar-rounded"
+                                style="background-image: url({{$league->avatar ? '/storage/avatars/'.$league->avatar : 'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png'}})"></span>
+                        </div>
 
                         <div class="mb-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-at" width="24"
@@ -96,6 +100,8 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
 
         <div class="col my-4">

@@ -105,8 +105,10 @@ class LeagueController extends Controller
             ]);
             $valid->validate();
 
-
             $league = League::find(Auth::user()->league->id);
+
+            $avatar = $this->uploadAvatar($request, $league);
+            $data['avatar'] = $avatar;
 
             $league->update($data);
 
@@ -118,6 +120,33 @@ class LeagueController extends Controller
         } catch (Exception $e) {
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
+        }
+    }
+
+
+    private function uploadAvatar(Request $request, $league)
+    {
+        try {
+            $data = $request->all();
+
+            if ($request->hasFile('avatar')) {
+
+                $avatar = $request->file('avatar');
+                $validFile = Validator::make($data, [
+                    'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+
+                $validFile->validate();
+
+                $avatarName = $league->id . '_avatar' . time() . '.' . request()->avatar->getClientOriginalExtension();
+                $request->avatar->storeAs('avatars', $avatarName);
+
+
+                return $avatarName;
+            }
+            return null;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -171,6 +200,25 @@ class LeagueController extends Controller
 
             toastr()->success('Membro atualziado');
             return redirect()->route('liga-membros-all');
+        }
+
+        toastr()->error('Ops... algo de errado aconteceu');
+        return redirect()->back();
+    }
+
+    public function removeMember(Request $request)
+    {
+        $data = $request->all();
+        $profile = Profile::findOrFail($data['profile']);
+        $league = Auth::user()->league;
+
+        $isMember = ProfileLeague::where('profile_id', $profile->id)->where('league_id', $league->id)->first();
+
+        if ($isMember) {
+
+            $isMember->delete();
+            toastr()->success('Membro Removido da liga');
+            return redirect()->back();
         }
 
         toastr()->error('Ops... algo de errado aconteceu');
