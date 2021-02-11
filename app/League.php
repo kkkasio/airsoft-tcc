@@ -40,7 +40,7 @@ class League extends Model
 
     public function teams()
     {
-        return $this->hasMany(LeagueTeam::class, 'team_id', 'league_id');
+        return $this->hasMany(LeagueTeam::class);
     }
 
     public function teamInvite()

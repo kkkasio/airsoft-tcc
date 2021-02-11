@@ -69,31 +69,8 @@
                     <ul class="pagination m-0 ms-auto">
 
                         {{$members->render()}}
-
                     </ul>
                 </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="modal modal-blur fade" id="modal-small" tabindex="-1" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                <form id="form" method="POST" action="{{ route('liga-post-delete') }}" class="modal-content">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="modal-title">Você tem certeza?</div>
-                        <div>Você quer deletar esse comunicado? Não é possivel desfazer essa ação.</div>
-                    </div>
-                    <input type="hidden" name="post" id="post_id" value="">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-link link-secondary me-auto"
-                            data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Sim! Deletar
-                            comunicado</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

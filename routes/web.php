@@ -44,7 +44,6 @@ Route::post('/liga/me/edit', 'LeagueController@update')->name('liga-me-edit-post
 
 Route::get('/liga/post/create', 'PostsController@form')->name('liga-post-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/post/create', 'PostsController@create')->name('liga-post-create')->middleware(['auth', 'verifyLeague']);
-
 Route::get('/liga/post/{id}/edit', 'PostsController@editForm')->name('liga-post-edit-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/post/{id}/edit', 'PostsController@update')->name('liga-post-edit')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/post/delete', 'PostsController@delete')->name('liga-post-delete')->middleware(['auth', 'verifyLeague']);
@@ -54,36 +53,33 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 Route::get('/liga/membros', 'LeagueController@showMembers')->name('liga-membros-all')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/membro/{id}', 'LeagueController@showMember')->name('liga-membro-show')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/membro/{id}/update', 'LeagueController@updateMember')->name('liga-membro-update')->middleware(['auth', 'verifyLeague']);
-
+Route::post('/liga/membro/remove', 'LeagueController@removeMember')->name('liga-membro-remove')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/membros/invites', 'LeagueProfilesController@showInvites')->name('liga-members-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/membros/invites', 'LeagueProfilesController@create')->name('liga-members-create-invites')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
-
 Route::post('/liga/evento/squads/update', 'SquadsController@update')->name('liga-evento-squad-update')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
-
-
-
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
-
-
-
 Route::get('/liga/eventos/aberto', 'EventController@open')->name('liga-eventos-aberto')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/eventos/planejados', 'EventController@planned')->name('liga-eventos-planejados')->middleware(['auth', 'verifyLeague']);
-
 Route::get('/liga/eventos/create', 'EventController@createForm')->name('liga-eventos-form')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/eventos/create', 'EventController@create')->name('liga-eventos-post')->middleware(['auth', 'verifyLeague']);
 
 
 Route::get('/liga/teams', 'LeagueTeamsController@show')->name('liga-times-show')->middleware(['auth', 'verifyLeague']);
+Route::get('/liga/teams/{slug}/members', 'LeagueTeamsController@membersTeam')->name('liga-times-show-members')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/teams/invites', 'LeagueTeamsController@showInvites')->name('liga-times-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-times-create-invite')->middleware(['auth', 'verifyLeague']);
 
 
 
 //Rotas Compartilhadas
+/*
+    ver membro
+    ver time
+*/
 
 
 
@@ -117,30 +113,22 @@ Route::post('/membro/time/{slug}/edit', 'TeamController@edit')->name('membro-tim
 Route::get('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberEdit')->name('membro-time-edit-member-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/member/edit/{id}', 'TeamController@memberUpdate')->name('membro-time-edit-member-post')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/member/edit/{id}/remove', 'TeamController@memberRemove')->name('membro-time-remove-member')->middleware(['auth', 'verifyMember']);
-
-
 Route::get('/membro/time/members/export', 'TeamController@exportMembers')->name('membro-time-members-export')->middleware(['auth', 'verifyMember']);
-
-
-
-
 Route::get('/membro/time/{slug}/invites', 'TeamController@showCodeInvite')->name('membro-time-show-invites')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/invites/create', 'TeamController@codeInvite')->name('membro-time-create-invite')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/time/invite', 'MemberController@inviteTeamForm')->name('member-team-invite-form')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/time/invite', 'MemberController@invitePost')->name('member-team-invite-post')->middleware(['auth', 'verifyMember']);
 
 
-Route::get('/membro/team/invite', 'MemberController@inviteTeamForm')->name('member-team-invite-form')->middleware(['auth', 'verifyMember']);
-Route::post('/membro/team/invite', 'MemberController@invitePost')->name('member-team-invite-post')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/liga/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/liga/events', 'EventController@showEventsMember')->name('membro-league-show-events')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/liga/events/{id}', 'EventController@show')->name('membro-league-show-event')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/liga/events/{id}/comment', 'EventController@comment')->name('membro-league-event-comment')->middleware(['auth', 'verifyMember']);
 
+Route::post('/membro/liga/invite', 'LeagueController@inviteMember')->name('membro-league-invite')->middleware(['auth', 'verifyMember']);
 
-Route::get('/membro/league/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);
-Route::get('/membro/league/events', 'EventController@showEventsMember')->name('membro-league-show-events')->middleware(['auth', 'verifyMember']);
-Route::get('/membro/league/events/{id}', 'EventController@show')->name('membro-league-show-event')->middleware(['auth', 'verifyMember']);
-Route::post('/membro/league/events/{id}/comment', 'EventController@comment')->name('membro-league-event-comment')->middleware(['auth', 'verifyMember']);
-
-Route::post('/membro/league/invite', 'LeagueController@inviteMember')->name('membro-league-invite')->middleware(['auth', 'verifyMember']);
-
-Route::post('/membro/league/events/{id}/subscribe', 'EventController@subscribe')->name('membro-event-subscribe')->middleware(['auth', 'verifyMember']);
-Route::post('/membro/league/events/{id}/unSubscribe', 'EventController@unSubscribe')->name('membro-event-unsubscribe')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/liga/events/{id}/subscribe', 'EventController@subscribe')->name('membro-event-subscribe')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/liga/events/{id}/unSubscribe', 'EventController@unSubscribe')->name('membro-event-unsubscribe')->middleware(['auth', 'verifyMember']);
 
 // se o membro tem um time e pode gerenciar um evento
 Route::post('/membro/league/events/{id}/open', 'EventController@openEvent')->name('membro-event-open')->middleware(['auth', 'verifyMember']);

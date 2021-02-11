@@ -1,6 +1,6 @@
 @extends('league.layouts.base')
 
-@section('title', '- Criar Evento')
+@section('title', '- Editar Perfil')
 
 @section('content')
 
@@ -20,7 +20,8 @@
 
         <div class="row row-cards">
             <div class="col-md-12">
-                <form method="POST" class="card card-md" class="card card-md" action="{{ route('liga-me-edit-post') }}">
+                <form enctype="multipart/form-data" method="POST" class="card card-md" class="card card-md"
+                    action="{{ route('liga-me-edit-post') }}">
                     @csrf
                     <div class="card-body">
 
@@ -39,7 +40,7 @@
 
                         <div class="form-group">
 
-                            <label for="about" class="form-label col-3 col-form-label">Nome da Liga</label>
+                            <label for="about" class="form-label col-3 col-form-label">Sobre a Liga</label>
                             <textarea type="text" id="about" name="about" value="{{old('about')}}"
                                 class="form-control @error('about') is-invalid @enderror"
                                 required>{{ old('about') ? old('about') : Auth::user()->league->about  }}</textarea>
@@ -50,7 +51,18 @@
                             @enderror
                         </div>
 
+                        <div class="form-group">
 
+                            <label for="avatar" class="form-label col-3 col-form-label">Foto</label>
+                            <input type="file" id="avatar" name="avatar"
+                                class="form-control @error('avatar') is-invalid @enderror">
+                            @error('avatar')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+
+                        </div>
 
                         <div class="form-group">
                             <label for="slug" class="form-label col-3 col-form-label">Slug (url na plataforma)</label>

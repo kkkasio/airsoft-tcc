@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\LeagueTeam;
 use App\LeagueTeamInvites;
+use App\Team;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class LeagueTeamsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function show()
     {
@@ -67,5 +65,19 @@ class LeagueTeamsController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
+    }
+
+    public function membersTeam($slug)
+    {
+        $team = Team::where('slug', $slug)->first();
+        $league = Auth::user()->league;
+
+        $teamLeague = LeagueTeam::where('team_id', $team->id)->where('league_id', $league->id)->first();
+
+        if ($teamLeague) {
+            return view('league.teams.members.index', compact('teamLeague'));
+        }
+        toastr()->error('Ops... algo de errado aconteceu');
+        return redirect()->back();
     }
 }
