@@ -49,7 +49,7 @@
                         @endif
 
                         <h3 class="m-0 mb-1"><a
-                                href="{{ route('membro-league-show-event',['id' => $event->id])}}">{{$event->name}}</a>
+                                href="{{ route('liga-evento-show',['id' => $event->id])}}">{{$event->name}}</a>
                         </h3>
                         <div class="text-muted">Data: {{$event->startdate->format('d/m/Y')}}</div>
                         <div class="mb-3">
@@ -62,7 +62,7 @@
                         @if($event->type === 'Jogo')
                         <div class="mt-3">
                             <div class="text-muted">
-                                <b>Inscritos:</b> 0
+                                <b>Inscritos:</b> {{count($event->subscribers)}}
                             </div>
                             <div class="text-muted">
                                 <b>Quórum mínimo:</b> {{$event->players}}

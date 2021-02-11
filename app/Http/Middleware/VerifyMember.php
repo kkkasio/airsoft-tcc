@@ -17,6 +17,11 @@ class VerifyMember
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
+
+        if ($user->type === 'Liga') {
+            return redirect('404');
+        }
+
         if ($request->path() === "membro/criar") {
 
             if (isset($user->profile->id)) {
@@ -28,6 +33,5 @@ class VerifyMember
             }
         }
         return $next($request);
-
     }
 }
