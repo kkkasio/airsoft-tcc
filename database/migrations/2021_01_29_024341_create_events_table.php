@@ -18,6 +18,7 @@ class CreateEventsTable extends Migration
             $table->string('name');
             $table->dateTime('startdate');
             $table->dateTime('enddate');
+            $table->string('location');
             $table->string('file');
             $table->integer('players');
             $table->text('about');

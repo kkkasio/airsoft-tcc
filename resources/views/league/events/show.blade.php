@@ -54,6 +54,95 @@
             </div>
         </div>
 
+
+        <div class="row row-cards  my-3">
+            <div class="col-md-4 col-sm-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Informações</div>
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="13" r="7"></circle>
+                                <polyline points="12 10 12 13 14 13"></polyline>
+                                <line x1="7" y1="4" x2="4.25" y2="6"></line>
+                                <line x1="17" y1="4" x2="19.75" y2="6"></line>
+                            </svg>
+                            Início: <strong>{{$event->startdate->format('d/m/Y H:m')}}</strong>
+                        </div>
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="13" r="7"></circle>
+                                <polyline points="12 10 12 13 14 13"></polyline>
+                                <line x1="7" y1="4" x2="4.25" y2="6"></line>
+                                <line x1="17" y1="4" x2="19.75" y2="6"></line>
+                            </svg>
+                            Término: <strong>{{$event->enddate->format('d/m/Y H:m')}}</strong>
+                        </div>
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                <line x1="9" y1="9" x2="10" y2="9"></line>
+                                <line x1="9" y1="13" x2="15" y2="13"></line>
+                                <line x1="9" y1="17" x2="15" y2="17"></line>
+                            </svg>
+                            Missão: <strong>@if($event->file) <a href="{{Storage::url('/files/'.$event->file)}}"
+                                    target="_blank">Clique Aqui</a> @else Não Enviado @endif </strong>
+                        </div>
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="11" r="3"></circle>
+                                <path
+                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
+                                </path>
+                            </svg>
+                            Local: <strong>{{$event->location}}</strong>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                            </svg>
+                            Minimo de Jogadores: <strong>{{$event->players}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-6 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Sobre o evento</div>
+                        <div class="mb-2">
+                            {{$event->about}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
         <div class="col-12">
             <div class="card">
 
@@ -63,12 +152,6 @@
                             <strong>Inscritos ({{count($event->subscribers)}})</strong>
                         </div>
                         <input id="event-id" type="hidden" name="event" value="{{$event->id}}">
-                        <div class="ms-auto text-muted">
-                            Pesquisar:
-                            <div class="ms-2 d-inline-block">
-                                <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">

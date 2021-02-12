@@ -86,15 +86,13 @@
                             Visualizar</a>
                         @if($event->team === null)
                         <a href="{{ route('liga-evento-edit-form',['id' => $event->id])}}" class="card-btn"><svg
-                                xmlns="http://www.w3.org/2000/svg" class="icon mx-1 icon-tabler icon-tabler-list-search"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="15" cy="15" r="4"></circle>
-                                <path d="M18.5 18.5l2.5 2.5"></path>
-                                <path d="M4 6h16"></path>
-                                <path d="M4 12h4"></path>
-                                <path d="M4 18h4"></path>
+                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                <line x1="16" y1="5" x2="19" y2="8"></line>
                             </svg>
                             Editar</a>
                         @endif

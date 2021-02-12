@@ -429,12 +429,10 @@ class EventController extends Controller
 
     public function update(Request $request, $id)
     {
-
         try {
             $data = $request->all();
             $event = Event::findOrFail($id);
             $league = Auth::user()->league;
-
 
 
             $data['league_id'] = $league->id;
@@ -442,6 +440,7 @@ class EventController extends Controller
             $data['enddate']   = Carbon::createFromDate($data['enddate']);
             $data['team_id']   = $data['time'];
             $data['type']      = 'Jogo';
+
 
             $valid = Validator::make($data, [
                 'name' => 'required|string|min:3',
@@ -458,16 +457,21 @@ class EventController extends Controller
             $data['team_id'] = $data['time'] > 0 ? $data['time'] : null;
 
 
-
             if ($data['team_id']) {
                 $team = Team::find($data['team_id']);
                 if ($team->league->league->id === $data['league_id']) {
 
+                    $pdf = $this->uploadPdf($request, $league);
                     $avatar = $this->uploadAvatar($request, $league);
 
 
                     if ($avatar) {
                         $data['avatar'] = $avatar;
+                    }
+
+
+                    if ($pdf) {
+                        $data['file'] = $pdf;
                     }
 
                     $event->update($data);
@@ -476,10 +480,15 @@ class EventController extends Controller
                     return redirect()->back();
                 }
             } else {
+                $pdf = $this->uploadPdf($request, $league);
                 $avatar = $this->uploadAvatar($request, $league);
 
                 if ($avatar) {
                     $data['avatar'] = $avatar;
+                }
+
+                if ($pdf) {
+                    $data['file'] = $pdf;
                 }
 
                 $event->update($data);
@@ -496,6 +505,33 @@ class EventController extends Controller
             dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
+        }
+    }
+
+    private function uploadPdf(Request $request, $league)
+    {
+        try {
+            $data = $request->all();
+
+            if ($request->hasFile('file')) {
+
+                $pdf = $request->file('file');
+                $validFile = Validator::make($data, [
+                    "file" => "required|mimetypes:application/pdf|max:10000"
+
+                ]);
+
+                $validFile->validate();
+
+                $pdfName = $league->id . '_pdf' . time() . '.' . request()->file->getClientOriginalExtension();
+                $request->file->storeAs('files', $pdfName);
+
+
+                return $pdfName;
+            }
+            return null;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 }
