@@ -18,8 +18,6 @@ class VerifyLeague
     {
         $user = Auth::user();
 
-
-
         if ($user->type === 'Membro') {
             return redirect('404');
         }
