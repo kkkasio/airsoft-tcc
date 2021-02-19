@@ -1,6 +1,6 @@
 @extends('league.layouts.base')
 
-@section('title', '- Gerenciar Evento')
+@section('title', '- Visualizar Evento')
 
 @section('content')
 
@@ -34,22 +34,52 @@
                     <div class="page-pretitle">
                     </div>
                     <h2 class="page-title">
-                        Evento: {{$event->name}}
+                        {{$event->name}} - {{$event->startdate->format('d/m/Y')}} ({{$event->status}})
                     </h2>
                 </div>
-                @if($event->status == 'Aberto' && $event->team === null && $event->league_id ===
-                Auth::user()->league->id)
+                @can('manage-event', $event)
+
+
+
+
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <form action="{{ route('liga-evento-squad-create') }}" method="POST">
+
+                        @if($event->status === 'Planejado')
+                        <form action="{{ route('league-event-open',['id' => $event->id]) }}" method="POST">
                             @csrf
-                            <a href="{{ route('liga-eventos-aberto') }}" class="btn btn-white">
-                                Encerrar Inscrições
-                            </a>
+                            <input type="hidden" name="event" value="{{$event->id}}">
+                            <button type="submit" class="btn btn-primary d-sm-inline-block">
+                                Abrir Inscrições
+                            </button>
                         </form>
+                        @endif
+
+                        @if($event->status === 'Aberto')
+                        <form action="{{ route('league-event-close',['id' => $event->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="event" value="{{$event->id}}">
+                            <button type="submit" class="btn btn-primary d-sm-inline-block">
+                                Encerrar Inscrições
+                            </button>
+                        </form>
+                        @endif
+
+                        @if($event->status === 'Inscrições Encerradas')
+                        <form action="{{ route('league-event-finish',['id' => $event->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="event" value="{{$event->id}}">
+                            <button type="submit" class="btn btn-primary d-sm-inline-block">
+                                Finalizar Evento
+                            </button>
+                        </form>
+                        @endif
+
+
+
                     </div>
                 </div>
-                @endif
+                @endcan
 
             </div>
         </div>
@@ -112,7 +142,19 @@
                                     d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
                                 </path>
                             </svg>
-                            Local: <strong>{{$event->location}}</strong>
+                            Local: <strong>{{$event->location ? $event->location: 'Não informado'}}</strong>
+                        </div>
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="11" r="3"></circle>
+                                <path
+                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
+                                </path>
+                            </svg>
+                            Organização: <strong>{{$event->team ? $event->team->name : 'Administração'}}</strong>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
@@ -328,7 +370,7 @@
 
     </div>
     <div>
-        <form method="POST" id="form-squad" action="{{ route('liga-evento-squad-update') }}">
+        <form method="POST" id="form-TESTE" action="{{ route('liga-evento-squad-update') }}">
             @csrf
             <input id="squad" type="hidden" name="squad" value="">
             <input id="profile" type="hidden" name="profile" value="">
@@ -351,7 +393,7 @@
         var profile = $('#profile').val($(this).attr('data-profile-id'));
         var event = $('#event').val($('#event-id').val());
 
-        $('#form-squad').submit();
+        $('#form-TESTE').submit();
     });
 
 

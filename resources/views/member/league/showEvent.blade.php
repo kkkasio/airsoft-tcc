@@ -66,10 +66,7 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
 
-                        @if($event->team && Auth::user()->profile->team &&
-                        $event->team->id ===
-                        Auth::user()->profile->team->team->id && Auth::user()->profile->team->type ===
-                        'Moderador')
+                        @can('manage-event', $event)
 
                         @if($event->status === 'Planejado')
                         <form action="{{ route('membro-event-open',['id' => $event->id]) }}" method="POST">
@@ -90,7 +87,7 @@
                         </form>
                         @endif
 
-                        @if($event->status === 'Encerrado')
+                        @if($event->status === 'Inscrições Encerradas')
                         <form action="{{ route('membro-event-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
@@ -121,7 +118,7 @@
                                 </button>
                             </form>
                             @endif
-                            @endif
+                            @endcan
                         </span>
                     </div>
                 </div>
@@ -254,19 +251,20 @@
             </div>
         </div>
 
-        @if ($event->status === 'Finalizado' && \Carbon\Carbon::now()::now()->diffInHours($event->enddate) > 2))
-
+        @if ($event->status === 'Finalizado' && \Carbon\Carbon::now()::now()->diffInHours($event->enddate) > 2)
         <div class="row row-cards mt-4">
             <div class="page-header d-print-none">
                 <div class="row align-items-center">
                     <div class="col">
                         <h2 class="page-title">Avaliações & Comentários</h2>
                     </div>
+                    @can('can-comment', $event)
                     <div class="col-auto ms-auto d-print-none">
                         <a href="#" class="btn btn-white" data-bs-toggle="modal" data-bs-target="#modal-comment">
                             Escrever um comentário
                         </a>
                     </div>
+                    @endcan
                 </div>
             </div>
             <div class="col-md-12">

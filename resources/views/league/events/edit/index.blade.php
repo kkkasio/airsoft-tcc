@@ -129,7 +129,7 @@
                                     </option>
                                     <option value="Planejado" {{$event->status === 'Planejado' ? 'selected' : ''}}>
                                         Planejado</option>
-                                    <option value="Encerrado" {{$event->status === 'Encerrado' ? 'selected' : ''}}>
+                                    <option value="Inscrições Encerradas" {{$event->status === 'Inscrições Encerradas' ? 'selected' : ''}}>
                                         Encerrado</option>
                                 </select>
                                 @error('status')

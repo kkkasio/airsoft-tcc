@@ -25,6 +25,27 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('manage-event', function ($user, $event) {
+            if ($user->type === 'Liga') {
+                $league = $user->league;
+
+                return $event->league->id === $league->id ?  true : false;
+            } else {
+                $profile = $user->profile;
+
+                if ($event->team && $profile->team && $profile->team->team_id === $event->team->id && $profile->team->type === 'Moderador')
+                    return true;
+                return false;
+            }
+        });
+
+
+        Gate::define('can-comment', function ($user, $event) {
+            if ($user->type === 'Membro') {
+                $profile  = $user->profile;
+
+                return $event->subscribers->firstWhere('profile_id', $profile->id) && !$event->ratings->firstWhere('profile_id', $profile->id);
+            }
+        });
     }
 }

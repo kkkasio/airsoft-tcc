@@ -152,7 +152,6 @@ class MemberController extends Controller
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back()->withErrors($e->validator)->withInput();
         }

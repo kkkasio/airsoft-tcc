@@ -39,7 +39,9 @@ class EventController extends Controller
     public function showEventsMember()
     {
         $league = Auth::user()->profile->league->league;
-        $events = $league->events->sortBy('startdate');
+
+        $events = $league->events->where('startdate', '>', Carbon::now()->subDay())->sortBy('startdate');
+
         return view('member.league.events', compact('events'));
     }
 
@@ -147,7 +149,7 @@ class EventController extends Controller
 
         $planned  = $league->events->where('status', 'Planejado')->sortBy('startdate')->slice(0, 4);
         $open  = $league->events->where('status', 'Aberto')->sortBy('startdate')->slice(0, 4);
-        $close  = $league->events->where('status', 'Encerrado')->sortBy('startdate')->slice(0, 4);
+        $close  = $league->events->where('status', 'Inscrições Encerradas')->sortBy('startdate')->slice(0, 4);
 
 
         return view('league.events.all', compact('planned', 'open', 'close'));
@@ -275,19 +277,34 @@ class EventController extends Controller
 
             $valid->validate();
 
-            $profile = Auth::user()->profile;
-            $event = Event::find($data['event']);
+
+            if (Auth::user()->type === 'Liga') {
+                $league = Auth::user()->league;
+                $event = Event::find($data['event']);
 
 
-            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+                if ($event->league_id === $league->id && !$event->team) {
+
+                    $event->status = 'Aberto';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            } else {
+
+                $profile = Auth::user()->profile;
+                $event = Event::find($data['event']);
 
 
+                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
 
-                $event->status = 'Encerrado';
-                $event->save();
+                    $event->status = 'Aberto';
+                    $event->save();
 
-                toastr()->success('Evento atualizado');
-                return redirect()->back();
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
             }
 
             toastr()->error('Ops... algo de errado aconteceu');
@@ -311,26 +328,51 @@ class EventController extends Controller
             $valid->validate();
 
 
+            if (Auth::user()->type === 'Liga') {
+                $league = Auth::user()->league;
+                $event = Event::find($data['event']);
 
-            $profile = Auth::user()->profile;
-            $event = Event::find($data['event']);
 
+                if ($event->league_id === $league->id && !$event->team) {
 
-            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+                    foreach ($event->subscribers as $subscriber) {
 
-                foreach ($event->subscribers as $subscriber) {
-
-                    if ($subscriber->squad_id === null) {
-                        toastr()->info('Existem pessoas sem SQUAD');
-                        return redirect()->back();
+                        if ($subscriber->squad_id === null) {
+                            toastr()->info('Existem pessoas sem SQUAD');
+                            return redirect()->back();
+                        }
                     }
-                }
-                $event->status = 'Encerrado';
-                $event->save();
+                    $event->status = 'Inscrições Encerradas';
+                    $event->save();
 
-                toastr()->success('Evento atualizado');
-                return redirect()->back();
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            } else {
+
+                $profile = Auth::user()->profile;
+                $event = Event::find($data['event']);
+
+
+                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                    foreach ($event->subscribers as $subscriber) {
+
+                        if ($subscriber->squad_id === null) {
+                            toastr()->info('Existem pessoas sem SQUAD');
+                            return redirect()->back();
+                        }
+                    }
+                    $event->status = 'Inscrições Encerradas';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
             }
+
+
+
 
 
             toastr()->error('Ops... algo de errado aconteceu');
@@ -354,18 +396,37 @@ class EventController extends Controller
             $valid->validate();
 
 
-            $profile = Auth::user()->profile;
-            $event = Event::find($data['event']);
+            if (Auth::user()->type === 'Liga') {
+                $league = Auth::user()->league;
+                $event = Event::find($data['event']);
 
 
-            if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+                if ($event->league_id === $league->id && !$event->team) {
 
-                $event->status = 'Finalizado';
-                $event->save();
+                    $event->status = 'Finalizado';
+                    $event->save();
 
-                toastr()->success('Evento foi finalizado');
-                return redirect()->back();
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            } else {
+
+                $profile = Auth::user()->profile;
+                $event = Event::find($data['event']);
+
+
+                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                    $event->status = 'Finalizado';
+                    $event->save();
+
+                    toastr()->success('Evento foi finalizado');
+                    return redirect()->back();
+                }
             }
+
+
+
 
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();

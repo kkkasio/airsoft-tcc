@@ -23,7 +23,7 @@ class CreateEventsTable extends Migration
             $table->integer('players');
             $table->text('about');
             $table->enum('type',['Reunião','Jogo']);
-            $table->enum('status',['Aberto','Encerrado','Planejado','Finalizado']);
+            $table->enum('status',['Aberto','Inscrições Encerradas','Planejado','Finalizado']);
 
             $table->unsignedBigInteger('team_id')->nullable();
             $table->foreign('team_id')->references('id')->on('teams');

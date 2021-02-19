@@ -178,7 +178,6 @@ class LeagueController extends Controller
                 return view('league.members.edit.index', compact('member'));
             }
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }

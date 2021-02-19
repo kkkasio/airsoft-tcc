@@ -214,7 +214,6 @@ class TeamController extends Controller
             toastr()->warning('Código não encontrado');
             return redirect()->back();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo deu errado');
             return redirect()->back();
         }
@@ -248,7 +247,6 @@ class TeamController extends Controller
                 return redirect()->route('membro-time-show', ['slug' => $team->slug]);
             }
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
@@ -307,7 +305,6 @@ class TeamController extends Controller
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
@@ -334,7 +331,6 @@ class TeamController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (Exception $e) {
-            dd($e);
         }
     }
 }

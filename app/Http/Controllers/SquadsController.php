@@ -39,7 +39,6 @@ class SquadsController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
@@ -65,7 +64,6 @@ class SquadsController extends Controller
                 return redirect()->back();
             }
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
@@ -107,10 +105,11 @@ class SquadsController extends Controller
         }
     }
 
-    public function updateMember(Request $request, $id)
+    public function updateMember(Request $request)
     {
         try {
             $data = $request->all();
+
 
             $data['squad_id']   = $data['squad'];
             $data['profile_id'] = $data['profile'];
@@ -127,16 +126,25 @@ class SquadsController extends Controller
             $event = Event::find($data['event_id']);
 
 
-            if (Auth::user()->profile && Auth::user()->profile->team && Auth::user()->profile->team->type === 'Moderador' && Auth::user()->profile->team->team->id === $event->team_id) {
-                $subscribe = ProfileEvent::where('event_id', $data['event_id'])->where('profile_id', $data['profile_id'])->first();
+            $subscribe = ProfileEvent::where('event_id', $data['event_id'])->where('profile_id', $data['profile_id'])->first();
 
-
+            if (Auth::user()->type === 'Liga') {
                 if ($subscribe) {
                     $subscribe->update(['squad_id' => $data['squad_id']]);
                     $subscribe->save();
 
                     toastr()->success('Squad atualizado');
                     return redirect()->back();
+                }
+            } else {
+                if (Auth::user()->profile && Auth::user()->profile->team && Auth::user()->profile->team->type === 'Moderador' && Auth::user()->profile->team->team->id === $event->team_id) {
+                    if ($subscribe) {
+                        $subscribe->update(['squad_id' => $data['squad_id']]);
+                        $subscribe->save();
+
+                        toastr()->success('Squad atualizado');
+                        return redirect()->back();
+                    }
                 }
             }
             toastr()->error('Ops... algo de errado aconteceu');

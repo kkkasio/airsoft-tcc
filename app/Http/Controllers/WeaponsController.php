@@ -82,7 +82,6 @@ class WeaponsController extends Controller
                 return redirect()->route('membro-me-weapon-all');
             }
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
