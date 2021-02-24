@@ -23,7 +23,7 @@ class CreateProfileEvent extends Migration
             $table->foreign('profile_id')->references('id')->on('profiles');
 
             $table->unsignedBigInteger('squad_id')->nullable();
-            $table->foreign('squad_id')->references('id')->on('event_squad');
+            $table->foreign('squad_id')->references('id')->on('event_squad')->onDelete('set null');
 
             $table->timestamps();
         });

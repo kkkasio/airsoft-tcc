@@ -51,8 +51,7 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 
 
 Route::post('/liga/evento/squads/update', 'SquadsController@updateMember')->name('liga-evento-squad-update')->middleware(['auth', 'verifyLeague']);
-
-
+Route::post('/liga/evento/squads/delete', 'SquadsController@deleteSquad')->name('liga-evento-squad-delete')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/membros', 'LeagueController@showMembers')->name('liga-membros-all')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/membro/{id}', 'LeagueController@showMember')->name('liga-membro-show')->middleware(['auth', 'verifyLeague']);
@@ -67,10 +66,10 @@ Route::get('/liga/evento/{id}/edit', 'EventController@formEdit')->name('liga-eve
 Route::post('/liga/evento/{id}/update', 'EventController@update')->name('liga-evento-update')->middleware(['auth', 'verifyLeague']);
 
 
-Route::post('/membro/evento/{id}/open', 'EventController@openEvent')->name('league-event-open')->middleware(['auth', 'verifyLeague']);
-Route::post('/membro/evento/{id}/close', 'EventController@closeEvent')->name('league-event-close')->middleware(['auth', 'verifyLeague']);
-Route::post('/membro/evento/{id}/finish', 'EventController@finishEvent')->name('league-event-finish')->middleware(['auth', 'verifyLeague']);
-
+Route::post('/liga/evento/{id}/open', 'EventController@openEvent')->name('league-event-open')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/close', 'EventController@closeEvent')->name('league-event-close')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/finish', 'EventController@finishEvent')->name('league-event-finish')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/teams-finish', 'EventController@finishTeams')->name('liga-evento-squad-teams-finish')->middleware(['auth', 'verifyLeague']);
 
 Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);

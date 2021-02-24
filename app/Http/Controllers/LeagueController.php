@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\City;
 use App\League;
 use App\LeagueProfileInvites;
+use App\LeagueTeam;
 use App\Profile;
 use App\ProfileLeague;
 use App\State;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -26,12 +28,43 @@ class LeagueController extends Controller
 
     public function index()
     {
-        dd('ok');
     }
 
     public function dashboard()
     {
-        return view('league.dashboard');
+        $league = Auth::user()->league;
+
+
+
+        //RESUMO GERAL
+        //MEMBROS
+        $members = ProfileLeague::where('league_id', $league->id)->get();
+        $chartData  = $members->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('m-Y');
+        });
+
+
+
+        foreach($chartData as $t){
+            dd($t);
+        }
+        // TIMES
+        $teams = LeagueTeam::where('league_id', $league->id)->get();
+        // TOTAL DE JOGOS
+
+
+
+
+        //5 indicadores
+        // GRÁFICO MEMBROS CADASTRADOS POR MÊS
+        // GRÁFICO EVENTOS CADASTRADOS POR MÊS
+
+
+
+        // % DE EVENTOS CANCELADOS, E FINALIZADOS NO TOTAL
+
+
+        return view('league.dashboard.index', compact('members', 'teams'));
     }
 
     public function createView()
