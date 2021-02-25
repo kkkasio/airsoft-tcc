@@ -55,6 +55,14 @@
                     </div>
                 </div>
 
+                <div class="my-3 col-sm-6 col-lg-6 my-3">
+                    <div class="card">
+                        <div class="card-body">
+                            {!! $chartPosts->container() !!}
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -64,6 +72,6 @@
 {{ $chartMembers->script() }}
 {{ $chartEvents->script() }}
 {{ $eventsByteam->script() }}
-
+{{ $chartPosts->script()  }}
 
 @endsection

@@ -7,6 +7,7 @@ use App\Event;
 use App\League;
 use App\LeagueProfileInvites;
 use App\LeagueTeam;
+use App\Post;
 use App\Profile;
 use App\ProfileLeague;
 use App\State;
@@ -126,7 +127,17 @@ class LeagueController extends Controller
             ->addData($teamEventsData)
             ->setLabels($teamEventsName);
 
-        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam'));
+
+        $postsByMonth = Post::where('league_id', $league->id)->whereYear('created_at', Carbon::today()->format('Y'))->get();
+        $postsData = $this->getMesesFactory($postsByMonth);
+
+        $chartPosts = LarapexChart::barChart()
+            ->setTitle('Postagens por Mês ' . '(' . Carbon::today()->format('Y') . ')')
+            ->setColors(['#1F487C', '#F79649', '#9BBB58', '#7159c1'])
+            ->addData('Postagens', $postsData)
+            ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
+
+        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam','chartPosts'));
     }
 
     private function getMesesFactory($object)
