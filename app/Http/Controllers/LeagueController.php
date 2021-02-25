@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\City;
+use App\Event;
 use App\League;
 use App\LeagueProfileInvites;
 use App\LeagueTeam;
@@ -14,9 +15,11 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use LarapexChart;
 
 class LeagueController extends Controller
 {
@@ -39,32 +42,105 @@ class LeagueController extends Controller
         //RESUMO GERAL
         //MEMBROS
         $members = ProfileLeague::where('league_id', $league->id)->get();
-        $chartData  = $members->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('m-Y');
-        });
+        $chartData = $this->getMesesFactory($members);
 
+        $chartMembers = LarapexChart::lineChart()
+            ->setTitle('Entrada de Membros por mês ' . '(' . Carbon::today()->format('Y') . ')')
+            ->setType('bar')
+            ->addData('Membros ', $chartData)
+            ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
 
-
-        foreach($chartData as $t){
-            dd($t);
-        }
         // TIMES
         $teams = LeagueTeam::where('league_id', $league->id)->get();
         // TOTAL DE JOGOS
 
 
-
-
-        //5 indicadores
-        // GRÁFICO MEMBROS CADASTRADOS POR MÊS
         // GRÁFICO EVENTOS CADASTRADOS POR MÊS
+        $events = Event::where('league_id', $league->id)->get();
+        $chartEvents = $events->groupBy(function ($val) {
+            return Carbon::parse($val->startdate)->format('m-Y');
+        });
+
+        $eventFinished = $events->filter(function ($val) {
+            return $val->status === 'Finalizado';
+        })->groupBy(function ($val) {
+            return Carbon::parse($val->startdate)->format('m-Y');
+        });
+
+        $eventCanceled = $events->filter(function ($val) {
+            return $val->status === 'Cancelado';
+        })->groupBy(function ($val) {
+            return Carbon::parse($val->startdate)->format('m-Y');
+        });
+
+        $eventByMonth = [];
+        $monthEvent = [];
+        foreach ($chartEvents as $data) {
+            $eventByMonth[] = count($data);
+            $monthsUsers[] = $data[0]->startdate->format('M Y');
+        }
 
 
+        $events = Event::where('league_id', $league->id)->whereYear('created_at', Carbon::today()->format('Y'))->get();
+        $eventCreate = $this->getMesesFactory($events);
 
-        // % DE EVENTOS CANCELADOS, E FINALIZADOS NO TOTAL
+        $eventCanceled = $this->getMesesFactory($events->filter(function ($value, $key) {
+            return $value->status === 'Cancelado';
+        }));
+
+        $eventFinish = $this->getMesesFactory($events->filter(function ($value, $key) {
+            return $value->status === 'Finalizado';
+        }));
+
+        $eventPlanned = $this->getMesesFactory($events->filter(function ($value, $key) {
+            return $value->status === 'Planejado';
+        }));
+
+        $chartEvents = LarapexChart::barChart()
+            ->setTitle('Eventos por Mês ' . '(' . Carbon::today()->format('Y') . ')')
+            ->setColors(['#1F487C', '#F79649', '#9BBB58', '#7159c1'])
+            ->addData('Iniciados', $eventCreate)
+            ->addData('Cancelados', $eventCanceled)
+            ->addData('Finalizados', $eventFinish)
+            ->addData('Planejados', $eventPlanned)
+            ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
 
 
-        return view('league.dashboard.index', compact('members', 'teams'));
+        $teamWithEvents = LeagueTeam::where('league_id', $league->id)->whereYear('created_at', Carbon::today()->format('Y'))->with('organizer')->get();
+
+
+        $teamEvents = [];
+        foreach ($teamWithEvents as  $team) {
+            $teamEventsData[] = $team->organizer->count();
+            $teamEventsName[] = $team->team->name;
+        }
+
+
+        //dd($teamEventsName);
+        array_unshift($teamEventsData, Event::where('league_id', $league->id)->where('team_id', null)->count());
+        array_unshift($teamEventsName, "Administração");
+
+
+        $eventsByteam = LarapexChart::polarAreaChart()
+            ->setTitle('Eventos distribuidos por time ' . '(' . Carbon::today()->format('Y') . ')')
+            ->addData($teamEventsData)
+            ->setLabels($teamEventsName);
+
+        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam'));
+    }
+
+    private function getMesesFactory($object)
+    {
+        $array = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $array[] = $object->filter(function ($value) use ($i) {
+                $mes = substr($value->created_at, 5, 2);
+                if ($i < 10)
+                    return $mes == '0' . $i;
+                return $mes == $i;
+            })->count();
+        }
+        return $array;
     }
 
     public function createView()
@@ -119,6 +195,7 @@ class LeagueController extends Controller
     {
         return view('league.posts.edit');
     }
+
     public function update(Request $request)
     {
         try {
@@ -158,7 +235,6 @@ class LeagueController extends Controller
             return redirect()->back();
         }
     }
-
 
     private function uploadAvatar(Request $request, $league)
     {
