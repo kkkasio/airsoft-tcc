@@ -47,6 +47,11 @@ class Profile extends Model
         return $this->hasMany(EventEvaluate::class);
     }
 
+    public function events()
+    {
+        return  $this->hasMany(ProfileEvent::class);
+    }
+
     public function getInitialsAttribute()
     {
         $name = explode(' ', $this->name);

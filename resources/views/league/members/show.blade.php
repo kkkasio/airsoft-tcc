@@ -28,6 +28,7 @@
                                 <th>Nome</th>
                                 <th>Time</th>
                                 <th>Regra</th>
+                                <th>Última Participação</th>
                                 <th class="w-1"></th>
                             </tr>
                         </thead>
@@ -50,6 +51,12 @@
                                 </td>
                                 <td class="text-muted">
                                     {{$member->type}}
+                                </td>
+                                <td>
+                                    <div class="text-muted">
+                                        {{$member->profile->events->last() ? $member->profile->events->last()->event->name: '-' }}
+                                        ({{$member->profile->events->last()->created_at->format('d/m/Y')}})
+                                    </div>
                                 </td>
                                 <td>
                                     <a href="{{ route('liga-membro-show',['id' => $member->id])}}">Editar</a>
