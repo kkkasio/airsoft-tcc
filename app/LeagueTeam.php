@@ -21,5 +21,9 @@ class LeagueTeam extends Model
         return $this->belongsTo(League::class);
     }
 
+    public function organizer(){
+        return  $this->hasMany(Event::class,'team_id','team_id');
+    }
+
 
 }

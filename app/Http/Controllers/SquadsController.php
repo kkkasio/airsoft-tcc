@@ -154,4 +154,33 @@ class SquadsController extends Controller
             return redirect()->back();
         }
     }
+
+    public function deleteSquad(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $squad = EventSquad::findOrFail($data['squad']);
+
+            if (Auth::user()->type === 'Liga') {
+
+                if (isNull($squad->team) && $squad->event->status === 'Aberto' || $squad->event->status === 'Inscrições Encerradas') {
+                    $squad->delete();
+
+                    toastr()->success('Squad Removido!');
+                    return redirect()->back();
+                }
+            } else {
+                dd("Membro");
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+
 }

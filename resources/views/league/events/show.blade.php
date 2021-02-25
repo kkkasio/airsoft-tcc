@@ -40,8 +40,6 @@
                 @can('manage-event', $event)
 
 
-
-
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
 
@@ -56,7 +54,7 @@
                         @endif
 
                         @if($event->status === 'Aberto')
-                        <form action="{{ route('league-event-close',['id' => $event->id]) }}" method="POST">
+                        <form action="{{ route('liga-evento-squad-teams-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
                             <button type="submit" class="btn btn-primary d-sm-inline-block">
@@ -65,7 +63,19 @@
                         </form>
                         @endif
 
+
+
                         @if($event->status === 'Inscrições Encerradas')
+                        <form action="{{ route('liga-evento-squad-teams-finish',['id' => $event->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="event" value="{{$event->id}}">
+                            <button type="submit" class="btn btn-primary d-sm-inline-block">
+                               Finalizar Divisão de Times
+                            </button>
+                        </form>
+                        @endif
+
+                        @if($event->status === 'Divisão de Times')
                         <form action="{{ route('league-event-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
@@ -225,6 +235,7 @@
 
 
                                 <td>
+                                    @if($event->status === 'Aberto' || $event->status === 'Inscrições Encerradas' )
                                     <select name="squad" class="form-select"
                                         data-profile-id="{{$subscriber->profile->id}}">
                                         <option value="0">Selecione o SQUAD</option>
@@ -233,8 +244,10 @@
                                             {{$subscriber->squad_id === $squad->id ? 'selected': '' }}>{{$squad->name}}
                                         </option>
                                         @endforeach
-
                                     </select>
+                                    @else
+                                    {{$subscriber->squad ? $subscriber->squad->name : '-'}}
+                                    @endif
                                 </td>
 
 
@@ -272,8 +285,8 @@
                             Squads ({{count($squads)}})
                         </h2>
                     </div>
-                    @if($event->status == 'Aberto' && $event->team === null && $event->league_id ===
-                    Auth::user()->league->id)
+                    @can('event-is-open', $event)
+
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <span class="d-sm-inline-block">
@@ -284,7 +297,7 @@
                             </span>
                         </div>
                     </div>
-                    @endif
+                    @endcan
                 </div>
             </div>
 
@@ -294,6 +307,24 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})</h3>
+                        @can(['manage-event','event-is-open'], $event)
+
+                        <div class="ms-auto">
+                            <a href="#" data-bs-toggle="modal" data-squad-id-delete="{{$squad->id}}"
+                                data-bs-target="#remove-squad" class="btn btn-danger  btn-icon" aria-label="Button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        @endcan
                     </div>
                     <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
                         @foreach($squad->squadMembers as $key => $value)
@@ -378,6 +409,45 @@
         </form>
     </div>
 
+    <div class="modal modal-blur fade" id="remove-squad" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+
+            <form method="POST" id="squadForm" action="{{ route('liga-evento-squad-delete') }}" class="modal-content">
+                @csrf
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <input type="hidden" name="squad" id="squadId">
+                <div class="modal-body text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 9v2m0 4v.01"></path>
+                        <path
+                            d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                        </path>
+                    </svg>
+                    <h3>Você tem certeza?</h3>
+                    <div class="text-muted">Você realmente gostaria de remover o SQUAD? Não é possivel recuperar
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col"><a href="#" class="btn btn-white w-100" data-bs-dismiss="modal">
+                                    Cancelar
+                                </a></div>
+                            <div class="col">
+                                <a href="#" id="squadDeleteButton" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                    Sim! Remover
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
 
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -396,9 +466,18 @@
         $('#form-TESTE').submit();
     });
 
+    $("[data-squad-id-delete]").click(function() {
+        var id = $(this).attr('data-squad-id-delete');
+        $('#squadId').val(id);
+    });
+
+    $("#squadDeleteButton").click(function(){
+        console.log('ok');
+        $('#squadForm').submit();
+    });
 
     $('#sendForm').on('click', function(){
         $('#form-create-squad').submit();
-    })
+    });
 </script>
 @endsection

@@ -357,6 +357,7 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})
                         </h3>
+                        
                     </div>
                     <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
                         @foreach($squad->squadMembers as $key => $value)

@@ -335,6 +335,61 @@ class EventController extends Controller
 
                 if ($event->league_id === $league->id && !$event->team) {
 
+
+                    $event->status = 'Finalizado';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            } else {
+
+                $profile = Auth::user()->profile;
+                $event = Event::find($data['event']);
+
+
+                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                    $event->status = 'Finalizado';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            }
+
+
+
+
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function finishTeams(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+
+
+            $valid = Validator::make($data, [
+                'event' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+            if (Auth::user()->type === 'Liga') {
+                $league = Auth::user()->league;
+                $event = Event::find($data['event']);
+
+
+                if ($event->league_id === $league->id && !$event->team) {
+
                     foreach ($event->subscribers as $subscriber) {
 
                         if ($subscriber->squad_id === null) {
@@ -342,6 +397,16 @@ class EventController extends Controller
                             return redirect()->back();
                         }
                     }
+
+                    if ((count($event->subscribers) < $event->players)) {
+
+                        $event->status = 'Cancelado';
+                        $event->save();
+
+                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessário');
+                        return redirect()->back();
+                    }
+
                     $event->status = 'Inscrições Encerradas';
                     $event->save();
 
@@ -371,17 +436,15 @@ class EventController extends Controller
                 }
             }
 
-
-
-
-
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
-        } catch (\Throwable $th) {
+        } catch (Exception  $e) {
+            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
     }
+
 
     public function finishEvent(Request $request, $id)
     {

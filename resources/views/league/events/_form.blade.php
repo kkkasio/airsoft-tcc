@@ -89,7 +89,6 @@
         <select id="status" name="status" class="form-select">
             <option value="Aberto">Aberto</option>
             <option value="Planejado">Planejado</option>
-            <option value="Encerrado">Encerrado</option>
         </select>
         @error('status')
         <span class="" role="alert">

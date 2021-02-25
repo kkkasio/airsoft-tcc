@@ -40,12 +40,27 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
+        Gate::define('event-is-open', function ($user, $event) {
+            $statusArray = ['Aberto', 'Inscrições Encerradas', 'Divisão de Times'];
+            if ($user->type     === 'Liga') {
+
+                return in_array($event->status, $statusArray);
+            } else {
+                $profile = $user->profile;
+
+                if ($event->team && $profile->team && $profile->team->team_id === $event->team->id && in_array($event->status, $statusArray))
+                    return true;
+                return false;
+            }
+        });
+
+
         Gate::define('can-comment', function ($user, $event) {
             if ($user->type === 'Membro') {
                 $profile  = $user->profile;
-
                 return $event->subscribers->firstWhere('profile_id', $profile->id) && !$event->ratings->firstWhere('profile_id', $profile->id);
             }
+            return false;
         });
     }
 }
