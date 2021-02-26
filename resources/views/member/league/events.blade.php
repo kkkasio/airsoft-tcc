@@ -14,8 +14,10 @@
             @forelse ($events as $i => $event)
             <div class="col-md-6 col-lg-3">
                 <div class="card">
+
+
                     <div class="card-img-top img-responsive img-responsive-16by9"
-                        style="background-image: url(https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png)">
+                        style="background-image: url({{$event->avatar ? '/storage/avatars/'.$event->avatar : 'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png'}})">
                     </div>
 
                     <div class="card-body p-4 text-center">
@@ -68,6 +70,18 @@
                                 <path d="M4 18h4"></path>
                             </svg>
                             Visualizar</a>
+                        @can('manage-event',$event)
+                        <a href="{{ route('membro-league-edit-event',['id' => $event->id])}}" class="card-btn"><svg
+                                xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                <line x1="16" y1="5" x2="19" y2="8"></line>
+                            </svg>
+                            Editar</a>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-@extends('league.layouts.base')
+@extends('member.layouts.base')
 
 @section('title', '- Editar Evento')
 
@@ -17,16 +17,12 @@
                 </div>
             </div>
         </div>
-
         <div class="row row-cards">
             <div class="col-md-12">
                 <form enctype="multipart/form-data" method="POST" class="card card-md" class="card card-md"
-                    action="{{ route('liga-evento-update',['id' => $event->id]) }}">
+                    action="{{ route('member-evento-update',['id' => $event->id]) }}">
                     @csrf
                     <div class="card-body">
-
-
-
                         <div class="form-group">
                             <div class="mb-3">
                                 <label for="name" class="form-label col-3 col-form-label">Nome da missão</label>
@@ -47,8 +43,10 @@
                                 <label for="avatar" class="form-label">Foto</label>
                                 <input type="file" id="avatar" name="avatar"
                                     class="form-control @error('avatar') is-invalid @enderror">
-                                <small class="form-hint">Preencha esse campo apenas se quiser <strong>ATUALIZAR</strong>
-                                    o avatar do evento.</small>
+                                <small class="form-hint">@if($event->avatar) <a
+                                        href="{{ url('/storage/avatars/'.$event->avatar) }}" target="_blank">Visualizar
+                                        Avatar</a> - Preencha esse campo apenas se quiser <strong>ATUALIZAR</strong> o
+                                    avatar do evento.</small> @endif
                                 @error('avatar')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -110,10 +108,8 @@
                         <div class="form-group">
                             <div class="mb-3">
                                 <label for="about" class="form-label col-3 col-form-label">Sobre o jogo</label>
-                                <textarea id="about" name="about" class="form-control" name="example-textarea-input"
-                                    rows="6"
+                                <textarea id="about" class="tinymce form-control" name="about"
                                     placeholder="Breve descrição sobre o evento..">{{old('about') ? old('about') : $event->about }}</textarea>
-
                                 @error('about')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -142,32 +138,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="mb-3">
-                                <label for="time" class="form-label">Organização</label>
-                                <select id="time" name="time" class="form-select">
-                                    <option value="0">Administração</option>
-
-                                    @foreach ($teams as $team)
-                                    <option value="{{$team->team->id}}">{{$team->team->name}}</option>
-                                    @endforeach
-                                </select>
-                                @error('time')
-                                <span class="" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <div class="mb-3">
                                 <label for="file" class="form-label col-3 col-form-label">PDF da Missão</label>
                                 <input type="file" id="file" name="file"
                                     class="form-control @error('file') is-invalid @enderror">
-                                <small class="form-hint">Preencha esse campo apenas se quiser <strong>ATUALIZAR</strong>
-                                    o PDF da missão.</small>
-
+                                <small class="form-hint">@if($event->file) <a
+                                        href="{{Storage::url('/files/'.$event->file)}}" target="_blank">Visualizar
+                                        Avatar</a> - Preencha esse campo apenas se quiser <strong>ATUALIZAR</strong> o
+                                    PDF da missão.</small> @endif
 
                                 @error('file')
                                 <span class="invalid-feedback" role="alert">
@@ -188,6 +168,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.tiny.cloud/1/urpafxeez855sb5p97yda09t1a3ymbrpu9xsv4z72cbgbe46/tinymce/5/tinymce.min.js"
     referrerpolicy="origin"></script>

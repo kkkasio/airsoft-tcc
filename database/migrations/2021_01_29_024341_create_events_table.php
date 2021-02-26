@@ -21,7 +21,7 @@ class CreateEventsTable extends Migration
             $table->string('location');
             $table->string('file');
             $table->integer('players');
-            $table->text('about');
+            $table->longText('about');
             $table->enum('type',['Reunião','Jogo']);
             $table->enum('status',['Planejado','Aberto','Inscrições Encerradas','Divisão de Times','Finalizado','Cancelado']);
 

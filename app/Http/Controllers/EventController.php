@@ -445,7 +445,6 @@ class EventController extends Controller
         }
     }
 
-
     public function finishEvent(Request $request, $id)
     {
         try {
@@ -540,15 +539,26 @@ class EventController extends Controller
 
     public function formEdit($id)
     {
-
-        $league = Auth::user()->league;
+        $user  =  Auth::user();
         $event = Event::findOrFail($id);
-        $teams =  LeagueTeam::where('league_id', $league->id)->get();
 
-        if ($event->league_id === $league->id && $event->team_id === null) {
+        if ($user->type === 'Membro') {
+            if ($user->can('manage-event', $event)) {
+                $profile  =  $user->profile;
 
-            return view('league.events.edit.index', compact('event', 'teams'));
+                return view('member.league.editEvent', compact('event'));
+            }
+        } else if ($user->type === 'Liga') {
+            $league = Auth::user()->league;
+            $teams =  LeagueTeam::where('league_id', $league->id)->get();
+
+            if ($event->league_id === $league->id && $event->team_id === null) {
+
+                return view('league.events.edit.index', compact('event', 'teams'));
+            }
         }
+
+        return  redirect('404');
     }
 
     public function update(Request $request, $id)
@@ -621,6 +631,58 @@ class EventController extends Controller
                 return redirect()->back();
             }
             toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
+    public function memberUpdate(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+            $event = Event::findOrFail($id);
+            $profile = Auth::user()->profile;
+
+
+
+            $data['league_id'] = $profile->league->league_id;
+            $data['startdate'] = Carbon::createFromDate($data['startdate']);
+            $data['enddate']   = Carbon::createFromDate($data['enddate']);
+            $data['type']      = 'Jogo';
+
+            $valid = Validator::make($data, [
+                'name' => 'required|string|min:3',
+                'startdate' => 'required|date', 'before:today',
+                'enddate' => 'required|date', 'before:today|after:startdate',
+                'players' => 'required|integer',
+                'about' => 'required|string|min:3',
+                'status' => 'required|string|min:3',
+            ]);
+
+            $valid->validate();
+
+            $pdf = $this->uploadPdf($request, $profile->league->league_id);
+            $avatar = $this->uploadAvatar($request, $profile->league->league_id);
+
+
+            if ($avatar) {
+                $data['avatar'] = $avatar;
+            }
+
+
+            if ($pdf) {
+                $data['file'] = $pdf;
+            }
+
+            $event->update($data);
+
+            toastr()->success('Evento Atualizado');
             return redirect()->back();
         } catch (ValidationException $e) {
             toastr()->error('Ops... Dados incorretos verifique o formulário');

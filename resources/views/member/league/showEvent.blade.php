@@ -129,13 +129,13 @@
 
         <div class="row row-cards">
             <div class="col-lg-8">
-                <div class="card card-lg">
+                <div class="card card-sm">
                     <div class="card-body">
-                        <div class="markdown">
-                            <p>
-                                {{$event->about}}
-                            </p>
-                        </div>
+
+                        <p>
+                            {!!($event->about) !!}
+                        </p>
+
                     </div>
                 </div>
             </div>
@@ -357,7 +357,7 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})
                         </h3>
-                        
+
                     </div>
                     <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
                         @foreach($squad->squadMembers as $key => $value)

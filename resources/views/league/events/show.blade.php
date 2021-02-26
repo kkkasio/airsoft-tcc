@@ -186,13 +186,11 @@
                     <div class="card-body">
                         <div class="card-title">Sobre o evento</div>
                         <div class="mb-2">
-                            {{$event->about}}
+                            {!! $event->about !!}
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
 
         <div class="col-12">

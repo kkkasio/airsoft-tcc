@@ -35,5 +35,17 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.tiny.cloud/1/urpafxeez855sb5p97yda09t1a3ymbrpu9xsv4z72cbgbe46/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+          selector: '#about',
+          //menubar: 'edit  view  format tools'
+          plugins: 'casechange formatpainter linkchecker autolink lists checklist  permanentpen powerpaste  tinymcespellchecker',
+          toolbar: 'undo redo | checklist | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
+          toolbar_mode: 'floating',
+          language: 'pt_BR'
+    });
+</script>
 
 @endsection
