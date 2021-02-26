@@ -187,7 +187,8 @@
                 <div class="card">
                     <div class="card-body p-4 text-center">
                         <span class="avatar avatar-xl mb-3 avatar-rounded"
-                            style="background-image: url(./static/avatars/000m.jpg)">{{$member->profile->initials}}</span>
+                            style="background-image: url({{$member->profile->avatar ? '/storage/avatars/'.$member->profile->avatar : ''}})">{{ $member->profile->avatar ? '' : $member->profile->initials }}</span>
+
                         <h3 class="m-0 mb-1">{{$member->profile->name}}</h3>
 
                         <div class="text-muted">

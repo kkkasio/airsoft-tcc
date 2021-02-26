@@ -18,6 +18,7 @@ class CreateProfilesTable extends Migration
             $table->string('name');
             $table->string('nickname',100);
             $table->string('slug');
+            $table->string('avatar')->nullable();
             $table->enum('gender',['M','F']);
             $table->date('birthday');
             $table->unsignedBigInteger('user_id');

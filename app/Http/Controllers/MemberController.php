@@ -44,6 +44,13 @@ class MemberController extends Controller
         $valid->validate();
         $profile = Profile::create($data);
 
+        $avatar = $this->uploadAvatar($request, $profile);
+
+        if ($avatar) {
+            $data['avatar'] = $avatar;
+            $profile->update($data['avatar']);
+        }
+
         toastr()->success('Seu perfil foi criado!');
 
         return redirect()->route('membro-me');
@@ -95,10 +102,42 @@ class MemberController extends Controller
         $auth = Auth::user()->profile;
         $profile = Profile::find($auth->id);
 
+
+        $avatar = $this->uploadAvatar($request, $profile);
+
+        if ($avatar) {
+            $data['avatar'] = $avatar;
+        }
+
         $profile->update($data);
 
         toastr()->success('Perfil atualizado');
         return redirect()->route('membro-me');
+    }
+
+    private function uploadAvatar(Request $request, $profile)
+    {
+        try {
+            $data = $request->all();
+            if ($request->hasFile('avatar')) {
+
+                $avatar = $request->file('avatar');
+                $validFile = Validator::make($data, [
+                    'avatar' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+                ]);
+
+                $validFile->validate();
+
+                $avatarName = $profile->id . '_avatar_p' . time() . '.' . $avatar->getClientOriginalExtension();
+                $request->avatar->storeAs('avatars', $avatarName);
+
+
+                return $avatarName;
+            }
+            return null;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     public function inviteTeamForm()

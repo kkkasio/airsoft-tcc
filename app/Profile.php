@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Profile extends Model
 {
     protected $fillable = [
-        'slug', 'name', 'birthday', 'user_id', 'nickname', 'gender', 'state_id', 'city_id'
+        'slug', 'name', 'birthday', 'user_id','avatar', 'nickname', 'gender', 'state_id', 'city_id'
     ];
 
 

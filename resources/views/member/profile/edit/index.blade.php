@@ -19,13 +19,13 @@
 
         <div class="row row-cards">
             <div class="col-md-12">
-                <form method="POST" class="card card-md" class="card card-md" action="{{ route('membro-me-edit-post') }}">
+                <form method="POST" class="card card-md" class="card card-md" enctype="multipart/form-data" action="{{ route('membro-me-edit-post') }}">
                     @csrf
                     <div class="card-body">
                         @include('member.profile._form')
                         <div class="form-footer">
                             <button type="submit" class="btn btn-primary w-100">
-                                Criar time
+                                Editar Perfil
                             </button>
                         </div>
                     </div>

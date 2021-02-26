@@ -35,6 +35,17 @@
 </div>
 
 <div class="form-group">
+    <label for="avatar" class="form-label col-3 col-form-label">Foto</label>
+    <input type="file" id="avatar" name="avatar" accept="image/jpg, image/jpeg, image/png" class="form-control @error('avatar') is-invalid @enderror">
+    @error('avatar')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+    @enderror
+
+</div>
+
+<div class="form-group">
     <div class="rm-label col-3 col-form-label">Selecione seu Gênero</div>
     <div>
         <label class="form-check form-check-inline">
