@@ -79,7 +79,7 @@
                     </path>
                 </svg>
                 <h3>Você tem certeza?</h3>
-                <div class="text-muted">Gostaria de remover o membro do time?</div>
+                <div class="text-muted">Gostaria de remover o membro da liga?</div>
             </div>
             <div class="modal-footer">
                 <div class="w-100">

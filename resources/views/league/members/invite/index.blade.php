@@ -12,7 +12,7 @@
                     <div class="page-pretitle">
                     </div>
                     <h2 class="page-title">
-                        Gerar convite para membro
+                        Gerenciar convites para membros
                     </h2>
                 </div>
                 <div class="col-auto ms-auto d-print-none">

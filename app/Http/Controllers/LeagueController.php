@@ -16,7 +16,6 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -117,7 +116,6 @@ class LeagueController extends Controller
         }
 
 
-        //dd($teamEventsName);
         array_unshift($teamEventsData, Event::where('league_id', $league->id)->where('team_id', null)->count());
         array_unshift($teamEventsName, "Administração");
 
@@ -137,7 +135,7 @@ class LeagueController extends Controller
             ->addData('Postagens', $postsData)
             ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
 
-        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam','chartPosts'));
+        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam', 'chartPosts'));
     }
 
     private function getMesesFactory($object)

@@ -94,7 +94,7 @@
                             Ver todos os membros
                         </a>
                         <a class="dropdown-item" href="{{ route('liga-members-show-invites')}}">
-                            Gerar convite
+                            Gerenciar convites
                         </a>
                     </div>
                 </li>
@@ -120,7 +120,7 @@
                             Ver todos os times
                         </a>
                         <a class="dropdown-item" href="{{ route('liga-times-show-invites')}}">
-                            Gerar convite para time
+                            Gerenciar convites
                         </a>
                     </div>
                 </li>

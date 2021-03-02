@@ -40,7 +40,6 @@
 <script>
     tinymce.init({
           selector: '#about',
-          //menubar: 'edit  view  format tools'
           plugins: 'casechange formatpainter linkchecker autolink lists checklist  permanentpen powerpaste  tinymcespellchecker',
           toolbar: 'undo redo | checklist | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
           toolbar_mode: 'floating',
