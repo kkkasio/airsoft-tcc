@@ -21,7 +21,7 @@ class EventController extends Controller
     public function show(Request $request, $id)
     {
         $profile = Auth::user()->profile;
-        $event = Event::find($id);
+        $event = Event::findOrFail($id);
 
         if ($profile->league->league->id === $event->league->id) {
             $squads = EventSquad::where('event_id', $event->id)->get();
@@ -147,12 +147,12 @@ class EventController extends Controller
     {
         $league = Auth::user()->league;
 
-        $planned  = $league->events->where('status', 'Planejado')->sortBy('startdate')->slice(0, 4);
-        $open  = $league->events->where('status', 'Aberto')->sortBy('startdate')->slice(0, 4);
-        $close  = $league->events->where('status', 'Inscrições Encerradas')->sortBy('startdate')->slice(0, 4);
+        $planned = Event::where('league_id',$league->id)->where('status', 'Planejado')->orderBy('startdate','DESC')->get();
+        $open  = Event::where('league_id',$league->id)->where('status', 'Aberto')->orderBy('startdate','DESC')->get(); //->sortBy('')
+        $finish  = Event::where('league_id',$league->id)->where('status', 'Finalizado')->orWhere('status','Cancelado')->orderBy('startdate','asc')->get();
 
 
-        return view('league.events.all', compact('planned', 'open', 'close'));
+        return view('league.events.all', compact('planned', 'open', 'finish'));
     }
 
     public function showLeague($id)

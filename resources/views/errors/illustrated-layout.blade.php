@@ -482,12 +482,16 @@
                 </p>
 
 
+                @if(auth()->check())
                 <a href="{{ Auth::user()->type === 'Membro' ? route('membro-dashboard') : route('liga-dashboard') }}">
                     <button
                         class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg">
                         {{ __('Ir pra Dashboard') }}
                     </button>
                 </a>
+                @else
+                    <p>A página solicitada não existe.</p>
+                @endif
             </div>
         </div>
 

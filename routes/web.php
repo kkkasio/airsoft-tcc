@@ -53,6 +53,7 @@ Route::get('/liga/post/all', 'PostsController@all')->name('liga-post-all')->midd
 Route::post('/liga/evento/squads/update', 'SquadsController@updateMember')->name('liga-evento-squad-update')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/squads/delete', 'SquadsController@deleteSquad')->name('liga-evento-squad-delete')->middleware(['auth', 'verifyLeague']);
 
+
 Route::get('/liga/membros', 'LeagueController@showMembers')->name('liga-membros-all')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/membro/{id}', 'LeagueController@showMember')->name('liga-membro-show')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/membro/{id}/update', 'LeagueController@updateMember')->name('liga-membro-update')->middleware(['auth', 'verifyLeague']);
@@ -106,6 +107,7 @@ Route::post('/membro/criar', 'MemberController@create')->name('criarProfile')->m
 
 
 Route::get('/membro/me', 'MemberController@me')->name('membro-me')->middleware(['auth', 'verifyMember']);
+Route::get('/membro/{slug}', 'MemberController@show')->name('membro-show')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/me/edit', 'MemberController@editForm')->name('membro-me-edit-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/me/edit', 'MemberController@update')->name('membro-me-edit-post')->middleware(['auth', 'verifyMember']);
 
@@ -153,6 +155,7 @@ Route::post('/membro/league/events/{id}/close', 'EventController@closeEvent')->n
 Route::post('/membro/league/events/{id}/finish', 'EventController@finishEvent')->name('membro-event-finish')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/league/events/{id}/squads/create', 'SquadsController@createMember')->name('membro-evento-squad-create')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/evento/squads/update', 'SquadsController@updateMember')->name('membro-evento-squad-update')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/evento/squads/delete', 'SquadsController@deleteSquad')->name('membro-evento-squad-delete')->middleware(['auth', 'verifyMember']);
 
 
 
