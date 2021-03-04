@@ -273,7 +273,8 @@
                         @forelse ($event->ratings as $comment)
                         <div class="row">
                             <div class="col-auto">
-                                <span class="avatar">{{$comment->profile->initials}}</span>
+                                <span class="avatar"
+                                    style="background-image: url({{$comment->profile->avatar ? '/storage/avatars/'.$comment->profile->avatar : ''}})">{{$comment->profile->avatar ? '' :$comment->profile->initials}}</span>
                             </div>
                             <div class="col">
                                 <div class="text-truncate">
@@ -319,10 +320,8 @@
                     </div>
 
                     <div class="col-auto ms-auto">
-                        @if($event->team && Auth::user()->profile->team &&
-                        $event->team->id ===
-                        Auth::user()->profile->team->team->id && Auth::user()->profile->team->type ===
-                        'Moderador')
+                        @if($event->status === 'Times Divididos')
+                        @can('manage-event', $event)
                         <form action="{{ route('membro-event-open',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
@@ -330,12 +329,11 @@
                                 ** EXPORTAR **
                             </button>
                         </form>
+                        @endcan
                         @endif
                     </div>
 
-                    @if($event->team_id && $event->status === 'Aberto' && Auth::user()->profile->team &&
-                    Auth::user()->profile->team->type ===
-                    'Moderador' && $event->team_id === Auth::user()->profile->team->team->id )
+                    @can('manage-event', $event)
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <span class="d-sm-inline-block">
@@ -346,7 +344,7 @@
                             </span>
                         </div>
                     </div>
-                    @endif
+                    @endcan
                 </div>
             </div>
 
@@ -357,17 +355,35 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>SQUAD:</b> {{$squad->name}} ({{count($squad->squadMembers)}})
                         </h3>
+                        @can(['manage-event','event-is-open'], $event)
+
+                        <div class="ms-auto">
+                            <a href="#" data-bs-toggle="modal" data-squad-id-delete="{{$squad->id}}"
+                                data-bs-target="#remove-squad" class="btn btn-danger  btn-icon" aria-label="Button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        @endcan
 
                     </div>
-                    <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="connected-sortable py-4">
+                    <div id="{{$squad->name}}" data-squad-id="{{$squad->id}}" class="py-4">
                         @foreach($squad->squadMembers as $key => $value)
-                        <li class="list-group-item cursor-move" profile-id="{{$value->profile->id}}">
+                        <li class="list-group-item" profile-id="{{$value->profile->id}}">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <a href="#">
-                                        <span class="avatar"
-                                            style="background-image: url(./static/avatars/002f.jpg)"></span>
-                                    </a>
+
+                                    <span class="avatar avatar-sm"
+                                        style="background-image: url({{$value->profile->avatar ? '/storage/avatars/'.$value->profile->avatar : ''}})">{{$value->profile->avatar ? '' : $value->profile->initials }}</span>
+
                                 </div>
                                 <div class="col text-truncate">
                                     <span class="text-body d-block">{{ $value->profile->name }}</span>
@@ -509,6 +525,43 @@ Auth::user()->profile->team->team->id && Auth::user()->profile->team->type === '
 </div>
 
 
+<div class="modal modal-blur fade" id="remove-squad" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+
+        <form method="POST" id="squadForm" action="{{ route('membro-evento-squad-delete') }}" class="modal-content">
+            @csrf
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <input type="text" name="squad" id="squadId">
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 9v2m0 4v.01"></path>
+                    <path
+                        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                    </path>
+                </svg>
+                <h3>Você tem certeza?</h3>
+                <div class="text-muted">Você realmente gostaria de remover o SQUAD? Não é possivel recuperar
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col"><a href="#" class="btn btn-white w-100" data-bs-dismiss="modal">
+                                Cancelar
+                            </a></div>
+                        <div class="col">
+                            <a href="#" id="squadDeleteButton" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                Sim! Remover
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
 
 @include('member.league._script')
 @endif

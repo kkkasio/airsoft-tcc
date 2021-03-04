@@ -13,5 +13,14 @@
         $('#form-create-squad').submit();
     })
 
+    $("[data-squad-id-delete]").click(function() {
+        var id = $(this).attr('data-squad-id-delete');
+        $('#squadId').val(id);
+    });
+
+    $("#squadDeleteButton").click(function(){
+        $('#squadForm').submit();
+    });
+
 
 </script>
