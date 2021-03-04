@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->type === 'Liga') {
                 $league = $user->league;
 
-                return $event->league->id === $league->id ?  true : false;
+                return $event->team_id === null &&  $event->league->id === $league->id ?  true : false;
             } else {
                 $profile = $user->profile;
 
@@ -41,8 +41,8 @@ class AuthServiceProvider extends ServiceProvider
 
 
         Gate::define('event-is-open', function ($user, $event) {
-            $statusArray = ['Aberto', 'Inscrições Encerradas', 'Divisão de Times'];
-            if ($user->type     === 'Liga') {
+            $statusArray = ['Aberto', 'Inscrições Encerradas', 'Times Divididos'];
+            if ($user->type === 'Liga') {
 
                 return in_array($event->status, $statusArray);
             } else {

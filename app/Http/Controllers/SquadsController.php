@@ -170,7 +170,12 @@ class SquadsController extends Controller
                     return redirect()->back();
                 }
             } else {
-                dd("Membro");
+                if (Auth::user()->profile && Auth::user()->profile->team && Auth::user()->profile->team->type === 'Moderador') {
+                    $squad->delete();
+
+                    toastr()->success('Squad Removido!');
+                    return redirect()->back();
+                }
             }
 
             toastr()->error('Ops... algo de errado aconteceu');
@@ -181,6 +186,4 @@ class SquadsController extends Controller
             return redirect()->back();
         }
     }
-
-
 }

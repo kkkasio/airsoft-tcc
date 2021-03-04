@@ -84,9 +84,6 @@
                             </button>
                         </form>
                         @endif
-
-
-
                     </div>
                 </div>
                 @endcan
@@ -233,7 +230,7 @@
 
 
                                 <td>
-                                    @if($event->status === 'Aberto' || $event->status === 'Inscrições Encerradas' )
+                                    @can(['manage-event','event-is-open'], $event)
                                     <select name="squad" class="form-select"
                                         data-profile-id="{{$subscriber->profile->id}}">
                                         <option value="0">Selecione o SQUAD</option>
@@ -245,7 +242,7 @@
                                     </select>
                                     @else
                                     {{$subscriber->squad ? $subscriber->squad->name : '-'}}
-                                    @endif
+                                    @endcan
                                 </td>
 
 
@@ -283,7 +280,7 @@
                             Squads ({{count($squads)}})
                         </h2>
                     </div>
-                    @can('event-is-open', $event)
+                    @can(['manage-event','event-is-open'], $event)
 
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
@@ -470,7 +467,6 @@
     });
 
     $("#squadDeleteButton").click(function(){
-        console.log('ok');
         $('#squadForm').submit();
     });
 
