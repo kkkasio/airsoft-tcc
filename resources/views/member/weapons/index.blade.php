@@ -18,7 +18,6 @@
                         <span class="d-sm-inline-block">
                             <a href="#" id="form-modal" class="btn d-none d-sm-inline-block" data-bs-toggle="modal"
                                 data-bs-target="#modal-add-weapon">
-
                                 Nova Arma
                             </a>
                         </span>
@@ -55,7 +54,7 @@
                                 <line x1="16" y1="5" x2="19" y2="8"></line>
                             </svg>
                             Editar</a>
-                        <a href="#" id="btnRemove" data-weapon="{{$weapon->id}}" data-bs-toggle="modal"
+                        <a href="#" data-weapon="{{$weapon->id}}" data-bs-toggle="modal"
                             data-bs-target="#modal-remove" class="card-btn"><svg xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24"
                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -134,7 +133,22 @@
 
 
                 <div class="mb-3">
-                    
+                    <label id="type" class="form-label">Classe</label>
+                    <select class="form-select" name="type" required>
+                        <option value="Pistola">Pistola
+                        </option>
+                        <option value="Assault">Assault
+                        </option>
+                        <option value="Suporte">Suporte
+                        </option>
+                        <option value="DMR">DMR</option>
+                        <option value="Sniper">Sniper</option>
+                    </select>
+                    @error('type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
 
 
@@ -160,7 +174,7 @@
 </div>
 
 <script>
-    $("#btnRemove").click(function() {
+    $("[data-weapon]").click(function() {
         var id = $(this).attr('data-weapon');
         $('#weapon').val(id);
     });

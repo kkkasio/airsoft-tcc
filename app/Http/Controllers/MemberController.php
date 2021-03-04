@@ -146,7 +146,7 @@ class MemberController extends Controller
 
 
         if ($profile->team) {
-            toastr()->error('Ops... algo de errado aconteceu');
+            toastr()->error('Ops... Você já tem um time');
             return redirect()->back();
         }
 

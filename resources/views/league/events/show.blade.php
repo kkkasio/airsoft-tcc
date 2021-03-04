@@ -54,7 +54,7 @@
                         @endif
 
                         @if($event->status === 'Aberto')
-                        <form action="{{ route('liga-evento-squad-teams-finish',['id' => $event->id]) }}" method="POST">
+                        <form action="{{ route('liga-evento-squad-inscription-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
                             <button type="submit" class="btn btn-primary d-sm-inline-block">
@@ -75,7 +75,7 @@
                         </form>
                         @endif
 
-                        @if($event->status === 'Divisão de Times')
+                        @if($event->status === 'Times Divididos')
                         <form action="{{ route('league-event-finish',['id' => $event->id]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">

@@ -70,6 +70,7 @@ Route::post('/liga/evento/{id}/open', 'EventController@openEvent')->name('league
 Route::post('/liga/evento/{id}/close', 'EventController@closeEvent')->name('league-event-close')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/{id}/finish', 'EventController@finishEvent')->name('league-event-finish')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/{id}/teams-finish', 'EventController@finishTeams')->name('liga-evento-squad-teams-finish')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/inscription-finish', 'EventController@finishInscription')->name('liga-evento-squad-inscription-finish')->middleware(['auth', 'verifyLeague']);
 
 Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
@@ -118,6 +119,10 @@ Route::post('/membro/me/weapons/delete', 'WeaponsController@delete')->name('memb
 // Rotas para o time
 Route::get('/membro/time/criar', 'TeamController@showCreate')->name('membro-criar-time-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/criar', 'TeamController@create')->name('membro-criar-time-post')->middleware(['auth', 'verifyMember']);
+
+Route::get('/membro/time/invite', 'MemberController@inviteTeamForm')->name('member-team-invite-form')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/time/invite', 'MemberController@invitePost')->name('member-team-invite-post')->middleware(['auth', 'verifyMember']);
+
 Route::get('/membro/time/{slug}', 'TeamController@show')->name('membro-time-show')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/time/{slug}/edit', 'TeamController@editForm')->name('membro-time-edit-form')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/edit', 'TeamController@edit')->name('membro-time-edit-post')->middleware(['auth', 'verifyMember']);
@@ -127,8 +132,7 @@ Route::post('/membro/time/{slug}/member/edit/{id}/remove', 'TeamController@membe
 Route::get('/membro/time/members/export', 'TeamController@exportMembers')->name('membro-time-members-export')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/time/{slug}/invites', 'TeamController@showCodeInvite')->name('membro-time-show-invites')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/invites/create', 'TeamController@codeInvite')->name('membro-time-create-invite')->middleware(['auth', 'verifyMember']);
-Route::get('/membro/time/invite', 'MemberController@inviteTeamForm')->name('member-team-invite-form')->middleware(['auth', 'verifyMember']);
-Route::post('/membro/time/invite', 'MemberController@invitePost')->name('member-team-invite-post')->middleware(['auth', 'verifyMember']);
+
 
 
 Route::get('/membro/liga/posts', 'LeagueController@showPostsMember')->name('membro-league-show-posts')->middleware(['auth', 'verifyMember']);

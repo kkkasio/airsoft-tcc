@@ -290,7 +290,7 @@ class LeagueController extends Controller
     {
         try {
             $league = Auth::user()->league;
-            $member = ProfileLeague::findOrFail($id);
+            $member = ProfileLeague::where('profile_id', $id)->first();
 
             if ($member) {
                 return view('league.members.edit.index', compact('member'));

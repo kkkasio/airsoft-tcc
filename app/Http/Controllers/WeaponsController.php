@@ -29,8 +29,9 @@ class WeaponsController extends Controller
             Weapon::create($data);
 
             toastr()->success('Arma adicionada!');
-            return redirect()->route('membro-me');
+            return redirect()->route('membro-me-weapon-all');
         } catch (Exception $e) {
+            dd($e->getMessage());
             toastr()->error('Ops.. ago de errado aconteceu');
             return redirect()->back();
         }
@@ -89,19 +90,25 @@ class WeaponsController extends Controller
 
     public function delete(Request $request)
     {
-        $data = $request->all();
+        try {
+            $data = $request->all();
 
-        $weapon = Weapon::find($data['weapon'])->first();
-        $user = Auth::user()->profile;
+            $weapon = Weapon::findOrFail($data['weapon']);
+            $user = Auth::user()->profile;
 
 
-        if ($user->id === $weapon->profile_id) {
-            $weapon->delete();
-            toastr()->success('A Arma foi removida');
-            return redirect()->route('membro-me-weapon-all');
+            if ($user->id === $weapon->profile_id) {
+                $weapon->delete();
+                toastr()->success('A Arma foi removida');
+                return redirect()->route('membro-me-weapon-all');
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
         }
-
-        toastr()->error('Ops... algo de errado aconteceu');
-        return redirect()->back();
     }
 }
