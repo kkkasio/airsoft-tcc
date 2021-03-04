@@ -22,7 +22,7 @@
     <form method="POST" action="{{ route('login') }}" class="card card-md">
         @csrf
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Login to your account</h2>
+            <h2 class="card-title text-center mb-4">Entrar na sua conta</h2>
 
             <div class="mb-3">
                 <label for="email" class="form-label">E-Mail</label>

@@ -32,15 +32,14 @@
                 <form method="POST" class="card card-md" class="card card-md"
                     action="{{ route('liga-membro-update', ['id' => $member->id])}}">
                     @csrf
+
                     <div class="card-body">
                         <div class="form-group">
                             <div class="mb-3">
                                 <div for="type" class="form-label col-3 col-form-label">Permissões na liga</div>
                                 <select class="form-select" name="type" id="type">
-                                    <option value="Moderador" {{$member->type === 'Moderador' ? 'selected' : ''}}>
-                                        Moderador</option>
-                                    <option value="Membro" {{$member->type === 'Membro' ? 'selected' : ''}}>Membro
-                                    </option>
+                                    <option value="Moderador" {{$member->type === 'Moderador' ? 'selected' : ''}}>Moderador</option>
+                                    <option value="Membro" {{$member->type === 'Membro' ? 'selected' : ''}}>Membro</option>
                                 </select>
 
                                 @error('slug')
