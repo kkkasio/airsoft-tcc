@@ -68,6 +68,13 @@ class MemberController extends Controller
         return view('member.profile.index', compact('profile', $profile));
     }
 
+    public function show($slug)
+    {
+        $member = Profile::where('slug',$slug)->firstOrFail();
+
+        return view('member.profile.member',compact('member'));
+    }
+
     public function editForm()
     {
         $profile = Auth::user()->profile;
