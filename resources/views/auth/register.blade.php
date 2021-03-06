@@ -4,7 +4,8 @@
 
 <div class="container-tight py-6">
     <div class="text-center mb-4">
-        SQUAD
+        <img src="{{url('/img/logo.png')}}" alt="SQUAD" width="25%"/>
+
     </div>
 
     <form method="POST" class="card card-md" action="{{ route('register') }}">
