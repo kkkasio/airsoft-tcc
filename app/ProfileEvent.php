@@ -24,4 +24,9 @@ class ProfileEvent extends Model
     {
         return $this->belongsTo(EventSquad::class);
     }
+
+    public function weapons()
+    {
+        return $this->hasMany(WeaponInscription::class, 'inscription_id','id');
+    }
 }

@@ -6,8 +6,11 @@ use App\Event;
 use App\EventEvaluate;
 use App\EventSquad;
 use App\LeagueTeam;
+use App\Profile;
 use App\ProfileEvent;
 use App\Team;
+use App\Weapon;
+use App\WeaponInscription;
 use Carbon\Carbon;
 use Error;
 use Exception;
@@ -33,6 +36,75 @@ class EventController extends Controller
 
         toastr()->error('Ops... algo de errado aconteceu');
         return redirect()->back();
+    }
+
+    public function showinscricao($id, $inscricao)
+    {
+        $inscricao = ProfileEvent::findOrFail($inscricao);
+        $weapons = $inscricao->profile->weapons;
+
+        if (Auth::user()->type === 'Liga') {
+            return view('league.events.inscription', compact('inscricao', 'weapons'));
+        } else {
+            return view('member.league.inscription', compact('inscricao', 'weapons'));
+        }
+    }
+
+    public function inscricaoWeapon(Request $request, $id, $inscricao)
+    {
+        $data = $request->all();
+
+        try {
+            $event = Event::findOrFail($id);
+            $inscricao = ProfileEvent::findOrFail($inscricao);
+            $weapon = Weapon::findOrFail($data['weapon']);
+
+            if (!$weapon || !$weapon->profile_id === $inscricao->profile_id) {
+                throw new Exception('Ops.. ocoreu um erro ao buscar a arma');
+            }
+
+            $hasWeaponInscription = WeaponInscription::where('inscription_id', $inscricao->id)->where('weapon_id', $weapon->id)->first();
+            if ($hasWeaponInscription) {
+                throw new Exception('Ops.. essa arma já está cronada!');
+            }
+
+            $data['inscription_id'] = $inscricao->id;
+            $data['weapon_id'] = $data['weapon'];
+
+
+            $valid = Validator::make($data, [
+                'inscription_id' => 'required|integer',
+                'weapon_id'      => 'required|integer',
+                'fps'            => 'required|integer',
+                'note'           => 'sometimes|nullable|string',
+
+            ]);
+            $valid->validate();
+
+            $weaponInscription = WeaponInscription::create($data);
+
+            toastr()->success('Arma cronada com sucesso!');
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            toastr()->error($e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    public function removeWeaponInscription(Request $request)
+    {
+        $data = $request->all();
+
+        $weaponInscription = WeaponInscription::findOrFail($data['weapon']);
+        $weaponInscription->delete();
+
+        toastr()->success('A cronagem foi removida');
+        return redirect()->back();
+
+        dd($weaponInscription);
     }
 
 
@@ -147,9 +219,9 @@ class EventController extends Controller
     {
         $league = Auth::user()->league;
 
-        $planned = Event::where('league_id',$league->id)->where('status', 'Planejado')->orderBy('startdate','DESC')->get();
-        $open  = Event::where('league_id',$league->id)->where('status', 'Aberto')->orderBy('startdate','DESC')->get(); //->sortBy('')
-        $finish  = Event::where('league_id',$league->id)->where('status', 'Finalizado')->orWhere('status','Cancelado')->orderBy('startdate','asc')->get();
+        $planned = Event::where('league_id', $league->id)->where('status', 'Planejado')->orderBy('startdate', 'DESC')->get();
+        $open  = Event::where('league_id', $league->id)->where('status', 'Aberto')->orderBy('startdate', 'DESC')->get(); //->sortBy('')
+        $finish  = Event::where('league_id', $league->id)->where('status', 'Finalizado')->orWhere('status', 'Cancelado')->orderBy('startdate', 'asc')->get();
 
 
         return view('league.events.all', compact('planned', 'open', 'finish'));
@@ -256,9 +328,10 @@ class EventController extends Controller
                 toastr()->success('Inscrição removida');
                 return redirect()->back();
             }
-            toastr()->error('Ops... algo de errado aconteceu');
+            toastr()->error('Ops... algo de errado acontece u');
             return redirect()->back();
         } catch (Exception $e) {
+            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
@@ -627,12 +700,11 @@ class EventController extends Controller
             $league = Auth::user()->league;
             $teams =  LeagueTeam::where('league_id', $league->id)->get();
 
-            if ($event->league_id === $league->id && $event->team_id === null) {
+            if ($event->league_id === $league->id) {
 
                 return view('league.events.edit.index', compact('event', 'teams'));
             }
         }
-
         return  redirect('404');
     }
 

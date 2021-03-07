@@ -73,6 +73,13 @@ Route::post('/liga/evento/{id}/finish', 'EventController@finishEvent')->name('le
 Route::post('/liga/evento/{id}/teams-finish', 'EventController@finishTeams')->name('liga-evento-squad-teams-finish')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/{id}/inscription-finish', 'EventController@finishInscription')->name('liga-evento-squad-inscription-finish')->middleware(['auth', 'verifyLeague']);
 
+Route::get('/liga/evento/{id}/inscricao/{inscricao}', 'EventController@showinscricao')->name('liga-event-inscricao-weapon')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/{id}/inscricao/{inscricao}', 'EventController@inscricaoWeapon')->name('liga-event-inscricao-weapon-post')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/evento/inscricao/weapon/remove/', 'EventController@removeWeaponInscription')->name('liga-event-inscricao-weapon-remove')->middleware(['auth', 'verifyLeague']);
+
+
+
+
 Route::post('/liga/evento/squads/create', 'SquadsController@create')->name('liga-evento-squad-create')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/eventos/aberto', 'EventController@open')->name('liga-eventos-aberto')->middleware(['auth', 'verifyLeague']);
@@ -143,6 +150,12 @@ Route::get('/membro/liga/event/{id}', 'EventController@show')->name('membro-leag
 Route::get('/membro/liga/event/{id}/edit', 'EventController@formEdit')->name('membro-league-edit-event')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/liga/event/{id}/update', 'EventController@memberUpdate')->name('member-evento-update')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/liga/event/{id}/comment', 'EventController@comment')->name('membro-league-event-comment')->middleware(['auth', 'verifyMember']);
+
+
+Route::get('/membro/liga/event/{id}/inscricao/{inscricao}', 'EventController@showinscricao')->name('membro-event-inscricao-weapon')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/liga/event/{id}/inscricao/{inscricao}', 'EventController@inscricaoWeapon')->name('membro-event-inscricao-weapon-post')->middleware(['auth', 'verifyMember']);
+
+Route::post('/membro/liga/event/inscricao/weapon/remove/', 'EventController@removeWeaponInscription')->name('membro-event-inscricao-weapon-remove')->middleware(['auth', 'verifyMember']);
 
 Route::post('/membro/liga/invite', 'LeagueController@inviteMember')->name('membro-league-invite')->middleware(['auth', 'verifyMember']);
 

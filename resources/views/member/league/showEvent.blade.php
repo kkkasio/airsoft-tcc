@@ -197,8 +197,20 @@
 
                             <tr>
                                 <td><span class="text-muted">#{{$subscriber->id}}</span></td>
-                                <td><a href="{{route('liga-membro-show',['id' => $subscriber->profile->id])}}"
-                                        class="text-reset" tabindex="-1">{{$subscriber->profile->name}}</a></td>
+                                <td>
+
+                                    @can('manage-event', $event)
+                                    @if($event->status === 'Aberto' || $event->status === 'Times Divididos')
+                                    <a href="{{route('membro-event-inscricao-weapon',['id' => $event->id, 'inscricao' => $subscriber->id])}}"
+                                        class="text-reset" tabindex="-1">{{$subscriber->profile->name}}</a>
+                                    @else
+                                    {{$subscriber->profile->name}}
+                                    @endif
+                                    @else
+                                    {{$subscriber->profile->name}}
+                                    @endcan
+
+                                </td>
                                 <td>
                                     {{$subscriber->profile->team ? $subscriber->profile->team->team->name : '' }}
                                 </td>
@@ -211,10 +223,7 @@
                                 </form>
 
                                 <td>
-                                    @if($event->status == 'Aberto' && $event->team && Auth::user()->profile->team &&
-                                    $event->team->id ===
-                                    Auth::user()->profile->team->team->id && Auth::user()->profile->team->type ===
-                                    'Moderador')
+                                    @can('manage-event',$event)
                                     <select name="squad" class="form-select"
                                         data-profile-id="{{$subscriber->profile->id}}">
                                         <option value="0">Selecione o SQUAD</option>
@@ -227,7 +236,7 @@
                                     </select>
                                     @else
                                     {{$subscriber->squad ? $subscriber->squad->name : '-' }}
-                                    @endif
+                                    @endcan
                                 </td>
                             </tr>
 
@@ -539,8 +548,7 @@ Auth::user()->profile->team->team->id && Auth::user()->profile->team->type === '
                     stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M12 9v2m0 4v.01"></path>
-                    <path
-                        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
                     </path>
                 </svg>
                 <h3>Você tem certeza?</h3>

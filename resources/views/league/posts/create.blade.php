@@ -2,8 +2,6 @@
 
 @section('title', '- Criar Comunicado')
 
-
-
 @section('content')
 
 <div class="content">

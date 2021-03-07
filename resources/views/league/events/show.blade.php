@@ -54,7 +54,8 @@
                         @endif
 
                         @if($event->status === 'Aberto')
-                        <form action="{{ route('liga-evento-squad-inscription-finish',['id' => $event->id]) }}" method="POST">
+                        <form action="{{ route('liga-evento-squad-inscription-finish',['id' => $event->id]) }}"
+                            method="POST">
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
                             <button type="submit" class="btn btn-primary d-sm-inline-block">
@@ -70,7 +71,7 @@
                             @csrf
                             <input type="hidden" name="event" value="{{$event->id}}">
                             <button type="submit" class="btn btn-primary d-sm-inline-block">
-                               Finalizar Divisão de Times
+                                Finalizar Divisão de Times
                             </button>
                         </form>
                         @endif
@@ -217,8 +218,14 @@
 
                             <tr>
                                 <td><span class="text-muted">#{{$subscriber->id}}</span></td>
-                                <td><a href="{{route('liga-membro-show',['id' => $subscriber->profile->id])}}"
-                                        class="text-reset" tabindex="-1">{{$subscriber->profile->name}}</a></td>
+                                <td>
+                                    @if($event->status === 'Aberto' || $event->status === 'Times Divididos')
+                                    <a href="{{route('liga-event-inscricao-weapon',['id' => $event->id, 'inscricao' => $subscriber->id])}}"
+                                        class="text-reset" tabindex="-1">{{$subscriber->profile->name}}</a>
+                                    @else
+                                    {{$subscriber->profile->name}}
+                                    @endif
+                                </td>
                                 <td>
                                     {{$subscriber->profile->team ? $subscriber->profile->team->team->name : '' }}
                                 </td>

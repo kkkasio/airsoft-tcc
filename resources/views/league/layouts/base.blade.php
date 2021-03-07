@@ -21,8 +21,7 @@
 
 <body class="antialiased" cz-shortcut-listen="true">
     <div id="page">
-        @toastr_js
-        @toastr_render
+
 
         @include('league.layouts.sidebar')
         @include('league.layouts.header')
@@ -33,5 +32,8 @@
     <script src="{{URL::asset('js/tabler.min.js')}}"></script>
     @include('layouts.footer')
 </body>
+@jquery
+@toastr_js
+@toastr_render
 
 </html>
