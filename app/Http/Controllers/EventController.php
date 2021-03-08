@@ -11,6 +11,7 @@ use App\ProfileEvent;
 use App\Team;
 use App\Weapon;
 use App\WeaponInscription;
+use PDF;
 use Carbon\Carbon;
 use Error;
 use Exception;
@@ -443,6 +444,86 @@ class EventController extends Controller
         }
     }
 
+    public function finishInscription(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+
+
+            $valid = Validator::make($data, [
+                'event' => 'required'
+            ]);
+
+            $valid->validate();
+
+
+            if (Auth::user()->type === 'Liga') {
+                $league = Auth::user()->league;
+                $event = Event::find($data['event']);
+
+
+                if ($event->league_id === $league->id && !$event->team) {
+
+                    /*foreach ($event->subscribers as $subscriber) {
+
+                        if ($subscriber->squad_id === null) {
+                            toastr()->info('Existem pessoas sem SQUAD');
+                            return redirect()->back();
+                        }
+                    }*/
+
+
+                    if ((count($event->subscribers) < $event->players)) {
+
+                        $event->status = 'Cancelado';
+                        $event->save();
+
+                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessários');
+
+                        return redirect()->back();
+                    }
+
+                    $event->status = 'Inscrições Encerradas';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            } else {
+
+                $profile = Auth::user()->profile;
+                $event = Event::find($data['event']);
+
+
+                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
+
+                    if ((count($event->subscribers) < $event->players)) {
+
+                        $event->status = 'Cancelado';
+                        $event->save();
+
+                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessários');
+
+                        return redirect()->back();
+                    }
+
+                    $event->status = 'Inscrições Encerradas';
+                    $event->save();
+
+                    toastr()->success('Evento atualizado');
+                    return redirect()->back();
+                }
+            }
+
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        } catch (Exception  $e) {
+            dd($e);
+            toastr()->error('Ops... algo de errado aconteceu');
+            return redirect()->back();
+        }
+    }
+
     public function finishTeams(Request $request, $id)
     {
         try {
@@ -471,12 +552,18 @@ class EventController extends Controller
                         }
                     }
 
+                    if (count($event->squads) <= 1) {
+
+                        toastr()->info('É obrigatório ter mais de um SQUAD');
+                        return redirect()->back();
+                    }
+
                     if ((count($event->subscribers) < $event->players)) {
 
                         $event->status = 'Cancelado';
                         $event->save();
 
-                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessário');
+                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessários');
                         return redirect()->back();
                     }
 
@@ -501,49 +588,11 @@ class EventController extends Controller
                             return redirect()->back();
                         }
                     }
-                    $event->status = 'Times Divididos';
-                    $event->save();
 
-                    toastr()->success('Evento atualizado');
-                    return redirect()->back();
-                }
-            }
+                    if (count($event->squads) <= 1) {
 
-            toastr()->error('Ops... algo de errado aconteceu');
-            return redirect()->back();
-        } catch (Exception  $e) {
-            dd($e);
-            toastr()->error('Ops... algo de errado aconteceu');
-            return redirect()->back();
-        }
-    }
-
-    public function finishInscription(Request $request, $id)
-    {
-        try {
-            $data = $request->all();
-
-
-            $valid = Validator::make($data, [
-                'event' => 'required'
-            ]);
-
-            $valid->validate();
-
-
-            if (Auth::user()->type === 'Liga') {
-                $league = Auth::user()->league;
-                $event = Event::find($data['event']);
-
-
-                if ($event->league_id === $league->id && !$event->team) {
-
-                    foreach ($event->subscribers as $subscriber) {
-
-                        if ($subscriber->squad_id === null) {
-                            toastr()->info('Existem pessoas sem SQUAD');
-                            return redirect()->back();
-                        }
+                        toastr()->info('É obrigatório ter mais de um SQUAD');
+                        return redirect()->back();
                     }
 
                     if ((count($event->subscribers) < $event->players)) {
@@ -551,31 +600,10 @@ class EventController extends Controller
                         $event->status = 'Cancelado';
                         $event->save();
 
-                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessário');
+                        toastr()->warning('Evento foi Cancelado. Não possui o mínimo de jogadores necessários');
                         return redirect()->back();
                     }
 
-                    $event->status = 'Times Divididos';
-                    $event->save();
-
-                    toastr()->success('Evento atualizado');
-                    return redirect()->back();
-                }
-            } else {
-
-                $profile = Auth::user()->profile;
-                $event = Event::find($data['event']);
-
-
-                if ($profile->team && $profile->team->team && $profile->team->type === 'Moderador' && $event->team_id === $profile->team->team->id) {
-
-                    foreach ($event->subscribers as $subscriber) {
-
-                        if ($subscriber->squad_id === null) {
-                            toastr()->info('Existem pessoas sem SQUAD');
-                            return redirect()->back();
-                        }
-                    }
                     $event->status = 'Times Divididos';
                     $event->save();
 
@@ -865,6 +893,20 @@ class EventController extends Controller
             return null;
         } catch (Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+    public function exportSquads($id)
+    {
+        $event = Event::findOrFail($id);
+
+        try {
+
+            $pdf = PDF::loadView('pdf.event', compact('event'));
+
+            return $pdf->stream('event.pdf');
+        } catch (Exception $e) {
+            dd($e);
         }
     }
 }

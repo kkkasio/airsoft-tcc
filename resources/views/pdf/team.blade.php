@@ -1,11 +1,9 @@
-<link rel="stylesheet" href="{{ public_path('css/tabler.css') }}">
-
+<link rel="stylesheet" href="{{ public_path('css/tabler.css') }}" />
 <title>Membros do Time</title>
 <style>
     .page-break {
         page-break-after: always;
     }
-
 </style>
 <p class="text-center text-success text-uppercase">Membros do time</p>
 <table class="table table-vcenter card-table">

@@ -73,6 +73,9 @@ Route::post('/liga/evento/{id}/finish', 'EventController@finishEvent')->name('le
 Route::post('/liga/evento/{id}/teams-finish', 'EventController@finishTeams')->name('liga-evento-squad-teams-finish')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/{id}/inscription-finish', 'EventController@finishInscription')->name('liga-evento-squad-inscription-finish')->middleware(['auth', 'verifyLeague']);
 
+Route::get('/liga/evento/{id}/export', 'EventController@exportSquads')->name('liga-evento-exportar-squads')->middleware(['auth', 'verifyLeague']);
+
+
 Route::get('/liga/evento/{id}/inscricao/{inscricao}', 'EventController@showinscricao')->name('liga-event-inscricao-weapon')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/{id}/inscricao/{inscricao}', 'EventController@inscricaoWeapon')->name('liga-event-inscricao-weapon-post')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/evento/inscricao/weapon/remove/', 'EventController@removeWeaponInscription')->name('liga-event-inscricao-weapon-remove')->middleware(['auth', 'verifyLeague']);

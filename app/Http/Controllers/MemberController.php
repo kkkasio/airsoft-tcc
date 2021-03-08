@@ -29,16 +29,25 @@ class MemberController extends Controller
         $data['user_id']  = Auth::user()->id;
 
 
-        $valid =  Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'nickname' => ['required', 'string', 'max:255'],
-            'birthday' => ['required', 'date_format:Y-m-d'],
-            'slug' => ['required', 'string', 'max:255', 'unique:profiles'],
-            'gender' => ['required', Rule::in(['F', 'M'])],
-            "estado" => ['required', 'string'],
-            "cidade" => ['required', 'string']
+        $todaySub18Years = Carbon::now()->subYears(18)->format('d/m/Y');
 
-        ]);
+
+        $messages = [
+            'birthday.before_or_equal' => 'Você deve ter 18 anos',
+            'estado.*' => 'Você deve selecionar um estado',
+            'cidade.*' => 'Você deve selecionar uma cidade',
+        ];
+
+        $valid =  Validator::make($data, [
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'nickname' => ['required', 'string', 'min:4', 'max:255'],
+            'birthday' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:' . $todaySub18Years],
+            'slug' => ['required', 'string', 'min:4', 'max:255', 'unique:profiles'],
+            'gender' => ['required', Rule::in(['F', 'M'])],
+            "estado" => ['required', 'integer',],
+            "cidade" => ['required', 'integer']
+
+        ], $messages);
 
 
         $valid->validate();
@@ -70,9 +79,9 @@ class MemberController extends Controller
 
     public function show($slug)
     {
-        $member = Profile::where('slug',$slug)->firstOrFail();
+        $member = Profile::where('slug', $slug)->firstOrFail();
 
-        return view('member.profile.member',compact('member'));
+        return view('member.profile.member', compact('member'));
     }
 
     public function editForm()

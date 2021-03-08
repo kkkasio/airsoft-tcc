@@ -35,4 +35,9 @@ class Event extends Model
     {
         return $this->hasMany(EventEvaluate::class);
     }
+
+    public function squads()
+    {
+        return $this->hasMany(EventSquad::class);
+    }
 }
