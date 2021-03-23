@@ -221,7 +221,7 @@ class EventController extends Controller
         $league = Auth::user()->league;
 
         $planned = Event::where('league_id', $league->id)->where('status', 'Planejado')->orderBy('startdate', 'DESC')->get();
-        $open  = Event::where('league_id', $league->id)->where('status', 'Aberto')->orderBy('startdate', 'DESC')->get(); //->sortBy('')
+        $open  = Event::where('league_id', $league->id)->where('status', 'Aberto')->orderBy('startdate', 'DESC')->get();
         $finish  = Event::where('league_id', $league->id)->where('status', 'Finalizado')->orWhere('status', 'Cancelado')->orderBy('startdate', 'asc')->get();
 
 

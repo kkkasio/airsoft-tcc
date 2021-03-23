@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Validation\ValidationException;
 
 class WeaponsController extends Controller
 {
@@ -21,6 +21,7 @@ class WeaponsController extends Controller
 
             $valid = Validator::make($data, [
                 'name' => 'required|string|min:3',
+                'nickname' => 'required|string|min:2',
                 'type' => ['required', Rule::in(['Pistola', 'Assault', 'DMR', 'Sniper', 'Suporte'])]
             ]);
 
@@ -30,8 +31,10 @@ class WeaponsController extends Controller
 
             toastr()->success('Arma adicionada!');
             return redirect()->route('membro-me-weapon-all');
+        } catch (ValidationException $e) {
+            toastr()->error('Ops... Dados incorretos verifique o formulário');
+            return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e->getMessage());
             toastr()->error('Ops.. ago de errado aconteceu');
             return redirect()->back();
         }
@@ -106,7 +109,6 @@ class WeaponsController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }

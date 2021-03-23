@@ -33,8 +33,8 @@ class TeamController extends Controller
         $data['profile_id'] = Auth::user()->profile->id;
 
         $valid = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:teams',
+            'name' => 'required|string|max:255|min:4',
+            'slug' => 'required|string|unique:teams|min:4',
             'about' => 'required|string'
         ]);
 

@@ -112,7 +112,7 @@
                 <div class="mb-3">
                     <label class="form-label">Nome</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        placeholder="Ex: Ares Amoeba 009" required>
+                        placeholder="Ex: Ares Amoeba 009" value="{{@old('name')}}" required>
                     @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -122,7 +122,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Apelido</label>
-                    <input type="text" class="form-control @error('nickname') is-invalid @enderror" name="nickname"
+                    <input type="text" class="form-control @error('nickname') is-invalid @enderror" value="{{@old('nickname')}}"  name="nickname"
                         placeholder="Sua arma tem um apelido?">
                     @error('nickname')
                     <span class="invalid-feedback" role="alert">

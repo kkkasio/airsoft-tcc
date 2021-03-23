@@ -1,7 +1,8 @@
 <div class="form-group">
     <label for="name" class="form-label col-3 col-form-label">Nome do time</label>
     <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-        placeholder="Nome do time" value="{{ old('name') || isset($team->name) ? $team->name : ''}}" required>
+        placeholder="Nome do time" value="{{ old('name')}}" required>
+
     @error('title')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -15,8 +16,8 @@
         <span class="input-group-text">
             https://localhost.com/time/
         </span>
-        <input type="text" id="slug" name="slug" value="{{ old('slug') || isset($team->slug) ? $team->slug : '' }}"
-            class="form-control @error('slug') is-invalid @enderror ps-1" autocomplete="off" {{isset($team->slug) ? 'disabled' : ''}} required>
+        <input type="text" id="slug" name="slug" value="{{ old('slug') }}"
+            class="form-control @error('slug') is-invalid @enderror ps-1" autocomplete="off" required>
 
         @error('slug')
         <div class="invalid-feedback">
@@ -24,7 +25,7 @@
         </div>
         @enderror
     </div>
-    @if(isset($team->slug))
+    @if(isset($team))
     <div class="form-check-label">Você não pode alterar esse campo</div>
     @endif
 </div>
@@ -33,7 +34,7 @@
     <label for="about" class="form-label col-3 col-form-label">Sobre o time</label>
     <textarea id="about" class="form-control @error('about') is-invalid @enderror" name="about"
         placeholder="Conte um pouco da história do time"
-        required>{{ old('about') || isset($team->about) ? $team->about : '' }}</textarea>
+        required>{{ old('about')}}</textarea>
     @error('about')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>

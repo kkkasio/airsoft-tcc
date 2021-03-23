@@ -110,7 +110,7 @@
             </h2>
         </div>
         <div class="row row-cards">
-            @forelse (Auth::user()->league->posts as $post)
+            @forelse ($posts as $post)
             <div class="col-md-4">
                 <div class="card card-stacked">
                     <div class="card-header">

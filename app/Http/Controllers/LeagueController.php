@@ -190,7 +190,9 @@ class LeagueController extends Controller
     {
         $user = Auth::user();
         $league = $user->league;
-        return view('league.profile.index', compact('league', $league));
+        $posts = Post::where('league_id', $league->id)->orderBy('created_at', 'desc')->get();
+
+        return view('league.profile.index', compact('league', 'posts'));
     }
 
     public function meEditForm()
