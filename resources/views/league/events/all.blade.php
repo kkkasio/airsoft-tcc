@@ -45,7 +45,8 @@
                                 @forelse ($open as $item)
 
                                 <tr>
-                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a></td>
+                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a>
+                                    </td>
                                     <td class="text-muted">
                                         {{$item->startdate->format('d/m/y H:i')}}
                                     </td>
@@ -56,7 +57,8 @@
                                     <td>
                                         {{$item->players}} / {{count($item->subscribers)}}
                                     </td>
-                                    <td><a href="{{ route('liga-evento-edit-form',['id' => $item->id])}}">Editar</a></td>
+                                    <td><a href="{{ route('liga-evento-edit-form',['id' => $item->id])}}">Editar</a>
+                                    </td>
                                 </tr>
 
                                 @empty
@@ -112,7 +114,8 @@
                                 @forelse ($planned as $item)
 
                                 <tr>
-                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a></td>
+                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a>
+                                    </td>
                                     <td class="text-muted">
                                         {{$item->startdate->format('d/m/y H:i')}}
                                     </td>
@@ -123,7 +126,8 @@
                                     <td>
                                         {{$item->players}} / {{count($item->subscribers)}}
                                     </td>
-                                    <td><a href="{{ route('liga-evento-edit-form',['id' => $item->id])}}">Editar</a></td>
+                                    <td><a href="{{ route('liga-evento-edit-form',['id' => $item->id])}}">Editar</a>
+                                    </td>
                                 </tr>
 
                                 @empty
@@ -171,7 +175,6 @@
                                     <th>Situação</th>
                                     <th>Organização</th>
                                     <th>Quorum mínimo / Inscritos</th>
-                                    <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -179,7 +182,8 @@
                                 @forelse ($finish as $item)
 
                                 <tr>
-                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a></td>
+                                    <td><a href="{{ route('liga-evento-show',['id' => $item->id])}}">{{$item->name}}</a>
+                                    </td>
                                     <td class="text-muted">
                                         {{$item->startdate->format('d/m/y H:i')}}
                                     </td>
@@ -190,7 +194,7 @@
                                     <td>
                                         {{$item->players}} / {{count($item->subscribers)}}
                                     </td>
-                                    <td><a href="{{ route('liga-evento-edit-form',['id' => $item->id])}}">Editar</a></td>
+
                                 </tr>
 
                                 @empty
