@@ -153,13 +153,6 @@
                         Eventos Encerrados e Finalizados
                     </h2>
                 </div>
-                <!--<div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <a href="{{ route('liga-eventos-planejados') }}" class="btn btn-white">
-                            Ver todos os planejados
-                        </a>
-                    </div>
-                </div>-->
             </div>
         </div>
 

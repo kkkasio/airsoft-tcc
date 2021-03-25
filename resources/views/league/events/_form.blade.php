@@ -54,6 +54,19 @@
     </div>
 </div>
 
+<div class="form-group">
+    <div class="mb-3">
+        <label for="location" class="form-label col-3 col-form-label">Local</label>
+        <input type="text" id="location" name="location" class="form-control @error('location') is-invalid @enderror"
+            value="{{old('location') }}" autocomplete="off">
+
+        @error('location')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+    </div>
+</div>
 
 <div class="form-group">
     <div class="mb-3">
@@ -76,9 +89,9 @@
             placeholder="Breve descrição sobre o evento..">{{old('about')}}</textarea>
 
         @error('about')
-        <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+        <div class="invalid-feedback" style="display:block">
+            <span>{{ $message }}</span>
+        </div>
         @enderror
     </div>
 </div>
@@ -91,7 +104,7 @@
             <option value="Planejado">Planejado</option>
         </select>
         @error('status')
-        <span class="" role="alert">
+        <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>
         @enderror

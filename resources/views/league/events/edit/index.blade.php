@@ -98,6 +98,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <div class="mb-3">
+                                <label for="location" class="form-label col-3 col-form-label">Local</label>
+                                <input type="text" id="location" name="location"
+                                    class="form-control @error('location') is-invalid @enderror"
+                                    value="{{old('location') ? old('location') : $event->location }}"
+                                    autocomplete="off" required>
+
+                                @error('location')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <div class="mb-3">
