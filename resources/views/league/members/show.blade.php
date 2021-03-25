@@ -53,10 +53,12 @@
                                     {{$member->type}}
                                 </td>
                                 <td>
+                                    @if($member->profile->events->last())
                                     <div class="text-muted">
-                                        {{$member->profile->events->last() ? $member->profile->events->last()->event->name: '-' }}
+                                        {{ $member->profile->events->last()->event->name }}
                                         ({{$member->profile->events->last()->created_at->format('d/m/Y')}})
                                     </div>
+                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('liga-membro-show',['id' => $member->id])}}">Editar</a>

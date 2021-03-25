@@ -10,13 +10,14 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'email', 'password','type','provider'
+        'email', 'password', 'type', 'provider'
     ];
 
     /**
@@ -38,15 +39,17 @@ class User extends Authenticatable
     ];
 
 
-    public function profile(){
-        if($this->type === 'Membro'){
+    public function profile()
+    {
+        if ($this->type === 'Membro') {
             return $this->hasOne(Profile::class);
         }
         return null;
     }
 
-    public function league(){
-        if($this->type === 'Liga'){
+    public function league()
+    {
+        if ($this->type === 'Liga') {
             return $this->hasOne(League::class);
         }
         return null;
