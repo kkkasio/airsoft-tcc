@@ -15,6 +15,13 @@
                         Editar Evento: {{$event->name}}
                     </h2>
                 </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{{route('liga-eventos')}}" class="btn btn-primary">
+                            Voltar Para listagem
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 

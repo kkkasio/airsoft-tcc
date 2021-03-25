@@ -728,7 +728,7 @@ class EventController extends Controller
             $league = Auth::user()->league;
             $teams =  LeagueTeam::where('league_id', $league->id)->get();
 
-            if ($event->league_id === $league->id) {
+            if ($event->league_id === $league->id && !in_array($event->status, ['Cancelado', 'Finalizado'])) {
 
                 return view('league.events.edit.index', compact('event', 'teams'));
             }
