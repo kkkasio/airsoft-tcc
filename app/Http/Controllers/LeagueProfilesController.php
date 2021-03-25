@@ -12,7 +12,7 @@ class LeagueProfilesController extends Controller
     public function showInvites()
     {
         $league = Auth::user()->league;
-        $invites = LeagueProfileInvites::where('league_id', $league->id)->get();
+        $invites = LeagueProfileInvites::where('league_id', $league->id)->orderBy('created_at','desc')->paginate(15);
 
         return view('league.members.invite.index', compact('invites'));
     }

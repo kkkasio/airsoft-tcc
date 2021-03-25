@@ -67,7 +67,17 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-footer d-flex align-itens-center">
+                        <p class="m-0 text-muted">Exibindo <span>{{$invites->count()}}</span> de
+                            {{$invites->total()}}
+                            em <span>{{$invites->lastPage()}}</span> páginas</p>
+                        <ul class="pagination m-0 ms-auto">
+
+                            {{$invites->render()}}
+                        </ul>
+                    </div>
                 </div>
+
             </div>
         </div>
 

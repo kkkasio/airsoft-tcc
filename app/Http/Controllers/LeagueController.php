@@ -38,6 +38,29 @@ class LeagueController extends Controller
         $league = Auth::user()->league;
 
 
+        $usersByCity = Profile::with(['league' => function ($query) use ($league) {
+            $query->where('league_id', $league->id);
+        }])->get()->groupBy('city_id');
+
+
+
+        $arrayCities = [];
+        $arrayValues = [];
+
+        foreach (array_keys($usersByCity->toArray()) as $key => $city) {
+
+            $arrayCities[] = City::findOrFail($city)->title;
+            $arrayValues[] = count(array_values($usersByCity->toArray())[$key]);
+
+            $rand = str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+
+        }
+
+        $chartUsersCity = LarapexChart::horizontalBarChart()
+            ->setTitle('Membros por Cidade')
+            ->setColors(['#03A9F4'])
+            ->setXAxis($arrayCities)
+            ->addData('', $arrayValues);
 
         //RESUMO GERAL
         //MEMBROS
@@ -135,7 +158,7 @@ class LeagueController extends Controller
             ->addData('Postagens', $postsData)
             ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
 
-        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam', 'chartPosts'));
+        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam', 'chartPosts', 'chartUsersCity'));
     }
 
     private function getMesesFactory($object)

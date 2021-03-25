@@ -64,6 +64,15 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="my-3 col-sm-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            {!! $chartUsersCity->container() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -73,5 +82,6 @@
 {{ $chartEvents->script() }}
 {{ $eventsByteam->script() }}
 {{ $chartPosts->script()  }}
+{{ $chartUsersCity->script() }}
 
 @endsection
