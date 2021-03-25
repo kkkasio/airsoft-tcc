@@ -113,7 +113,12 @@ class MemberController extends Controller
             "cidade" => ['required', 'string']
         ]);
 
+
+
         $valid->validate();
+
+        $data['city_id'] = $data['cidade'];
+        $data['state_id'] = $data['estado'];
 
         $auth = Auth::user()->profile;
         $profile = Profile::find($auth->id);
