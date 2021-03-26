@@ -145,7 +145,7 @@ class EventController extends Controller
                 'status' => 'required|string|min:3',
                 'team_id' => 'required|integer',
                 'startdate' => 'required|date', 'before:today',
-                'enddate' => 'required|date', 'before:today|after:startdate'
+                'enddate' => 'required|date', 'before:today|after_or_equal:startdate'
             ]);
 
             $valid->validate();

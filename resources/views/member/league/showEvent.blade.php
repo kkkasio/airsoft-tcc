@@ -450,7 +450,7 @@
                 </div>
                 <div>
                     <label for="comment" class="form-label">Comentário</label>
-                    <textarea id="comment" name="comment" placeholder="Escreva um texto curto"
+                    <textarea id="comment" name="comment" placeholder="Escreva um comentário curto"
                         class="form-control  @error('comment') is-invalid @enderror"
                         required>{{old('comment')}}</textarea>
                     @error('comment')
