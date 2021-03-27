@@ -22,9 +22,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($squad->squadMembers as $member)
+            @foreach($squad->squadMembers as $key => $member)
             <tr scope="row">
-                <td>{{$member->profile->name}} - (<small>{{strtoupper($member->profile->team->team->name)}})</small>
+                <td>{{(++$key)}} - {{$member->profile->name}} -
+                    (<small>{{strtoupper($member->profile->team ? $member->profile->team->team->name : 'SEM TIME')}})</small>
                 </td>
             </tr>
             @endforeach
