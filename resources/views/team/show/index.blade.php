@@ -105,7 +105,8 @@
                         </div>
                         @else
                         <p>O time ainda não participa de uma liga</p>
-                        @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
+                        @if(Auth::user()->profile->team && Auth::user()->profile->team->team->slug === $team->slug &&
+                        Auth::user()->profile->team->type
                         === 'Moderador')
                         <div class="mt-2">
                             <a href="#" class="btn btn-white" data-bs-toggle="modal" data-bs-target="#modal-report">
@@ -120,7 +121,8 @@
                 </div>
             </div>
 
-            @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
+            @if(Auth::user()->profile->team && Auth::user()->profile->team->team->slug === $team->slug &&
+            Auth::user()->profile->team->type
             === 'Moderador')
             <div class="col-md-4 col-sm-6 col-lg-4">
                 <div class="card">
@@ -129,7 +131,8 @@
 
                         <p>Códigos disponíveis:
                             {{count(Auth::user()->profile->team->team->invites()->where('used',null)->get())}}</p>
-                        @if(Auth::user()->profile->team->team->slug === $team->slug && Auth::user()->profile->team->type
+                        @if(Auth::user()->profile->team && Auth::user()->profile->team->team->slug === $team->slug &&
+                        Auth::user()->profile->team->type
                         === 'Moderador')
                         <div class="mt-2">
                             <a href="{{route('membro-time-show-invites',['slug' => Auth::user()->profile->team->team->slug ])}}"

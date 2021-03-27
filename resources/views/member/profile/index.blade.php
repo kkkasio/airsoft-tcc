@@ -129,7 +129,6 @@
                         @else
                         <div class="mb-2">
                             Ops... Você ainda não possui um time
-                            <a href="{{route('membro-criar-time-form')}}" class="btn btn-dark">Criar um time</a>
                         </div>
 
                         @endif
@@ -249,7 +248,7 @@
 
 <div class="modal modal-blur fade" id="modal-form" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <form id="form" action="{{ route('membro-me-weapon-post') }}" method="POST" class="modal-content">
+        <form id="form-weapon" action="{{ route('membro-me-weapon-post') }}" method="POST" class="modal-content">
             @csrf
             <div class="modal-header">
                 <h5 class="modal-title">Adicionar nova arma</h5>
@@ -300,7 +299,7 @@
                 <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                     Cancelar
                 </a>
-                <button id="sendForm" type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                <button id="sendFormWeapon" type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -350,12 +349,12 @@
 </div>
 
 <script>
-    $("button[type=submit").click(function(){
-        $("form").submit();
+    $("#sendFormWeapon").click(function(){
+        $("#form-weapon").submit();
     })
 
     $("#sendFormInvite").click(function(){
-        $("form-invite").submit();
+        $("#form-invite").submit();
     })
 
 </script>
