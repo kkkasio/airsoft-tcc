@@ -103,8 +103,8 @@
                                 <label for="location" class="form-label col-3 col-form-label">Local</label>
                                 <input type="text" id="location" name="location"
                                     class="form-control @error('location') is-invalid @enderror"
-                                    value="{{old('location') ? old('location') : $event->location }}"
-                                    autocomplete="off" required>
+                                    value="{{old('location') ? old('location') : $event->location }}" autocomplete="off"
+                                    required>
 
                                 @error('location')
                                 <span class="invalid-feedback" role="alert">
@@ -218,7 +218,7 @@
     tinymce.init({
           selector: '#about',
           //menubar: 'edit  view  format tools'
-          plugins: 'casechange formatpainter linkchecker autolink lists checklist  permanentpen powerpaste  tinymcespellchecker',
+          plugins: 'autolink advlist  lists link image charmap print preview hr anchor pagebreak',
           toolbar: 'undo redo | checklist | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
           toolbar_mode: 'floating',
           language: 'pt_BR'

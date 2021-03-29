@@ -210,11 +210,13 @@
                                 <th>Nome</th>
                                 <th>Time</th>
                                 <th>Data</th>
+                                <th>Total de armas Cronadas</th>
                                 <th>SQUAD</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($subscribers as $subscriber)
+
 
                             <tr>
                                 <td><span class="text-muted">#{{$subscriber->id}}</span></td>
@@ -233,6 +235,10 @@
 
                                 <td>
                                     {{$subscriber->created_at->format('d/m/Y')}}
+                                </td>
+
+                                <td>
+                                    {{count($subscriber->weapons)}}
                                 </td>
 
 

@@ -56,18 +56,20 @@ class EventController extends Controller
         $data = $request->all();
 
         try {
+
             $event = Event::findOrFail($id);
             $inscricao = ProfileEvent::findOrFail($inscricao);
             $weapon = Weapon::findOrFail($data['weapon']);
-
-            if (!$weapon || !$weapon->profile_id === $inscricao->profile_id) {
-                throw new Exception('Ops.. ocoreu um erro ao buscar a arma');
-            }
 
             $hasWeaponInscription = WeaponInscription::where('inscription_id', $inscricao->id)->where('weapon_id', $weapon->id)->first();
             if ($hasWeaponInscription) {
                 throw new Exception('Ops.. essa arma já está cronada!');
             }
+
+            if (!$weapon || !$weapon->profile_id === $inscricao->profile_id) {
+                throw new Exception('Ops.. ocoreu um erro ao buscar a arma');
+            }
+
 
             $data['inscription_id'] = $inscricao->id;
             $data['weapon_id'] = $data['weapon'];
@@ -82,7 +84,7 @@ class EventController extends Controller
             ]);
             $valid->validate();
 
-            $weaponInscription = WeaponInscription::create($data);
+            WeaponInscription::create($data);
 
             toastr()->success('Arma cronada com sucesso!');
             return redirect()->back();
@@ -104,8 +106,6 @@ class EventController extends Controller
 
         toastr()->success('A cronagem foi removida');
         return redirect()->back();
-
-        dd($weaponInscription);
     }
 
 
@@ -137,6 +137,10 @@ class EventController extends Controller
             $data['enddate']   = Carbon::createFromDate($data['enddate']);
             $data['team_id']   = $data['time'];
             $data['type']      = 'Jogo';
+            $data['eventdate'] = Carbon::createFromDate($data['startdate'])->format('Y-m-d');
+
+
+            dd($data);
 
             $valid = Validator::make($data, [
                 'name' => 'required|string|min:3',
@@ -749,7 +753,13 @@ class EventController extends Controller
             $data['enddate']   = Carbon::createFromDate($data['enddate']);
             $data['team_id']   = $data['time'];
             $data['type']      = 'Jogo';
+            $data['eventdate'] = $data['startdate']->format('Y-m-d');
 
+
+
+            if (Event::whereDate('eventdate', $data['startdate']->format('Y-m-d'))->first()) {
+                throw new Exception('Já existe um evento criado para esse dia!');
+            }
 
             $valid = Validator::make($data, [
                 'name' => 'required|string|min:3',
@@ -811,8 +821,7 @@ class EventController extends Controller
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e);
-            toastr()->error('Ops... algo de errado aconteceu');
+            toastr()->error($e->getMessage());
             return redirect()->back();
         }
     }

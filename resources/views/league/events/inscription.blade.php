@@ -38,16 +38,17 @@
                         <div class="form-group">
                             <div class="mb-3">
                                 <label for="weapon" class="form-label col-3 col-form-label">Armas</label>
+
                                 <select class="form-select" id="weapon" name="weapon">
-                                    @if($weapons)
-                                    @foreach ($weapons as $weapon)
+                                    @forelse ($weapons as $weapon)
                                     <option value="{{$weapon->id}}">{{$weapon->name.' - '. $weapon->type }}</option>
 
-                                    @endforeach
-                                    @else
-                                    <option value="">Sem Arma cadastrada</option>
-                                    @endif
+                                    @empty
+
+                                    <option value="" selected>NENHUMA ARMA CADASTRADA</option>
+                                    @endforelse
                                 </select>
+
                                 @error('weapon')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
