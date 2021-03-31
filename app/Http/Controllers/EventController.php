@@ -115,7 +115,10 @@ class EventController extends Controller
 
         $events = $league->events->where('startdate', '>', Carbon::now()->subDay())->sortBy('startdate');
 
-        return view('member.league.events', compact('events'));
+        $closedEvents = Event::where('league_id', $league->id)->where('status', 'Finalizado')->orWhere('status', 'Cancelado')->orderBy('startdate', 'desc')->get();
+
+
+        return view('member.league.events', compact('events', 'closedEvents'));
     }
 
     public function createForm()

@@ -18,9 +18,9 @@ class CreateCommentsTable extends Migration
 
             $table->string('comment');
             $table->unsignedBigInteger('profile_id');
-            $table->foreign('profile_id')->references('id')->on('profiles');
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('SET NULL');
             $table->unsignedBigInteger('event_id');
-            $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

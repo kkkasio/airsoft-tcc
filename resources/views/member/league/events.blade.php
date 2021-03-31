@@ -7,7 +7,7 @@
 <div class="content">
     <div class="container-xl">
         <h2 class="page-title my-3">
-            Eventos da Liga: {{Auth::user()->profile->league->league->name}}
+            Proximos eventos eventos da Liga
         </h2>
 
         <div class="row row-cards">
@@ -88,6 +88,66 @@
             @empty
             <p>Nenhum evento cadastrado</p>
             @endforelse
+        </div>
+
+        <div class="mt-4 page-header d-print-none">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                    </div>
+                    <h2 class="page-title">
+                        Eventos Encerrados e Finalizados
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Data</th>
+                                    <th>Situação</th>
+                                    <th>Organização</th>
+                                    <th>Quorum mínimo / Inscritos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @forelse ($closedEvents as $item)
+
+                                <tr>
+                                    <td><a
+                                            href="{{ route('membro-league-show-event',['id' => $item->id])}}">{{$item->name}}</a>
+                                    </td>
+                                    <td class="text-muted">
+                                        {{$item->startdate->format('d/m/y')}}
+                                    </td>
+                                    <td class="text-muted">{{$item->status}}</td>
+                                    <td class="text-muted">
+                                        {{$item->team ? $item->team->name : 'Administração'}}
+                                    </td>
+                                    <td>
+                                        {{$item->players}} / {{count($item->subscribers)}}
+                                    </td>
+                                    </td>
+                                </tr>
+
+                                @empty
+                                <td>Nada cadastrado</td>
+
+                                @endforelse
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
