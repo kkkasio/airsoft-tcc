@@ -13,15 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
+
+Route::get('home', 'HomeController@home');
 
 Route::get('auth/google', 'Auth\LoginController@redirectToGoogle');
 Route::get('auth/google/callback', 'Auth\LoginController@handleGoogleCallback');
-
 
 Route::get('auth/github', 'Auth\LoginController@redirectToGithub');
 Route::get('auth/github/callback', 'Auth\LoginController@handleGithubCallback');
@@ -103,6 +107,7 @@ Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-t
     ver membro
     ver time
 */
+
 
 
 
