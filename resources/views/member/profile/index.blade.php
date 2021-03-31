@@ -182,7 +182,7 @@
                             </svg>
                             Editar Armas
                         </a>
-                        <a href="#" class="btn  d-sm-none btn-icon" aria-label="Adicionar nova arma">
+                        <a href="{{ route('membro-me-weapon-all') }}" class="btn  d-sm-none btn-icon" aria-label="Adicionar nova arma">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">

@@ -14,19 +14,29 @@
                     </h2>
                 </div>
             </div>
+
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <span class="d-sm-inline-block">
+                        <a href="{{ route('membro-me-weapon-all')}}" class="btn btn-white">
+                            Voltar para a Listagem
+                        </a>
+                    </span>
+                </div>
+            </div>
         </div>
 
         <div class="row row-cards">
             <div class="col-md-12">
-                <form method="POST" class="card card-md" class="card card-md" action="{{ route('membro-me-weapon-update', ['id'=> $weapon->id])}}">
+                <form method="POST" class="card card-md" class="card card-md"
+                    action="{{ route('membro-me-weapon-update', ['id'=> $weapon->id])}}">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name" class="form-label col-3 col-form-label">Nome</label>
                             <input id="name" type="text" name="name"
                                 class="form-control @error('name') is-invalid @enderror" placeholder="Nome do time"
-                                value="{{ old('name') || isset($weapon->name) ? $weapon->name : ''}}"
-                                required>
+                                value="{{ old('name') || isset($weapon->name) ? $weapon->name : ''}}" required>
                             @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

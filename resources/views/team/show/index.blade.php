@@ -56,7 +56,7 @@
                                 <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
                                 <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                             </svg>
-                            URL: <strong><?php echo config('app.url')."/time/{$team->slug}" ?></strong>
+                            URL: <strong><?php echo config('app.url')."/membro/time/{$team->slug}" ?></strong>
                         </div>
                         <div class="mb-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
@@ -147,6 +147,71 @@
             </div>
             @endif
         </div>
+
+
+
+        <div class="mt-4 page-header d-print-none">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                    </div>
+                    <h2 class="page-title">
+                        Eventos Organizados pelo Time
+                    </h2>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Data e Hora de Início</th>
+                                    <th>Situação</th>
+                                    <th>Organização</th>
+                                    <th>Quorum mínimo / Inscritos</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @forelse ($events as $item)
+
+                                <tr>
+                                    <td><a href="{{ route('membro-league-show-event',['id' => $item->id])}}">{{$item->name}}</a>
+                                    </td>
+                                    <td class="text-muted">
+                                        {{$item->startdate->format('d/m/y H:i')}}
+                                    </td>
+                                    <td class="text-muted">{{$item->status}}</td>
+                                    <td class="text-muted">
+                                        {{$item->team ? $item->team->name : 'Administração'}}
+                                    </td>
+                                    <td>
+                                        {{$item->players}} / {{count($item->subscribers)}}
+                                    </td>
+                                </tr>
+
+                                @empty
+                                <td>Nada cadastrado</td>
+
+                                @endforelse
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
 
 
         <div class="mt-4 page-header d-print-none">

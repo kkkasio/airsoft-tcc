@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\League;
+use App\Event;
 use App\LeagueTeam;
 use App\LeagueTeamInvites;
 use App\Profile;
@@ -14,7 +14,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use PDF;
@@ -56,7 +55,9 @@ class TeamController extends Controller
 
         $team = Team::where('slug', '=', $slug)->firstOrFail();
 
-        return view('team.show.index', compact($team, 'team'));
+        $events = Event::where('team_id', $team->id)->paginate(5);
+
+        return view('team.show.index', compact('team','events'));
     }
 
     public function editForm(Request $request, $slug)
