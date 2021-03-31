@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
+use App\Profile;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,17 +17,13 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function home()
     {
-        dd(Auth::user());
-        return view('home');
+        $user = Auth::user();
+
+        return redirect($user->type === 'Membro' ? 'membro/dashboard' : 'liga/dashboard');
     }
 }

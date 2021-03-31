@@ -1,12 +1,12 @@
-@extends('layouts.app')
+@extends('member.layouts.simple')
 
 @section('content')
-<div class="container">
+<div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Verify Your Email Address') }}</div>
-
+                <div class="card-status-bottom bg-success"></div>
                 <div class="card-body">
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">
