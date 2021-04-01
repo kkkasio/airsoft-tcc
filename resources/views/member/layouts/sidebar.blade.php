@@ -4,9 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href=".">
-                <img src="./static/logo-white.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-            </a>
+            <img src="{{url('/img/logo.png')}}" alt="SQUAD" height="35px" />
         </h1>
         <div class="navbar-nav flex-row d-lg-none">
 
