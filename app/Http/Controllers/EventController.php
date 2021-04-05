@@ -710,6 +710,9 @@ class EventController extends Controller
                 toastr()->success('Avaliação enviada');
                 return redirect()->route('membro-league-show-event', ['id' => $event->id]);
             }
+
+            toastr()->error('Ops... Você não está inscrito no evento.');
+            return redirect()->back();
         } catch (ValidationException $e) {
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
