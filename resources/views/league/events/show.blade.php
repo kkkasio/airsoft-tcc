@@ -180,8 +180,8 @@
                 </div>
             </div>
             <div class="col-md-8 col-sm-6 col-lg-8">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card" style="height: calc(24rem + 10px)">
+                    <div class="card-body card-body-scrollable card-body-scrollable-shadow">
                         <div class="card-title">Sobre o evento</div>
                         <div class="mb-2">
                             {!! $event->about !!}

@@ -128,19 +128,7 @@
 
 
         <div class="row row-cards">
-            <div class="col-lg-8">
-                <div class="card card-sm">
-                    <div class="card-body">
-
-                        <p>
-                            {!!($event->about) !!}
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
+            <div class="col-md-4 col-sm-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <h2>Sobre o evento</h2>
@@ -164,6 +152,18 @@
                             <b>Arquivo do Jogo</b>: {{$event->file}}
                         </div>
                         @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-sm-6 col-lg-8">
+                <div class="card" style="height: calc(24rem + 10px)">
+                    <div class="card-body card-body-scrollable card-body-scrollable-shadow">
+
+                        <p>
+                            {!!($event->about) !!}
+                        </p>
+
                     </div>
                 </div>
             </div>
