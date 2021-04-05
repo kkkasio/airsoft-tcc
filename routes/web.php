@@ -151,6 +151,7 @@ Route::post('/membro/time/{slug}/member/edit/{id}/remove', 'TeamController@membe
 Route::get('/membro/time/members/export', 'TeamController@exportMembers')->name('membro-time-members-export')->middleware(['auth', 'verifyMember']);
 Route::get('/membro/time/{slug}/invites', 'TeamController@showCodeInvite')->name('membro-time-show-invites')->middleware(['auth', 'verifyMember']);
 Route::post('/membro/time/{slug}/invites/create', 'TeamController@codeInvite')->name('membro-time-create-invite')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/time/invite/{id}/remove', 'TeamController@removeInvite')->name('membro-time-remove-invite')->middleware(['auth', 'verifyMember']);
 
 
 

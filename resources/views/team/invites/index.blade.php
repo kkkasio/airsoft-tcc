@@ -38,6 +38,7 @@
                                     <th>Data de Criação</th>
                                     <th>Foi usado?</th>
                                     <th>Usuário</th>
+                                    <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,6 +57,19 @@
                                     <td>
                                         {{$invite->profile ? $invite->profile->name : '-'}}
                                     </td>
+                                    <td>
+                                        @if (!$invite->used)
+                                        <form action="{{ route('membro-time-remove-invite',['id' => $invite->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <input type="hidden" name="invite" value="{{$invite->id}}">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                Deletar Convite
+                                            </button>
+                                        </form>
+                                        @endif
+
+                                    </td>
                                 </tr>
                                 @empty
                                 <tr>
@@ -73,7 +87,8 @@
 
         <div class="modal modal-blur fade" id="modal-report" tabindex="-1" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <form id="form" action="{{ route('membro-time-create-invite',['slug' => $team->slug]) }}" method="POST" class="modal-content">
+                <form id="form" action="{{ route('membro-time-create-invite',['slug' => $team->slug]) }}" method="POST"
+                    class="modal-content">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title">Gerar código de convite</h5>

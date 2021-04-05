@@ -57,7 +57,7 @@ class TeamController extends Controller
 
         $events = Event::where('team_id', $team->id)->paginate(5);
 
-        return view('team.show.index', compact('team','events'));
+        return view('team.show.index', compact('team', 'events'));
     }
 
     public function editForm(Request $request, $slug)
@@ -309,6 +309,21 @@ class TeamController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
+    }
+
+    public function removeInvite(Request $request, $id)
+    {
+        $invite = TeamInvite::findOrFail($id);
+
+
+        if ($invite->profile_id) {
+            toastr('Ops... esse convite já foi utilizado', 'error');
+            return redirect()->back();
+        }
+
+        $invite->delete();
+        toastr('Convite removido com sucesso!', 'success');
+        return redirect()->back();
     }
 
     public function exportMembers()
