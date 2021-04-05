@@ -38,6 +38,7 @@
                                     <th>Data de Criação</th>
                                     <th>Foi usado?</th>
                                     <th>Time</th>
+                                    <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,6 +56,20 @@
                                     </td>
                                     <td>
                                         {{$invite->team ? $invite->team->name : '-'}}
+                                    </td>
+
+                                    <td>
+                                        @if (!$invite->used)
+                                        <form action="{{ route('liga-times-delete-invite',['id' => $invite->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <input type="hidden" name="invite" value="{{$invite->id}}">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                Deletar Convite
+                                            </button>
+                                        </form>
+                                        @endif
+
                                     </td>
                                 </tr>
                                 @empty

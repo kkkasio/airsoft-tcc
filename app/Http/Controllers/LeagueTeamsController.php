@@ -67,6 +67,21 @@ class LeagueTeamsController extends Controller
         }
     }
 
+    public function deleteInvite(Request $request, $id)
+    {
+        $invite = LeagueTeamInvites::findOrFail($id);
+
+
+        if ($invite->team_id) {
+            toastr('Ops... esse convite já foi utilizado', 'error');
+            return redirect()->back();
+        }
+
+        $invite->delete();
+        toastr('Convite removido com sucesso!', 'success');
+        return redirect()->back();
+    }
+
     public function membersTeam($slug)
     {
         $team = Team::where('slug', $slug)->first();

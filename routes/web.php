@@ -64,6 +64,7 @@ Route::post('/liga/membro/{id}/update', 'LeagueController@updateMember')->name('
 Route::post('/liga/membro/remove', 'LeagueController@removeMember')->name('liga-membro-remove')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/membros/invites', 'LeagueProfilesController@showInvites')->name('liga-members-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/membros/invites', 'LeagueProfilesController@create')->name('liga-members-create-invites')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/membros/invite/{id}/delete', 'LeagueProfilesController@deleteInvite')->name('liga-members-delete-invite')->middleware(['auth', 'verifyLeague']);
 
 Route::get('/liga/eventos', 'EventController@allLeague')->name('liga-eventos')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/evento/{id}', 'EventController@showLeague')->name('liga-evento-show')->middleware(['auth', 'verifyLeague']);
@@ -99,6 +100,7 @@ Route::get('/liga/teams', 'LeagueTeamsController@show')->name('liga-times-show')
 Route::get('/liga/teams/{slug}/members', 'LeagueTeamsController@membersTeam')->name('liga-times-show-members')->middleware(['auth', 'verifyLeague']);
 Route::get('/liga/teams/invites', 'LeagueTeamsController@showInvites')->name('liga-times-show-invites')->middleware(['auth', 'verifyLeague']);
 Route::post('/liga/teams/invites', 'LeagueTeamsController@create')->name('liga-times-create-invite')->middleware(['auth', 'verifyLeague']);
+Route::post('/liga/teams/invite/{id}/delete', 'LeagueTeamsController@deleteInvite')->name('liga-times-delete-invite')->middleware(['auth', 'verifyLeague']);
 
 
 

@@ -12,7 +12,7 @@ class LeagueProfilesController extends Controller
     public function showInvites()
     {
         $league = Auth::user()->league;
-        $invites = LeagueProfileInvites::where('league_id', $league->id)->orderBy('created_at','desc')->paginate(15);
+        $invites = LeagueProfileInvites::where('league_id', $league->id)->orderBy('created_at', 'desc')->paginate(15);
 
         return view('league.members.invite.index', compact('invites'));
     }
@@ -52,5 +52,19 @@ class LeagueProfilesController extends Controller
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back();
         }
+    }
+
+    public function deleteInvite(Request $request, $id)
+    {
+        $invite = LeagueProfileInvites::findOrFail($id);
+
+        if ($invite->profile_id) {
+            toastr('Ops... esse convite já foi utilizado', 'error');
+            return redirect()->back();
+        }
+
+        $invite->delete();
+        toastr('Convite removido com sucesso!', 'success');
+        return redirect()->back();
     }
 }
