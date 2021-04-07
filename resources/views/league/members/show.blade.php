@@ -37,17 +37,24 @@
                             <tr>
                                 <td>
                                     <div class="d-flex py-1 align-items-center">
+
                                         <span class="avatar me-2"
-                                            style="background-image: url(./static/avatars/006m.jpg)">{{$member->profile->avatar ? '' : $member->profile->initials}}</span>
+                                            style="background-image: url({{$member->profile->avatar ? '/storage/avatars/'.$member->profile->avatar : ''}})">{{$member->profile->avatar ? '' : $member->profile->initials}}</span>
                                         <div class="flex-fill">
                                             <div class="font-weight-medium">{{$member->profile->name}}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div>{{$member->profile->team ? $member->profile->team->team->name : ''}}</div>
+                                    @if ($member->profile->team)
+                                    <div>{{$member->profile->team->team->name}}</div>
                                     <div class="text-muted">
-                                        {{$member->profile->team ? $member->profile->team->type : ''}}</div>
+                                        {{$member->profile->team->type}}</div>
+
+                                    @else
+                                    <div>Sem Time</div>
+                                    @endif
+
                                 </td>
                                 <td class="text-muted">
                                     {{$member->type}}

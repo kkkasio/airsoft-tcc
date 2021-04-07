@@ -359,8 +359,8 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <a href="#">
-                                        <span class="avatar"
-                                            style="background-image: url(./static/avatars/002f.jpg)"></span>
+                                        <span class="avatar me-2"
+                                            style="background-image: url({{$value->profile->avatar ? '/storage/avatars/'.$value->profile->avatar : ''}})">{{$value->profile->avatar ? '' : $value->profile->initials}}</span>
                                     </a>
                                 </div>
                                 <div class="col text-truncate">
