@@ -16,7 +16,6 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <a href=" {{route('liga-me')}} " class="dropdown-item">Perfil</a>
-                    <a href="#" class="dropdown-item">Feedback</a>
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -30,7 +29,6 @@
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
-
         </div>
     </div>
 </header>

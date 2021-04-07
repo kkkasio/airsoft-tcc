@@ -49,7 +49,8 @@
                                     @if ($member->profile->team)
                                     <div>{{$member->profile->team->team->name}}</div>
                                     <div class="text-muted">
-                                        {{$member->profile->team->type}}</div>
+                                        {{$member->profile->team->type}}
+                                    </div>
 
                                     @else
                                     <div>Sem Time</div>
@@ -57,7 +58,7 @@
 
                                 </td>
                                 <td class="text-muted">
-                                    {{$member->type}}
+                                    <span class="{{$member->type === 'Moderador' ? 'badge bg-red' : 'badge bg-azure'}}">{{$member->type}}</span>
                                 </td>
                                 <td>
                                     @if($member->profile->events->last())

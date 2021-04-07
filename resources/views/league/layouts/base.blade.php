@@ -22,7 +22,6 @@
 <body class="antialiased" cz-shortcut-listen="true">
     <div id="page">
 
-
         @include('league.layouts.sidebar')
         @include('league.layouts.header')
         @yield('content')
@@ -35,5 +34,4 @@
 @jquery
 @toastr_js
 @toastr_render
-
 </html>

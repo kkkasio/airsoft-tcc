@@ -21,32 +21,25 @@
                     </svg>
                     <span class="badge bg-red"></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-card">
-                    <div class="card">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad amet consectetur
-                            exercitationem fugiat in ipsa ipsum, natus odio quidem quod repudiandae sapiente. Amet
-                            debitis et magni maxime necessitatibus ullam.
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
-                    <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+
+                    <span class="avatar avatar-sm"
+                        style="background-image: url({{Auth::user()->league->avatar ? '/storage/avatars/'.Auth::user()->league->avatar : 'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png'}})"></span>
                     <div class="d-none d-xl-block ps-2">
-                        <div>Paweł Kuna</div>
-                        <div class="mt-1 small text-muted">UI Designer</div>
+                        <div>{{Auth::user()->league->name}}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="#" class="dropdown-item">Set status</a>
-                    <a href="#" class="dropdown-item">Profile &amp; account</a>
-                    <a href="#" class="dropdown-item">Feedback</a>
+                    <a href=" {{route('liga-me')}} " class="dropdown-item">Perfil</a>
+
+
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="#" class="dropdown-item">Logout</a>
+
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
                 </div>
             </div>
         </div>
