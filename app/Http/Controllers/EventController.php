@@ -762,8 +762,10 @@ class EventController extends Controller
             $data['eventdate'] = $data['startdate']->format('Y-m-d');
 
 
+            $dayEvent = Event::whereDate('eventdate', $data['startdate']->format('Y-m-d'))->first();
 
-            if (Event::whereDate('eventdate', $data['startdate']->format('Y-m-d'))->first()) {
+
+            if ($dayEvent && !$dayEvent->id === $event->id) {
                 throw new Exception('Já existe um evento criado para esse dia!');
             }
 
