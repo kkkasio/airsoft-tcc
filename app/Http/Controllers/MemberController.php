@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Profile;
+use App\ProfileEvent;
 use App\ProfileTeam;
 use App\State;
 use App\TeamInvite;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,7 +97,12 @@ class MemberController extends Controller
 
     public function dashboard()
     {
-        return view('member.dashboard');
+        $league = Auth::user()->profile->league;
+        $team = Auth::user()->profile->team;
+
+        $events = ProfileEvent::where('profile_id', Auth::user()->profile->id)->get();
+
+        return view('member.dashboard', compact('league', 'team', 'events'));
     }
 
     public function update(Request $request)
@@ -214,6 +221,27 @@ class MemberController extends Controller
         } catch (Exception $e) {
             toastr()->error('Ops... algo de errado aconteceu');
             return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+    }
+
+    public function leagueLogin()
+    {
+        try {
+            $profile = Auth::user()->profile;
+            $league = Auth::user()->profile->league;
+
+            if ($league->type !== 'Moderador') {
+                throw new Exception('Ops... você não é um moderador');
+            }
+
+            $user = $league->league->user;
+            Auth::login($user);
+
+            toastr('Login realizado com sucesso', 'success');
+            return redirect()->route('liga-dashboard');
+        } catch (Exception $e) {
+            toastr('Ops... ocorreu um erro', 'error');
+            return redirect()->back();
         }
     }
 }

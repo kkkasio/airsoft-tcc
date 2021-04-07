@@ -17,7 +17,7 @@ class ProfileEvent extends Model
 
     public   function event()
     {
-        return  $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class);
     }
 
     public function squad()
@@ -27,6 +27,6 @@ class ProfileEvent extends Model
 
     public function weapons()
     {
-        return $this->hasMany(WeaponInscription::class, 'inscription_id','id');
+        return $this->hasMany(WeaponInscription::class, 'inscription_id', 'id');
     }
 }

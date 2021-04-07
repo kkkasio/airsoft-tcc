@@ -185,3 +185,4 @@ Route::post('/membro/evento/squads/delete', 'SquadsController@deleteSquad')->nam
 
 
 Route::post('/membro/time/{slug}/league', 'TeamController@invitePost')->name('membro-time-invite-post')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/league/login','MemberController@leagueLogin')->name('membro-liga-login')->middleware(['auth', 'verifyMember']);
