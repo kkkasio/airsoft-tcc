@@ -20,7 +20,8 @@
 
         <div class="row row-cards">
             <div class="col-md-12">
-                <form enctype="multipart/form-data" method="POST" class="card card-md" class="card card-md" action="{{ route('liga-eventos-post') }}">
+                <form enctype="multipart/form-data" method="POST" class="card card-md" class="card card-md"
+                    action="{{ route('liga-eventos-post') }}">
                     @csrf
                     <div class="card-body">
                         @include('league.events._form')
@@ -40,7 +41,7 @@
 <script>
     tinymce.init({
           selector: '#about',
-          plugins: 'casechange formatpainter linkchecker autolink lists checklist  permanentpen powerpaste  tinymcespellchecker',
+          plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
           toolbar: 'undo redo | checklist | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
           toolbar_mode: 'floating',
           language: 'pt_BR'

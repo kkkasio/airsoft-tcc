@@ -13,15 +13,16 @@
                         Editar Arma
                     </h2>
                 </div>
-            </div>
 
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-                    <span class="d-sm-inline-block">
-                        <a href="{{ route('membro-me-weapon-all')}}" class="btn btn-white">
-                            Voltar para a Listagem
-                        </a>
-                    </span>
+
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <span class="d-sm-inline-block">
+                            <a href="{{ route('membro-me-weapon-all')}}" class="btn btn-white">
+                                Voltar para a Listagem
+                            </a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,7 +68,8 @@
                                 <option value="Suporte" {{$weapon->type === 'Suporte' ? 'selected': ''}}>Suporte
                                 </option>
                                 <option value="DMR" {{$weapon->type === 'DMR' ? 'selected': ''}}>DMR</option>
-                                <option value="Sniper" {{$weapon->type === 'Sniper' ? 'selected': ''}}>Sniper</option>
+                                <option value="Sniper" {{$weapon->type === 'Sniper' ? 'selected': ''}}>Sniper
+                                </option>
                             </select>
                             @error('type')
                             <span class="invalid-feedback" role="alert">

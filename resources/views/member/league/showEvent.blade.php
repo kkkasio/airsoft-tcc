@@ -131,28 +131,89 @@
             <div class="col-md-4 col-sm-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h2>Sobre o evento</h2>
-                        <div class="mb-1">
-                            <b>Organização:</b> {{$event->team ? $event->team->name : 'Administração'}}
+                        <h2>Sobre o Evento</h2>
+
+
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="13" r="7"></circle>
+                                <polyline points="12 10 12 13 14 13"></polyline>
+                                <line x1="7" y1="4" x2="4.25" y2="6"></line>
+                                <line x1="17" y1="4" x2="19.75" y2="6"></line>
+                            </svg>
+                            Início: <strong>{{$event->startdate->format('d/m/Y H:m')}}</strong>
                         </div>
-                        <div class="mb-1">
-                            <b>Data e hora de início:</b> {{$event->startdate->format('d/m/Y H:m')}}
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="13" r="7"></circle>
+                                <polyline points="12 10 12 13 14 13"></polyline>
+                                <line x1="7" y1="4" x2="4.25" y2="6"></line>
+                                <line x1="17" y1="4" x2="19.75" y2="6"></line>
+                            </svg>
+                            Término: <strong>{{$event->enddate->format('d/m/Y H:m')}}</strong>
                         </div>
-                        <div class="mb-1">
-                            <b>Data e hora de término:</b> {{$event->enddate->format('d/m/Y H:m')}}
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                <line x1="9" y1="9" x2="10" y2="9"></line>
+                                <line x1="9" y1="13" x2="15" y2="13"></line>
+                                <line x1="9" y1="17" x2="15" y2="17"></line>
+                            </svg>
+                            Missão: <strong>@if($event->file) <a href="{{Storage::url('/files/'.$event->file)}}"
+                                    target="_blank">Clique Aqui</a> @else Não Enviado @endif </strong>
                         </div>
-                        <div class="mb-1">
-                            <b>Mínimo de inscritos:</b> {{$event->players}}
+
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="11" r="3"></circle>
+                                <path
+                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
+                                </path>
+                            </svg>
+                            Local: <strong>{{$event->location ? $event->location: 'Não informado'}}</strong>
                         </div>
-                        <div class="mb-1">
-                            <b>Total de Inscritos:</b> {{count($event->subscribers)}}
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                </path>
+                            </svg>
+                            Organização: <strong>{{$event->team ? $event->team->name : 'Administração'}}</strong>
                         </div>
-                        @if($event->file)
-                        <div class="mb-1">
-                            <b>Arquivo do Jogo</b>: {{$event->file}}
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                            </svg>
+                            Minimo de Jogadores: <strong>{{$event->players}}</strong>
                         </div>
-                        @endif
                     </div>
+
+
                 </div>
             </div>
 
@@ -229,7 +290,8 @@
                                         <option value="0">Selecione o SQUAD</option>
                                         @foreach ($squads as $squad)
                                         <option value="{{$squad->id}}"
-                                            {{$subscriber->squad_id === $squad->id ? 'selected': '' }}>{{$squad->name}}
+                                            {{$subscriber->squad_id === $squad->id ? 'selected': '' }}>
+                                            {{$squad->name}}
                                         </option>
                                         @endforeach
 

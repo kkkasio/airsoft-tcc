@@ -22,7 +22,6 @@
                 <div class="card">
                     <div class="card-status-start bg-primary"></div>
                     <div class="card-body">
-                        <h3 class="card-title">Card with side status</h3>
                         <p><strong>Total de Membros</strong>: {{count($members)}}</p>
                         <p><strong>Total de Times</strong>: {{count($teams)}}</p>
                         <p><strong>Total de Eventos</strong>: {{count($members)}}</p>

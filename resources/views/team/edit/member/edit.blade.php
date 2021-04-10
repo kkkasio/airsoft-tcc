@@ -69,7 +69,7 @@
 <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <form id="form-delete"
-            action="{{ route('membro-league-event-comment',['id'=> $member->id, 'slug' => $member->team->slug])}}"
+            action="{{ route('membro-time-remove-member',['id'=> $member->id, 'slug' => $member->team->slug])}}"
             method="POST" class="modal-content">
             @csrf
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

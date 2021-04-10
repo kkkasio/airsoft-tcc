@@ -31,9 +31,6 @@
 
             <div class="col-md-6 col-lg-3">
                 <div class="card">
-                    <div class="card-img-top img-responsive img-responsive-16by9"
-                        style="background-image: url(https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png)">
-                    </div>
 
                     <div class="card-body p-4 text-center">
 
@@ -54,8 +51,8 @@
                                 <line x1="16" y1="5" x2="19" y2="8"></line>
                             </svg>
                             Editar</a>
-                        <a href="#" data-weapon="{{$weapon->id}}" data-bs-toggle="modal"
-                            data-bs-target="#modal-remove" class="card-btn"><svg xmlns="http://www.w3.org/2000/svg"
+                        <a href="#" data-weapon="{{$weapon->id}}" data-bs-toggle="modal" data-bs-target="#modal-remove"
+                            class="card-btn"><svg xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24"
                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -122,8 +119,8 @@
 
                 <div class="mb-3">
                     <label class="form-label">Apelido</label>
-                    <input type="text" class="form-control @error('nickname') is-invalid @enderror" value="{{@old('nickname')}}"  name="nickname"
-                        placeholder="Sua arma tem um apelido?">
+                    <input type="text" class="form-control @error('nickname') is-invalid @enderror"
+                        value="{{@old('nickname')}}" name="nickname" placeholder="Sua arma tem um apelido?">
                     @error('nickname')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

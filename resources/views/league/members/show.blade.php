@@ -27,7 +27,7 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>Time</th>
-                                <th>Regra</th>
+                                <th>Regra na Liga</th>
                                 <th>Última Participação</th>
                                 <th class="w-1"></th>
                             </tr>

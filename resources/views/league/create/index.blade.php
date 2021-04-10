@@ -18,8 +18,9 @@
             <div class="mb-3">
                 <div class="form-label">
                     <label for="name" class="form-label">Nome da liga*</label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror"
-                        placeholder="Qual o nome da liga?" autocomplete="off" required>
+                    <input id="name" type="text" name="name" value="{{ old('name') }}"
+                        class="form-control @error('name') is-invalid @enderror" placeholder="Qual o nome da liga?"
+                        autocomplete="off" required>
                     @error('name')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -31,10 +32,10 @@
                 <label for="slug" class="form-label">Slug (url na plataforma)</label>
                 <div class="input-group input-group-flat">
                     <span class="input-group-text">
-                        https://localhost.com/liga/
+                        <?php echo config('app.url')?>/liga/
                     </span>
-                    <input type="text" id="slug" name="slug" value="{{ old('slug') }}" class="form-control @error('slug') is-invalid @enderror ps-1"
-                        autocomplete="off" required>
+                    <input type="text" id="slug" name="slug" value="{{ old('slug') }}"
+                        class="form-control @error('slug') is-invalid @enderror ps-1" autocomplete="off" required>
                     @error('slug')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -45,7 +46,8 @@
 
             <div class="mb-3">
                 <label class="form-label">Data de Criação</label>
-                <input type="text" name="foundation" required class="form-control @error('foundation') is-invalid @enderror" data-mask="00/00/0000"
+                <input type="text" name="foundation" required
+                    class="form-control @error('foundation') is-invalid @enderror" data-mask="00/00/0000"
                     data-mask-visible="true" placeholder="00/00/0000" value="{{ old('foundation') }}"
                     autocomplete="off">
                 @error('foundation')
@@ -82,8 +84,8 @@
             <div class="mb-3">
                 <label class="form-label">Conte um pouco sobre a liga
                     <!--<span class="form-label-description">56/100</span>--></label>
-                <textarea class="form-control @error('about') is-invalid @enderror" name="about" rows="6" value="{{ old('about') }}" required
-                    placeholder="Escreva aqui.."></textarea>
+                <textarea class="form-control @error('about') is-invalid @enderror" name="about" rows="6"
+                    value="{{ old('about') }}" required placeholder="Escreva aqui.."></textarea>
             </div>
 
             <div class="form-footer">
