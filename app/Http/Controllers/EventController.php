@@ -135,15 +135,15 @@ class EventController extends Controller
             $data = $request->all();
             $league = Auth::user()->league;
 
+            $dateEvent = Carbon::createFromDate($data['startdate'])->format('Y-m-d');
+
             $data['league_id'] = $league->id;
             $data['startdate'] = Carbon::createFromDate($data['startdate']);
             $data['enddate']   = Carbon::createFromDate($data['enddate']);
             $data['team_id']   = $data['time'];
             $data['type']      = 'Jogo';
-            $data['eventdate'] = Carbon::createFromDate($data['startdate'])->format('Y-m-d');
+            $data['eventdate'] = $dateEvent;
 
-
-            dd($data);
 
             $valid = Validator::make($data, [
                 'name' => 'required|string|min:3',
@@ -165,7 +165,12 @@ class EventController extends Controller
                 if ($team->league->league->id === $data['league_id']) {
 
                     $avatar = $this->uploadAvatar($request, $league);
+                    $pdf = $this->uploadPdf($request, $league);
 
+
+                    if ($pdf) {
+                        $data['avatar'] = $pdf;
+                    }
 
                     if ($avatar) {
                         $data['avatar'] = $avatar;
@@ -178,6 +183,9 @@ class EventController extends Controller
                 }
             } else {
                 $avatar = $this->uploadAvatar($request, $league);
+                $pdf = $this->uploadPdf($request, $league);
+
+                $data['pdf'] = $pdf;
 
                 $data['avatar'] = $avatar;
 
@@ -192,9 +200,8 @@ class EventController extends Controller
             toastr()->error('Ops... Dados incorretos verifique o formulário');
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (Exception $e) {
-            dd($e);
             toastr()->error('Ops... algo de errado aconteceu');
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 
@@ -902,6 +909,8 @@ class EventController extends Controller
                 $validFile->validate();
 
                 $pdfName = $league->id . '_pdf' . time() . '.' . request()->file->getClientOriginalExtension();
+
+
                 $request->file->storeAs('files', $pdfName);
 
 
