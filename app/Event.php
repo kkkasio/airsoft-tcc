@@ -40,4 +40,9 @@ class Event extends Model
     {
         return $this->hasMany(EventSquad::class);
     }
+
+    public function scopeYear($query, $year)
+    {
+        return $query->whereYear('created_at', $year);
+    }
 }

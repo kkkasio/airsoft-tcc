@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <p><strong>Total de Membros</strong>: {{count($members)}}</p>
                         <p><strong>Total de Times</strong>: {{count($teams)}}</p>
-                        <p><strong>Total de Eventos</strong>: {{count($members)}}</p>
+                        <p><strong>Total de Eventos</strong>: {{count($events)}}</p>
                     </div>
                 </div>
             </div>

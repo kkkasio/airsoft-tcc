@@ -38,6 +38,9 @@ class LeagueController extends Controller
         $league = Auth::user()->league;
 
 
+        $year = Carbon::today()->format('Y');
+        $events = Event::where('league_id', $league->id)->year(Carbon::today()->format('Y'))->get();
+
         $usersByCity = Profile::with(['league' => function ($query) use ($league) {
             $query->where('league_id', $league->id);
         }])->get()->groupBy('city_id');
@@ -51,9 +54,6 @@ class LeagueController extends Controller
 
             $arrayCities[] = City::findOrFail($city)->title;
             $arrayValues[] = count(array_values($usersByCity->toArray())[$key]);
-
-            $rand = str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
-
         }
 
         $chartUsersCity = LarapexChart::horizontalBarChart()
@@ -158,7 +158,7 @@ class LeagueController extends Controller
             ->addData('Postagens', $postsData)
             ->setXAxis(['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']);
 
-        return view('league.dashboard.index', compact('members', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam', 'chartPosts', 'chartUsersCity'));
+        return view('league.dashboard.index', compact('members', 'events', 'teams', 'chartMembers', 'chartEvents', 'eventsByteam', 'chartPosts', 'chartUsersCity'));
     }
 
     private function getMesesFactory($object)
