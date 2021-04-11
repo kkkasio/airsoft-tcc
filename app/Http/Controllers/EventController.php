@@ -164,30 +164,32 @@ class EventController extends Controller
                 $team = Team::find($data['team_id']);
                 if ($team->league->league->id === $data['league_id']) {
 
-                    $avatar = $this->uploadAvatar($request, $league);
                     $pdf = $this->uploadPdf($request, $league);
-
-
-                    if ($pdf) {
-                        $data['avatar'] = $pdf;
-                    }
+                    $avatar = $this->uploadAvatar($request, $league);
 
                     if ($avatar) {
                         $data['avatar'] = $avatar;
                     }
 
+                    if ($pdf) {
+                        $data['file'] = $pdf;
+                    }
                     $event = Event::create($data);
 
                     toastr()->success('Evento criado');
                     return redirect()->back();
                 }
             } else {
-                $avatar = $this->uploadAvatar($request, $league);
                 $pdf = $this->uploadPdf($request, $league);
+                $avatar = $this->uploadAvatar($request, $league);
 
-                $data['pdf'] = $pdf;
+                if ($avatar) {
+                    $data['avatar'] = $avatar;
+                }
 
-                $data['avatar'] = $avatar;
+                if ($pdf) {
+                    $data['file'] = $pdf;
+                }
 
                 $event = Event::create($data);
 
@@ -901,6 +903,7 @@ class EventController extends Controller
             if ($request->hasFile('file')) {
 
                 $pdf = $request->file('file');
+
                 $validFile = Validator::make($data, [
                     "file" => "required|mimetypes:application/pdf|max:10000"
 
