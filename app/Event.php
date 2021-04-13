@@ -45,4 +45,9 @@ class Event extends Model
     {
         return $query->whereYear('created_at', $year);
     }
+
+    public function scopeOpen($query)
+    {
+        return $query->whereIn('status',array('Aberto','Planejado'));
+    }
 }

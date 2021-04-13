@@ -113,10 +113,9 @@ class EventController extends Controller
     {
         $league = Auth::user()->profile->league->league;
 
-        $events = $league->events->where('startdate', '>', Carbon::now()->subDay())->sortBy('startdate');
+        $events = Event::where('league_id', $league->id)->where('startdate', '>', Carbon::now()->subDay())->open()->orderBy('startdate')->get();
 
         $closedEvents = Event::where('league_id', $league->id)->where('status', 'Finalizado')->orWhere('status', 'Cancelado')->orderBy('startdate', 'desc')->get();
-
 
         return view('member.league.events', compact('events', 'closedEvents'));
     }
