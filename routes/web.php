@@ -110,6 +110,12 @@ Route::post('/liga/teams/invite/{id}/delete', 'LeagueTeamsController@deleteInvit
     ver time
 */
 
+Route::get('/liga/password', 'LeagueController@formPassword')->name('liga-password-form')->middleware(['auth', 'verifyLeague']);
+
+Route::get('/membro/password', 'MemberController@formPassword')->name('membro-password-form')->middleware(['auth', 'verifyMember']);
+
+Route::post('/password', 'PasswordController@update')->name('update-password')->middleware(['auth']);
+
 
 
 
@@ -185,4 +191,4 @@ Route::post('/membro/evento/squads/delete', 'SquadsController@deleteSquad')->nam
 
 
 Route::post('/membro/time/{slug}/league', 'TeamController@invitePost')->name('membro-time-invite-post')->middleware(['auth', 'verifyMember']);
-Route::post('/membro/league/login','MemberController@leagueLogin')->name('membro-liga-login')->middleware(['auth', 'verifyMember']);
+Route::post('/membro/league/login', 'MemberController@leagueLogin')->name('membro-liga-login')->middleware(['auth', 'verifyMember']);

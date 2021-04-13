@@ -244,4 +244,9 @@ class MemberController extends Controller
             return redirect()->back();
         }
     }
+    public function formPassword()
+    {
+        $user = Auth::user();
+        return view('auth.passwords.change', compact('user'));
+    }
 }

@@ -16,6 +16,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <a href=" {{route('liga-me')}} " class="dropdown-item">Perfil</a>
+                    <a href=" {{route('liga-password-form')}} " class="dropdown-item">Trocar Senha</a>
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item" href="{{ route('logout') }}"

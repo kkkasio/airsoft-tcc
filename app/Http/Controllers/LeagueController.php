@@ -412,4 +412,10 @@ class LeagueController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
     }
+
+    public function formPassword()
+    {
+        $user = Auth::user();
+        return view('auth.passwords.change',compact('user'));
+    }
 }
