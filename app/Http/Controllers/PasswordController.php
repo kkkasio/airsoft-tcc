@@ -23,8 +23,8 @@ class PasswordController extends Controller
             }
 
             $valid = Validator::make($data, [
-                'password' => ['required', 'string', 'min:8'],
-                'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+                'password' => ['required', 'string', 'min:6'],
+                'new_password' => ['required', 'string', 'min:6', 'confirmed'],
             ]);
 
             $valid->validate();
