@@ -28,7 +28,7 @@ class LeagueProfilesController extends Controller
 
             if ($data['code']) {
                 $valid = Validator::make($data, [
-                    'code' => 'required|unique:league_team_invite|min:5'
+                    'code' => 'required|unique:league_profile_invite|min:5'
                 ]);
 
                 $valid->validate();
